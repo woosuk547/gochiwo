@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       throw new Error('No candidates in response');
     }
 
-    const imagePart = candidate.content.parts.find(
+    const imagePart = candidate.content?.parts?.find(
       (part: any) => part.inlineData
     );
 
@@ -39,8 +39,8 @@ export async function POST(request: Request) {
       throw new Error('No image generated');
     }
 
-    const imageData = imagePart.inlineData.data; // Base64
-    const mimeType = imagePart.inlineData.mimeType;
+    const imageData = (imagePart as any).inlineData?.data; // Base64
+    const mimeType = (imagePart as any).inlineData?.mimeType;
 
     return NextResponse.json({
       success: true,
