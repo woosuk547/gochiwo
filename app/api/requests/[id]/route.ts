@@ -4,12 +4,12 @@ import { prisma } from '@/lib/prisma'
 // PATCH /api/requests/[id] - 고객 요청 상태 업데이트
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await request.json()
     const { status, contractorId } = body
-    const { id } = params
+    const { id } = await params
 
     const updateData: Record<string, any> = {}
 
