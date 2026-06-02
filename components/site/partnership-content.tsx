@@ -197,6 +197,15 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                   <span className="text-[12px] text-gray-300 font-light">+ 파트너십 확장 중</span>
                 </div>
               </div>
+
+              {/* 임직원 예약 주의사항 */}
+              <div className="rounded-none border border-gray-100 bg-gray-50/50 p-5 text-[12px] leading-relaxed text-gray-500 space-y-1.5">
+                <p className="font-semibold text-[13px] text-[#1a1a1a]">이용 조건 및 주의사항</p>
+                <p>· 이용일 기준 <span className="font-semibold text-[#1a1a1a]">3주 전(21일 전)</span>부터 예약이 가능합니다.</p>
+                <p>· 임직원 <span className="font-semibold text-[#1a1a1a]">본인이 반드시 투숙</span>하는 것을 원칙으로 합니다.</p>
+                <p>· 임직원 본인이 동반하지 않거나 타인에게 양도한 것이 적발될 경우, 즉시 예약이 취소되며 환불이 불가합니다.</p>
+                <p>· 예약 시 기업 전용 이메일로 신청해 주시면 할인 코드를 전송해 드립니다.</p>
+              </div>
             </div>
 
             {/* 폼 */}
