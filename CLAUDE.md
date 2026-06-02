@@ -3,7 +3,7 @@
 > **활성**: Repause (크리오스 외주) | **비활성**: 고쳐줘 → `_legacy-gochiwo/`로 분리 완료
 
 ## 배포 & 인프라
-- **프로덕션**: https://gochiwo-production.up.railway.app
+- **프로덕션**: https://repause.up.railway.app
 - **도메인**: 반값도메인 (ID: `sm5126`, PW: `!zmfldhtm5151`)
 - **Github**: https://github.com/woosuk547/gochiwo
 - **플랫폼**: Railway (무료 플랜, main 브랜치 push 시 자동배포)
@@ -79,6 +79,8 @@
 - [2026-05-30] 결제 검증 및 보안 강화 -> 결제 승인 API(`/api/payment/confirm`)는 클라이언트 `amount`를 맹신하지 않고 DB의 `depositAmount`/`finalAmount`와 서버에서 강제 재비교해 금액 위변조를 차단해야 함. 인증이 없고 요금 폭탄 리스크가 있는 레거시 AI API(`financial-agent`, `generate-image`)는 활성 트리에서 영구 제거해야 함.
 - [2026-05-30] 캘린더 단일 진실 공급원(Single Source of Truth) 설계 -> 캘린더 로직이 분산되면 날짜 가용성/선택 로직 불일치 버그가 유발되므로, `getMonthMatrix`와 `selectDateRange`를 `lib/calendar.ts` 공용 유틸로 완전히 통일해야 함. 화면에 캘린더가 2개 이상 동시 노출되면 혼란스러우므로, 폼 영역은 읽기 전용 날짜 표시로 처리해 UI 복잡도를 줄여야 함.
 - [2026-05-30] 접근성 표준 준수(WCAG 1.4.4) -> `viewport`의 `maximumScale=1`은 저시력자 핀치 줌을 막아 접근성 위반이므로 반드시 제거해야 함. `onClick`이 들어간 모든 날짜 셀과 탭은 스크린리더와 키보드 초점 이동을 위해 `<button>` 태그와 `aria-pressed`, `aria-label` 속성으로 의미론적 구조를 보강해야 함.
+- [2026-06-02] Railway 프로덕션 배포 핵심 사항 -> (1) Next.js 16 Turbopack은 Railway 컨테이너에서 패닉 오류 발생 → `next build`가 아닌 `next@15.3.8`(Dockerfile 내 `npm ci`)를 사용해 webpack 빌드 강제. (2) Dockerfile 빌드 단계에서 `DATABASE_URL=file:/app/prisma/dev.db` (절대경로)로 `prisma db push`를 실행 후 db 파일을 런타임 단계로 복사해야 함. (3) Railway env var `DATABASE_URL` 도 절대경로`file:/app/prisma/dev.db`로 설정해야 상대경로 문제 방지. (4) `next.config.ts`에 `output: 'standalone'`과 `eslint.ignoreDuringBuilds: true` 필수. (5) Railway 무료 트라이얼 만료 시 env var 변경 API 차단됨 → 대시보드 직접 변경. (6) `useSearchParams()` 사용 컴포넌트는 반드시 Suspense 경계로 감싸야 빌드 통과.
+- [2026-06-02] Railway Dockerfile 배포 관리자 계정 설정 -> 관리자 로그인에는 `ADMIN_ID`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` 3개가 모두 필요. `ADMIN_SECRET` 단독으로는 동작하지 않음. Railway 변수 변경 후 재배포 자동 트리거됨.
 
 ## 2026-05-24 작업 일지
 
