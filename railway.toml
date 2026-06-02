@@ -1,5 +1,5 @@
 [build]
-buildCommand = "npm install --legacy-peer-deps && npm run build"
+buildCommand = "npm install next@15.3.4 eslint-config-next@15.3.4 --legacy-peer-deps && npm run build"
 
 [deploy]
 startCommand = "npm start"
