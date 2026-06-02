@@ -44,7 +44,7 @@ export default function RootLayout({
         <KakaoChannelButton />
         <Script
           src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}&submodules=geocoder`}
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
       </body>
     </html>
