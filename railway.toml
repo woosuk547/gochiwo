@@ -1,7 +1,7 @@
 [build]
-buildCommand = "npm install next@15.3.4 eslint-config-next@15.3.4 --legacy-peer-deps && npm run build"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "npm start"
 healthcheckPath = "/"
 restartPolicyType = "ON_FAILURE"
