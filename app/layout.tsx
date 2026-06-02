@@ -13,23 +13,23 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://repause.co.kr'),
   title: {
-    default: '리포즈 | 숲 속 프리미엄 독채 스테이',
+    default: '리포즈 | 하이엔드 프라이빗 독채 스테이',
     template: '%s | 리포즈',
   },
-  description: '강원 홍천, 숲을 마주한 독채 스테이. 전면창 거실, 히노끼 욕조, 프라이빗 데크. 비수기 680,000원부터.',
-  keywords: ['리포즈', '독채 스테이', '강원 홍천', '프리미엄 펜션', '풀빌라', '숲속 스테이'],
+  description: '리포즈는 연인과 가족을 위한 하이엔드 프라이빗 독채 풀빌라입니다. 전면창 거실, 히노끼 욕조, 프라이빗 데크와 사계절 전용 풀을 경험해 보세요.',
+  keywords: ['리포즈', '독채 스테이', '하이엔드 풀빌라', '프라이빗 스테이', '럭셔리 독채', '가족 풀빌라'],
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
     siteName: '리포즈',
-    title: '리포즈 | 숲 속 프리미엄 독채 스테이',
-    description: '강원 홍천, 숲을 마주한 독채 스테이. 느린 하루를 위해 설계한 프리미엄 독채.',
+    title: '리포즈 | 하이엔드 프라이빗 독채 스테이',
+    description: '연인과 가족을 위한 프라이빗 독채 풀빌라. 고요한 휴식과 우리만의 시간을 제안합니다.',
     url: 'https://repause.co.kr',
   },
   twitter: {
     card: 'summary_large_image',
-    title: '리포즈 | 숲 속 프리미엄 독채 스테이',
-    description: '강원 홍천, 숲을 마주한 독채 스테이.',
+    title: '리포즈 | 하이엔드 프라이빗 독채 스테이',
+    description: '고요한 휴식과 우리만의 시간을 위한 프라이빗 독채 스테이.',
   },
 }
 

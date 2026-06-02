@@ -209,7 +209,7 @@ export async function sendReservationConfirmation(options: ReservationConfirmati
           ${options.benefitLabel ? `
           <tr style="border-bottom: 1px solid #e5e5e5;">
             <td style="padding: 12px 0; color: #666666;">제휴 구분</td>
-            <td style="padding: 12px 0; text-align: right;"><strong>${options.benefitLabel} (12% 특별 할인)</strong></td>
+            <td style="padding: 12px 0; text-align: right;"><strong>${options.benefitLabel} (제휴 임직원 우대 적용)</strong></td>
           </tr>` : ''}
           <tr>
             <td style="padding: 12px 0; color: #666666;">선호 결제</td>

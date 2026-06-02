@@ -32,9 +32,10 @@ export function MobileCTABar() {
         >
           <Link
             href="/reservation"
-            className="flex h-12 w-full items-center justify-center rounded-none border border-[#1a1a1a] bg-[#1a1a1a] text-[14px] font-bold tracking-wider text-white transition-all duration-300 hover:bg-transparent hover:text-[#1a1a1a] active:scale-[0.98]"
+            className="group flex min-h-14 w-full flex-col items-center justify-center rounded-none border border-[#1a1a1a] bg-[#1a1a1a] px-4 py-2 text-white transition-all duration-300 hover:bg-transparent hover:text-[#1a1a1a] active:scale-[0.98]"
           >
-            예약하기
+            <span className="text-[14px] font-bold tracking-wider">예약 가능 일정 보기</span>
+            <span className="mt-0.5 text-[11px] font-normal tracking-tight text-white/65 group-hover:text-[#1a1a1a]/60">2인 기준 · 최대 6인</span>
           </Link>
         </motion.div>
       )}

@@ -19,7 +19,7 @@ export function SiteFooter() {
               </div>
             </Link>
             <p className="mt-2 text-[14px] leading-relaxed text-gray-500 md:text-[15px]">
-              강원 홍천, 숲 속 프리미엄 독채 스테이
+              고요한 휴식과 우리만의 시간을 위한 프라이빗 독채 스테이
             </p>
           </div>
 

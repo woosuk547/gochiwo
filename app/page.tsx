@@ -30,25 +30,31 @@ export default function HomePage() {
         {/* 중앙 텍스트 */}
         <div className="relative flex flex-col items-center text-center px-5">
           <FadeIn delay={0.2} duration={0.7} distance={0}>
-            <p className="text-[12px] font-medium tracking-[0.15em] text-white/50 mb-6">
-              온전한 안식과 고요가 흐르는 프라이빗 스테이
+            <p className="mb-6 text-[12px] font-medium tracking-[0.12em] text-white/55">
+              하이엔드 프라이빗 독채 풀빌라
             </p>
           </FadeIn>
 
           <div className="overflow-hidden">
             <FadeIn delay={0.35} duration={1.1} distance={50}>
               <h1 className="text-[clamp(3rem,8.5vw,7.5rem)] font-extralight leading-[1.05] tracking-[-0.025em] text-white font-serif">
-                머무는 것만으로
+                고요가 흐르는 시간
               </h1>
             </FadeIn>
           </div>
           <div className="overflow-hidden">
             <FadeIn delay={0.5} duration={1.1} distance={50}>
               <h1 className="text-[clamp(3rem,8.5vw,7.5rem)] font-extralight leading-[1.05] tracking-[-0.025em] text-white/60 font-serif">
-                충분한 곳
+                우리만의 휴식
               </h1>
             </FadeIn>
           </div>
+
+          <FadeIn delay={0.65} duration={0.7} distance={12}>
+            <p className="mt-6 max-w-xl text-[14px] leading-relaxed text-white/65 md:text-[15px]">
+              연인과 가족이 오롯이 머무는 럭셔리 독채. 그저 머무는 것만으로 충분한 회복을 경험해 보세요.
+            </p>
+          </FadeIn>
 
           <FadeIn delay={0.75} duration={0.7} distance={16}>
             <div className="mt-10 flex items-center gap-6">
@@ -56,14 +62,14 @@ export default function HomePage() {
                 href="/reservation"
                 className="text-[13px] font-medium tracking-[0.1em] text-white border-b border-white/40 pb-0.5 transition-all duration-300 hover:border-white hover:text-white"
               >
-                예약하기
+                예약 가능 일정 보기
               </Link>
               <span className="h-3 w-px bg-white/20" />
               <Link
                 href="/space"
                 className="text-[13px] font-medium tracking-[0.1em] text-white/50 border-b border-transparent pb-0.5 transition-all duration-300 hover:border-white/40 hover:text-white/80"
               >
-                공간 보기
+                공간 둘러보기
               </Link>
             </div>
           </FadeIn>
@@ -85,7 +91,7 @@ export default function HomePage() {
         </FadeIn>
         <FadeIn delay={0.9} className="absolute bottom-10 right-5 md:right-10">
           <p className="text-[11px] tracking-[0.1em] text-white/50">
-            비수기 680,000원~/박
+            2인 기준 · 최대 6인 · 사계절 전용 풀
           </p>
         </FadeIn>
       </section>
@@ -104,10 +110,10 @@ export default function HomePage() {
           <FadeIn delay={0.3}>
             <div className="mt-12 grid grid-cols-2 gap-4 border-t border-gray-100 pt-10 md:grid-cols-4">
               {[
-                { title: 'A Private Sanctuary', desc: '단 한 팀을 위한 단독 정원', detail: '250평 대자연 정원 · 48평 정제된 실내' },
-                { title: 'Check-In & Out', desc: '입실 16:00 · 퇴실 11:00', detail: '여정 가이드 당일 오전 비대면 발송' },
-                { title: 'Slow Rest', desc: '2박 이상 느긋한 여정', detail: '연박 할인 특별가 제공' },
-                { title: 'Seasonal Pool', desc: '따뜻한 미온수 기본 세팅', detail: '추가 과금 없는 사계절 전용 풀' },
+                { title: '프라이빗 독채', desc: '단 한 팀을 위한 독립 공간', detail: '250평 정원 · 48평 정제된 실내' },
+                { title: '이용 인원', desc: '기준 2인 · 최대 6인', detail: '6인 예약 시 토퍼와 침구 추가 제공' },
+                { title: '느긋한 연박', desc: '2박 이상 머무는 여정', detail: '연박 할인 특별가 제공' },
+                { title: '사계절 전용 풀', desc: '추운 계절 미온수 포함', detail: '봄·여름은 자연수 풀로 운영' },
               ].map((item) => (
                 <div key={item.title} className="group border-b border-gray-100 pb-5 md:border-b-0 md:pb-0">
                   <p className="text-[14px] font-semibold tracking-[-0.015em] text-[#1a1a1a]">{item.title}</p>
@@ -241,9 +247,9 @@ export default function HomePage() {
       <section className="border-t border-gray-100 bg-[#1a1a1a] px-5 py-20 md:py-28">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
-            <p className="text-[11px] tracking-[0.12em] text-white/40 uppercase">A Private Journey</p>
+            <p className="text-[11px] tracking-[0.12em] text-white/40">예약 과정</p>
             <h2 className="mt-4 text-[clamp(1.8rem,4vw,3rem)] font-light leading-tight tracking-[-0.025em] text-white">
-              숲으로 이르는 여정
+              온전한 쉼을 예약하는 과정
             </h2>
           </FadeIn>
 
@@ -260,18 +266,18 @@ export default function HomePage() {
           </div>
 
           <FadeIn delay={0.4}>
-            <div className="mt-14 flex gap-4">
+            <div className="mt-14 flex flex-wrap gap-4">
               <Link
                 href="/reservation"
                 className="rounded-none border border-white bg-white px-7 py-3.5 text-[14px] font-semibold tracking-wide text-[#1a1a1a] transition-all duration-300 hover:bg-transparent hover:text-white"
               >
-                날짜 선택하기
+                일반 예약하기
               </Link>
               <Link
                 href="/partnership"
                 className="rounded-none border border-white/20 px-7 py-3.5 text-[14px] font-medium text-white/70 transition-all duration-300 hover:border-white/50 hover:text-white"
               >
-                제휴 예약
+                제휴 · 대관 문의
               </Link>
             </div>
           </FadeIn>

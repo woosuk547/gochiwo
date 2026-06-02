@@ -31,8 +31,8 @@ export const brandPrinciples = [
 export const brandTimeline = [
   {
     label: '2026.06',
-    title: '숲 속의 첫 번째 독채',
-    copy: '숲을 대면하는 고요한 독채 스테이를 통해 리포즈가 정의하는 최상위 안식의 표준을 세웁니다.',
+    title: '첫 번째 프라이빗 독채',
+    copy: '고요한 자연과 정제된 공간 감각을 담은 독채 스테이를 통해 리포즈가 정의하는 최상위 안식의 표준을 세웁니다.',
   },
   {
     label: '2026 하반기',

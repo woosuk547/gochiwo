@@ -14,7 +14,7 @@ const spaceDetails = [
   {
     label: '거실',
     title: '전면창 거실',
-    copy: '숲이 들어오는 거실. 깊은 소파, 낮은 조명, 그리고 사계절이 바뀌는 풍경. 도착하자마자 속도가 느려져요.',
+    copy: '자연이 액자처럼 들어오는 거실. 깊은 소파와 낮은 조명 사이로 우리만의 시간이 천천히 시작돼요.',
     image: '/repause/editorial-living.jpg',
     reverse: false,
   },
@@ -35,7 +35,7 @@ const spaceDetails = [
   {
     label: '데크',
     title: '프라이빗 데크',
-    copy: '아침 안개, 해질녘 빛, 조용한 새소리. 가장 오래 앉게 되는 자리예요.',
+    copy: '포치 아래 의자에 앉아 잠시 눈을 감아보세요. 마음이 차분해지며 고요한 명상에 잠기게 됩니다.',
     image: '/repause/editorial-deck.jpg',
     reverse: true,
   },
@@ -59,7 +59,7 @@ export default function SpacePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.4)_100%)]" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
           <FadeIn delay={0.1}>
-            <p className="text-[11px] tracking-[0.15em] text-white/50">홍천 포레스트 하우스</p>
+            <p className="text-[11px] tracking-[0.12em] text-white/50">프라이빗 포레스트 하우스</p>
           </FadeIn>
           <div className="overflow-hidden mt-3">
             <FadeIn delay={0.2} duration={0.9} distance={50}>
@@ -82,17 +82,17 @@ export default function SpacePage() {
           <TextReveal>
             <p className="text-[clamp(1.3rem,2.5vw,2rem)] font-light leading-[1.8] tracking-[-0.025em] text-[#1a1a1a]">
               공간 안에서 마주하는 사색의 깊이가 길어질수록, 회복의 부피 또한 깊어집니다.<br />
-              숲을 응시하는 거실에서 조용히 시작되어 깊은 수면, 히노끼 정화, 그리고 테라스 데크로 이어지는 유려한 여정을 경험해 보세요.
+              자연을 응시하는 거실에서 조용히 시작되어 깊은 수면, 히노끼 정화, 그리고 테라스 데크로 이어지는 유려한 여정을 경험해 보세요.
             </p>
           </TextReveal>
 
           <FadeIn delay={0.3}>
             <div className="mt-10 grid grid-cols-2 gap-4 border-t border-gray-100 pt-8 md:grid-cols-4">
               {[
-                { label: '전면창 거실', value: '숲 전망 소파 라운지' },
-                { label: '히노끼 욕조', value: '온수 반신욕 & 배쓰 솔트' },
-                { label: '프라이빗 데크', value: '조식 바스켓 전용 서비스' },
-                { label: '다이닝 & 키친', value: '가든 테라스 속 프라이빗 다이닝' },
+                { label: '전면창 거실', value: '자연을 응시하는 소파 라운지' },
+                { label: '히노끼 욕조', value: '따뜻한 반신욕과 편백 향' },
+                { label: '프라이빗 데크', value: '포치 아래 고요한 명상' },
+                { label: '다이닝 & 키친', value: 'BBQ 존과 프라이빗 다이닝' },
               ].map((item) => (
                 <div key={item.label} className="border-b border-gray-50 pb-4 md:border-b-0 md:pb-0">
                   <p className="text-[11px] tracking-[0.1em] text-gray-400 uppercase">{item.label}</p>
@@ -176,19 +176,19 @@ export default function SpacePage() {
             </h2>
           </TextReveal>
           <FadeIn delay={0.3}>
-            <p className="mt-4 text-[14px] text-white/50">숲을 대면하며 온전히 머무실 가용 일정을 살펴보시기 바랍니다.</p>
+            <p className="mt-4 text-[14px] text-white/50">우리만의 시간을 위한 가용 일정을 살펴보세요.</p>
             <div className="mt-8 flex justify-center gap-4">
               <Link
                 href="/reservation"
                 className="rounded-none border border-white bg-white px-8 py-4 text-[14px] font-semibold tracking-wide text-[#1a1a1a] transition-all duration-300 hover:bg-transparent hover:text-white"
               >
-                날짜 선택하기
+                예약 가능 일정 보기
               </Link>
               <Link
                 href="/partnership"
                 className="rounded-none border border-white/30 px-8 py-4 text-[14px] font-medium text-white/70 transition-all duration-300 hover:border-white hover:text-white"
               >
-                제휴 예약
+                제휴 · 대관 문의
               </Link>
             </div>
           </FadeIn>
