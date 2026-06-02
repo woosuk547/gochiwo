@@ -44,7 +44,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
             activeTab === 'reserve' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
           }`}
         >
-          여정 예약 신청
+          예약하기
           {activeTab === 'reserve' && (
             <motion.div
               layoutId="activeTabUnderline"
@@ -59,7 +59,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
             activeTab === 'lookup' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
           }`}
         >
-          예약 정보 조회
+          예약 조회
           {activeTab === 'lookup' && (
             <motion.div
               layoutId="activeTabUnderline"
@@ -87,7 +87,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
                   <Image src="/repause/room-outdoor.jpg" alt="리포즈 데크" fill className="object-cover" />
                 </div>
                 <div className="mt-3 md:mt-4">
-                  <h2 className="text-lg font-bold text-[#1a1a1a] md:text-xl">포레스트 하우스</h2>
+                  <h2 className="text-lg font-bold text-[#1a1a1a] md:text-xl">{primaryStay.name}</h2>
                   <p className="mt-2 text-[13px] leading-relaxed text-gray-500 md:text-[14px]">{primaryStay.description}</p>
                   <p className="mt-2 text-[12px] text-gray-400 md:text-[13px]">
                     제휴사 임직원 예약 및 대관 문의는{' '}

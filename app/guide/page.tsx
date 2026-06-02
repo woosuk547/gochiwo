@@ -118,16 +118,16 @@ export default function GuidePage() {
           <div className="grid gap-10 lg:grid-cols-2">
             <AnimatedSection>
               <div>
-                <p className="text-[11px] tracking-[0.12em] text-gray-400 uppercase">A Journey to Repause</p>
+                <p className="text-[11px] tracking-[0.12em] text-gray-400">오시는 길</p>
                 <h2 className="mt-3 text-[1.8rem] font-light tracking-[-0.02em] text-[#1a1a1a]">오시는 길</h2>
                 <p className="mt-4 text-[15px] leading-relaxed text-gray-600">
-                  서울 잠실을 기점으로 차량 약 1시간 20분 소요.<br />푸르른 대자연과 고요한 계곡이 안식처처럼 깊게 품어 안은 강원 홍천의 한적한 품에 숨겨져 있습니다.
+                  서울에서 차로 약 1시간 20분. 대자연 속 고요한 자리에 자리한 프라이빗 독채입니다.
                 </p>
                 <div className="mt-8 space-y-4">
                   {[
                     { label: '주소', value: '강원 홍천군 서면 숲속길 21' },
                     { label: '체크인', value: '비대면 체크인 서비스. 여정 시작 당일 오전, 개별 가이드를 전송해 드립니다.' },
-                    { label: '주차', value: '독채 내 전용 단독 주차 공간 2대 제공. 환경에 귀를 기울이는 정서를 위해 전기차 완속 충전 스테이션 완비.' },
+                    { label: '주차', value: '전용 단독 주차 공간 2대 제공. 전기차 완속 충전 스테이션 무료 이용 가능.' },
                   ].map((item) => (
                     <div key={item.label} className="border-t border-gray-100 pt-4">
                       <p className="text-[11px] tracking-[0.1em] text-gray-400">{item.label}</p>

@@ -347,14 +347,13 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                     </label>
 
                     <div className="grid grid-cols-2 gap-4">
-                      {/* 희망 일시 */}
+                      {/* 희망 날짜 */}
                       <label className="block space-y-1">
-                        <span className="text-[11px] font-bold text-gray-400 tracking-wide uppercase">희망 일시 <span className="text-red-500">*</span></span>
+                        <span className="text-[11px] font-bold text-gray-400 tracking-wide uppercase">희망 날짜 <span className="text-red-500">*</span></span>
                         <input
-                          type="text"
+                          type="date"
                           value={rentalForm.rentalDate}
                           onChange={(e) => updateRentalField('rentalDate', e.target.value)}
-                          placeholder="예: 2026-06-15 13시"
                           required
                           className="h-10 w-full rounded-none border-b border-gray-200 bg-transparent px-0 pb-1 text-[13px] focus:border-[#1a1a1a] focus:outline-none"
                         />
@@ -367,7 +366,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                           type="text"
                           value={rentalForm.duration}
                           onChange={(e) => updateRentalField('duration', e.target.value)}
-                          placeholder="예: 5시간 또는 전일 대관"
+                          placeholder="예: 5시간 / 전일 대관"
                           className="h-10 w-full rounded-none border-b border-gray-200 bg-transparent px-0 pb-1 text-[13px] focus:border-[#1a1a1a] focus:outline-none"
                         />
                       </label>
@@ -382,9 +381,11 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                           value={rentalForm.totalGuests}
                           onChange={(e) => updateRentalField('totalGuests', e.target.value)}
                           min="1"
+                          max="50"
                           required
                           className="h-10 w-full rounded-none border-b border-gray-200 bg-transparent px-0 pb-1 text-[13px] focus:border-[#1a1a1a] focus:outline-none"
                         />
+                        <p className="text-[10px] text-gray-400 leading-tight">기본 5인 포함, 초과 시 인당 추가 요금</p>
                       </label>
 
                       {/* 사용 희망 공간 */}

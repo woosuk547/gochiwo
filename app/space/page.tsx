@@ -171,12 +171,12 @@ export default function SpacePage() {
         <div className="absolute inset-0 bg-[#1a1a1a]/75" />
         <div className="relative px-5 py-24 text-center md:py-32">
           <TextReveal>
-            <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-light tracking-[-0.02em] text-white">
-              A Private Sanctuary Awaits
+            <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-light tracking-[-0.02em] text-white font-serif">
+              지금, 우리만의 시간을 예약하세요
             </h2>
           </TextReveal>
           <FadeIn delay={0.3}>
-            <p className="mt-4 text-[14px] text-white/50">우리만의 시간을 위한 가용 일정을 살펴보세요.</p>
+            <p className="mt-4 text-[14px] text-white/50">가용 일정을 확인하고 바로 예약해 보세요.</p>
             <div className="mt-8 flex justify-center gap-4">
               <Link
                 href="/reservation"

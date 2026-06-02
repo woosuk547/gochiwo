@@ -10,6 +10,13 @@ import {
 } from '@/lib/repause-content'
 
 export default function HomePage() {
+  function formatNoticeDate(dateStr: string) {
+    const d = new Date(dateStr)
+    const m = String(d.getUTCMonth() + 1).padStart(2, '0')
+    const day = String(d.getUTCDate()).padStart(2, '0')
+    return `${m}.${day}`
+  }
+
   return (
     <PageShell overlayHeader>
 
@@ -41,12 +48,10 @@ export default function HomePage() {
                 고요가 흐르는 시간
               </h1>
             </FadeIn>
-          </div>
-          <div className="overflow-hidden">
             <FadeIn delay={0.5} duration={1.1} distance={50}>
-              <h1 className="text-[clamp(3rem,8.5vw,7.5rem)] font-extralight leading-[1.05] tracking-[-0.025em] text-white/60 font-serif">
+              <p className="text-[clamp(3rem,8.5vw,7.5rem)] font-extralight leading-[1.05] tracking-[-0.025em] text-white/60 font-serif">
                 우리만의 휴식
-              </h1>
+              </p>
             </FadeIn>
           </div>
 
@@ -298,7 +303,7 @@ export default function HomePage() {
               <StaggerItem key={notice.title}>
                 <Link href="/notices" className="group flex items-center justify-between py-4 transition-colors">
                   <div className="flex items-center gap-3">
-                    <span className="text-[11px] text-gray-300">{notice.date}</span>
+                    <span className="text-[11px] text-gray-300">{formatNoticeDate(notice.date)}</span>
                     <p className="text-[14px] text-[#1a1a1a]">{notice.title}</p>
                   </div>
                   <span className="text-gray-300 transition-all duration-200 group-hover:translate-x-1 group-hover:text-[#1a1a1a]">→</span>

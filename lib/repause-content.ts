@@ -33,7 +33,7 @@ export const staySnapshot = [
   { label: '유형', value: '럭셔리 독채' },
   { label: '기본 요금', value: '680,000원~/박' },
   { label: '정원', value: '2~6인' },
-  { label: '체크인', value: '16:00' },
+  { label: '체크인/아웃', value: '16:00 / 11:00' },
 ]
 
 export const signatureHighlights = [
@@ -120,10 +120,10 @@ export const reservationNotes = [
 ]
 
 export const reservationSteps = [
-  { step: '1', title: '날짜 선택', copy: '원하시는 체크인과 체크아웃 날짜를 선택해 예약 가능 일정을 확인해 주세요.' },
-  { step: '2', title: '인원과 요청사항 입력', copy: '2인, 4인, 6인 중 머무실 인원과 필요한 요청사항을 간단히 남겨 주세요.' },
-  { step: '3', title: '승인 및 결제 안내', copy: '일정을 확인한 뒤 24시간 이내에 승인 여부와 예약금 결제 안내를 보내드립니다.' },
-  { step: '4', title: '체크인 가이드', copy: '체크인 당일 오전, 오시는 길과 프라이빗 출입 안내를 차분히 전달해 드립니다.' },
+  { step: '1', title: '날짜 선택', copy: '체크인과 체크아웃 날짜를 선택하세요. 가용 일정을 캘린더에서 바로 확인할 수 있어요.' },
+  { step: '2', title: '인원 입력', copy: '2인, 4인, 6인 중 머무실 인원과 요청사항을 남겨주세요.' },
+  { step: '3', title: '승인 및 결제', copy: '24시간 이내에 승인 여부와 결제 안내를 보내드려요.' },
+  { step: '4', title: '체크인 가이드', copy: '체크인 당일 오전, 오시는 길과 프라이빗 출입 안내를 전달해 드립니다.' },
 ]
 
 export const partnershipBenefits = [

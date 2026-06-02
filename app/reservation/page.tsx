@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: '예약 — 리포즈',
-  description: '머무실 일정과 인원을 가늠하시면 고유한 여정 정산 금액이 정교하게 산정됩니다. REPAUSE 안식 설계.',
+  description: '날짜와 인원을 선택하면 예상 요금을 바로 확인할 수 있어요. 리포즈 프라이빗 독채 예약.',
 }
 
 export default async function ReservationPage() {
@@ -17,10 +17,10 @@ export default async function ReservationPage() {
   return (
     <PageShell>
       <PageHero
-        title="머무실 날을 가만히 가늠해 보세요"
-        description="원하시는 일정을 조심히 남겨 주시면 중복되지 않는 온전한 여정의 여백을 기품 있게 정비해 드립니다."
+        title="예약하기"
+        description="날짜와 인원을 선택하시면 예상 요금을 바로 확인할 수 있어요."
         image="/repause/editorial-bedroom.jpg"
-        eyebrow="예약하기"
+        eyebrow="예약"
       />
 
       <section className="mx-auto max-w-6xl px-4 py-8 md:px-5 md:py-12 lg:py-16">

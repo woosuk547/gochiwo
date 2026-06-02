@@ -36,7 +36,12 @@ export function LargeCalendarPicker({
   const reservedKeys = useMemo(() => buildReservedDateKeys(reservedRanges), [reservedRanges])
   const todayKey = getTodayKey()
 
+  const isPastLimit =
+    currentYear < today.getFullYear() ||
+    (currentYear === today.getFullYear() && currentMonth <= today.getMonth())
+
   const handlePrevMonth = () => {
+    if (isPastLimit) return
     if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear((y) => y - 1) }
     else setCurrentMonth((m) => m - 1)
   }
@@ -104,7 +109,7 @@ export function LargeCalendarPicker({
     <div className="rounded-none border border-gray-200 bg-white overflow-hidden">
       {/* 월 네비게이션 */}
       <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-        <button type="button" onClick={handlePrevMonth} aria-label="이전 달" className="flex h-10 w-10 items-center justify-center rounded-none text-gray-500 hover:bg-gray-100 transition-colors">
+        <button type="button" onClick={handlePrevMonth} aria-label="이전 달" disabled={isPastLimit} className="flex h-10 w-10 items-center justify-center rounded-none text-gray-500 hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
           <ChevronLeft className="h-5 w-5" />
         </button>
         <h3 className="text-[16px] font-semibold text-[#1a1a1a]">{getMonthLabel()}</h3>
@@ -188,8 +193,6 @@ export function LargeCalendarPicker({
                   }`}
                 >
                   <span>{dayNum}</span>
-                  {isStart && <span className="absolute top-0.5 text-[9px] text-white/70">IN</span>}
-                  {isEnd && <span className="absolute top-0.5 text-[9px] text-white/70">OUT</span>}
                 </motion.button>
               )
             })}
