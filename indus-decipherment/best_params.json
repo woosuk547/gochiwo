@@ -1,0 +1,24 @@
+{
+  "best_rate": 97.3,
+  "params": {
+    "cr_pr_mult": 1.55,
+    "cr_affix_mult": 1.2,
+    "cr_hmm_mult": 1.2,
+    "cr_mdl_mult": 1.25,
+    "cr_corevocab_mult": 1.4,
+    "cr_markov_mult": 1.0,
+    "sv_high_cov": 0.8,
+    "sv_high_cons": 0.45,
+    "sv_high_mult": 1.15,
+    "sv_mid_cov": 0.15,
+    "sv_mid_mult": 1.25,
+    "sv_excl_mult": 0.95,
+    "cr_dl_mult": 1.4,
+    "bsc_n_iter": 80,
+    "bsc_n_restarts": 5,
+    "db_crf_mult": 1.45,
+    "db_msp_mult": 1.25,
+    "db_bsc_mult": 1.4,
+    "db_msp_thresh": 0.6
+  }
+}

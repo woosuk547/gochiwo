@@ -11,50 +11,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model CustomerRequest {
-  id           String   @id @default(cuid())
-  title        String
-  description  String
-  address      String?
-  imageUrl     String?
-  latitude     Float?
-  longitude    Float?
-  status       String   @default("PENDING") // PENDING, MATCHED, COMPLETED
-  contractorId String?
-  createdAt    DateTime @default(now())
-  reviews      Review[]
+enum ReservationSource {
+  DIRECT
+  PARTNERSHIP
 }
 
-model Contractor {
-  id              String   @id @default(cuid())
-  name            String
-  phone           String
-  serviceArea     String
-  address         String?  // 전체 도로명 주소
-  latitude        Float
-  longitude       Float
-  rating          Float    @default(4.5)
-  reviewCount     Int      @default(0)
-  completedJobs   Int      @default(0)
-  trustScore      Float    @default(85.0) // 0-100
-  responseTime    Int      @default(30) // 평균 응답 시간 (분)
-  profileImage    String?  // 프로필 이미지 URL
-  description     String?  // 업체 소개
-  specialties     String?  // 전문 분야 (JSON array as string)
-  verified        Boolean  @default(false)
-  verifiedAt      DateTime?
-  createdAt       DateTime @default(now())
-  reviews         Review[]
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  DECLINED
+  CANCELLED
 }
 
-model Review {
-  id          String          @id @default(cuid())
-  contractorId String
-  requestId    String
-  customerName String          @default("익명")
-  rating       Int             // 1-5
-  comment      String
-  createdAt    DateTime        @default(now())
-  contractor   Contractor      @relation(fields: [contractorId], references: [id])
-  request      CustomerRequest @relation(fields: [requestId], references: [id])
+enum PaymentMethod {
+  CARD
+  BANK_TRANSFER
+  CORPORATE_BILLING
+}
+
+enum PaymentStatus {
+  REVIEW_PENDING
+  PAYMENT_GUIDE_SENT
+  DEPOSIT_PAID
+  PAID
+  REFUNDED
+}
+
+model Reservation {
+  id               String            @id @default(cuid())
+  source           ReservationSource @default(DIRECT)
+  status           ReservationStatus @default(PENDING)
+  guestName        String
+  companyName      String?
+  email            String
+  phone            String
+  guests           Int
+  checkIn          DateTime
+  checkOut         DateTime
+  arrivalTime      String?
+  benefitLabel     String?
+  paymentMethod    PaymentMethod     @default(CARD)
+  paymentStatus    PaymentStatus     @default(REVIEW_PENDING)
+  baseAmount       Int               @default(0)
+  extraGuestAmount Int               @default(0)
+  discountAmount   Int               @default(0)
+  finalAmount      Int               @default(0)
+  depositAmount    Int               @default(0)
+  note             String?
+  requestedAt      DateTime?
+  paidAt           DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model BlockedDate {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  label     String?
+  createdAt DateTime @default(now())
 }

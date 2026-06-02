@@ -1,0 +1,20 @@
+{
+  "best_rate": 43.02,
+  "params": {
+    "cr_pr_mult": 1.6,
+    "cr_affix_mult": 1.45,
+    "cr_hmm_mult": 1.15,
+    "cr_mdl_mult": 1.35,
+    "cr_corevocab_mult": 1.3,
+    "cr_markov_mult": 1.05,
+    "sv_high_cov": 0.65,
+    "sv_high_cons": 0.45,
+    "sv_high_mult": 1.6,
+    "sv_mid_cov": 0.5,
+    "sv_mid_mult": 1.5,
+    "db_crf_mult": 1.4,
+    "db_msp_mult": 1.0,
+    "db_bsc_mult": 1.3,
+    "db_msp_thresh": 0.5
+  }
+}

@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>웹사이트 제작 최종 견적서</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: #1d1d1f;
+        background: #fff;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+          "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+        letter-spacing: 0;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 16mm 17mm 15mm;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 8mm;
+        border-bottom: 1px solid #d2d2d7;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 27px;
+        line-height: 1.1;
+        font-weight: 800;
+      }
+
+      .subtitle {
+        margin-top: 6px;
+        color: #6e6e73;
+        font-size: 14px;
+      }
+
+      .meta {
+        text-align: right;
+        color: #6e6e73;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      .meta strong {
+        display: block;
+        color: #1d1d1f;
+        font-size: 15px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 7mm;
+      }
+
+      .card {
+        border-radius: 12px;
+        background: #f5f5f7;
+        padding: 14px 16px;
+      }
+
+      .label {
+        margin-bottom: 10px;
+        color: #06c;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 3px;
+      }
+
+      .name {
+        margin: 0 0 10px;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .muted {
+        margin: 5px 0;
+        color: #6e6e73;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
+        gap: 0;
+        margin-top: 6mm;
+        border-radius: 12px;
+        background: #f5f5f7;
+        overflow: hidden;
+      }
+
+      .summary > div {
+        padding: 12px 14px;
+        border-right: 1px solid #d2d2d7;
+      }
+
+      .summary > div:last-child {
+        border-right: 0;
+      }
+
+      .summary small {
+        display: block;
+        margin-bottom: 6px;
+        color: #86868b;
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .summary strong {
+        font-size: 13px;
+      }
+
+      .price {
+        color: #06c;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .section-title {
+        margin: 6mm 0 3mm;
+        color: #86868b;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border-radius: 8px;
+        font-size: 11px;
+      }
+
+      thead th {
+        padding: 9px 11px;
+        color: #fff;
+        background: #1d1d1f;
+        text-align: left;
+        font-weight: 700;
+      }
+
+      thead th.qty,
+      thead th.amount {
+        text-align: right;
+      }
+
+      tbody td {
+        padding: 8px 11px;
+        border-bottom: 1px solid #e8e8ed;
+        vertical-align: top;
+        line-height: 1.45;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .item {
+        width: 20%;
+        font-weight: 800;
+      }
+
+      .desc {
+        width: 56%;
+      }
+
+      .desc span {
+        display: block;
+        margin-top: 3px;
+        color: #86868b;
+        font-size: 10px;
+      }
+
+      .qty {
+        width: 8%;
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      .amount {
+        width: 16%;
+        text-align: right;
+        white-space: nowrap;
+        font-weight: 800;
+      }
+
+      .badge {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        color: #06c;
+        background: #e8f1ff;
+        font-size: 9px;
+        font-weight: 800;
+      }
+
+      .total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 3mm;
+        padding: 13px 16px;
+        border-radius: 8px;
+        background: #f5f5f7;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .total strong:last-child {
+        font-size: 20px;
+      }
+
+      .condition-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 6mm;
+      }
+
+      .condition {
+        min-height: 108px;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .condition h3 {
+        margin: 0;
+        padding: 11px 15px;
+        border-bottom: 1px solid #d2d2d7;
+        font-size: 12px;
+      }
+
+      ul {
+        margin: 0;
+        padding: 11px 16px 12px 22px;
+      }
+
+      li {
+        margin: 5px 0;
+        padding-left: 3px;
+        font-size: 11px;
+        line-height: 1.45;
+      }
+
+      li::marker {
+        color: #06c;
+      }
+
+      .note-box {
+        margin-top: 5mm;
+        padding: 15px 18px;
+        border-radius: 12px;
+        background: #f5f5f7;
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      .signature-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 6mm;
+      }
+
+      .signature {
+        min-height: 130px;
+      }
+
+      .signature .label {
+        color: #86868b;
+      }
+
+      .signature-date {
+        color: #6e6e73;
+        font-size: 12px;
+      }
+
+      .sign-image {
+        display: block;
+        width: 78px;
+        height: auto;
+        margin-top: 12px;
+      }
+
+      .sign-placeholder {
+        margin-top: 17px;
+        color: #b0b0b5;
+        font-size: 12px;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8mm;
+        padding-top: 12px;
+        border-top: 1px solid #e8e8ed;
+        color: #86868b;
+        font-size: 10px;
+      }
+
+      .footer strong {
+        color: #06c;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <header class="top">
+        <div>
+          <h1>최종 견적서</h1>
+          <div class="subtitle">Web Development Proposal</div>
+        </div>
+        <div class="meta">
+          No. 2026-003
+          <strong>2026년 5월 12일</strong>
+          유효기간 발행일로부터 14일
+        </div>
+      </header>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="label">TO · 수신</div>
+          <p class="name">(주)크리오스</p>
+          <p class="muted">담당자: ___________</p>
+          <p class="muted">연락처: ___________</p>
+          <p class="muted">이메일: ___________</p>
+        </div>
+        <div class="card">
+          <div class="label">FROM · 발신</div>
+          <p class="name">이우석</p>
+          <p class="muted">8년차 풀스택 개발자</p>
+          <p class="muted">연락처: 010-5059-8558</p>
+          <p class="muted">이메일: woosuk547@naver.com</p>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div>
+          <small>프로젝트</small>
+          <strong>독채 숙박 예약 웹사이트</strong>
+        </div>
+        <div>
+          <small>기술 스택</small>
+          <strong>Next.js / Prisma</strong>
+        </div>
+        <div>
+          <small>납기 목표</small>
+          <strong>2026년 6월 7일</strong>
+        </div>
+        <div>
+          <small>총 예상 금액</small>
+          <span class="price">6,500,000원</span>
+        </div>
+      </div>
+
+      <div class="section-title">개발 견적 항목</div>
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>세부 내용</th>
+            <th class="qty">수량</th>
+            <th class="amount">금액</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="item">기획 / 구조 설계</td>
+            <td class="desc">
+              사이트맵, 페이지 흐름, 예약 및 제휴기업 예약 플로우 설계
+              <span>홈 / 회사&브랜드 소개 / 이용안내 / 예약 / 제휴기업 예약 기준</span>
+            </td>
+            <td class="qty">1식</td>
+            <td class="amount">400,000원</td>
+          </tr>
+          <tr>
+            <td class="item">퍼블리싱</td>
+            <td class="desc">
+              디자인 시안 기반 HTML/CSS 변환
+              <span>반응형, 기본 인터랙션, 이미지/콘텐츠 섹션 구현 포함</span>
+            </td>
+            <td class="qty">1식</td>
+            <td class="amount">900,000원</td>
+          </tr>
+          <tr>
+            <td class="item">프론트엔드 개발</td>
+            <td class="desc">
+              5개 주요 화면 개발
+              <span>홈, 회사&브랜드 소개, 이용안내, 예약, 제휴기업 예약</span>
+            </td>
+            <td class="qty">1식</td>
+            <td class="amount">1,000,000원</td>
+          </tr>
+          <tr>
+            <td class="item">예약 시스템 <span class="badge">핵심</span></td>
+            <td class="desc">
+              예약 캘린더, 가용일 설정, 예약 신청/확인/취소 흐름
+              <span>단일 독채 기준, DB 연동, 예약 확인 메일 발송 포함</span>
+            </td>
+            <td class="qty">1식</td>
+            <td class="amount">1,300,000원</td>
+          </tr>
+          <tr>
+            <td class="item">제휴기업 예약 <span class="badge">핵심</span></td>
+            <td class="desc">
+              제휴기업 전용 예약 탭 및 예약 구분 저장
+              <span>확정된 할인/혜택 정책 1종 기준, 관리자에서 예약 관리 가능</span>
+            </td>
+            <td class="qty">1식</td>
+            <td class="amount">800,000원</td>
+          </tr>
+          <tr>
+            <td class="item">결제 연동 <span class="badge">핵심</span></td>
+            <td class="desc">
+              토스페이먼츠 연동, 결제 성공/실패 처리
+              <span>기본 취소/환불 처리 로직, 결제 이력 저장 포함</span>
+            </td>
+            <td class="qty">1식</td>
+            <td class="amount">1,000,000원</td>
+          </tr>
+          <tr>
+            <td class="item">관리자 페이지 <span class="badge">핵심</span></td>
+            <td class="desc">
+              예약 현황 대시보드, 예약 승인/거절, 날짜 차단
+              <span>일반 예약 및 제휴기업 예약 조회/관리, 관리자 로그인 포함</span>
+            </td>
+            <td class="qty">1식</td>
+            <td class="amount">800,000원</td>
+          </tr>
+          <tr>
+            <td class="item">배포 / QA</td>
+            <td class="desc">
+              Vercel 배포, DB 세팅, 도메인 연결, SSL, 검수
+              <span>예약·결제 주요 시나리오 테스트 및 소스코드 납품 포함</span>
+            </td>
+            <td class="qty">1식</td>
+            <td class="amount">300,000원</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="total">
+        <strong>합계 (VAT 별도)</strong>
+        <strong>6,500,000원</strong>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="section-title">진행 조건</div>
+      <div class="condition-grid">
+        <div class="card condition">
+          <h3>일정 및 결제</h3>
+          <ul>
+            <li>납기 목표: <strong>2026년 6월 7일</strong></li>
+            <li>착수금 50% 입금 후 즉시 착수</li>
+            <li>잔금 50%는 납품 완료 후 지급</li>
+            <li>디자인 시안, 텍스트, 이미지는 클라이언트 제공 기준</li>
+          </ul>
+        </div>
+
+        <div class="card condition">
+          <h3>수정 정책</h3>
+          <ul>
+            <li>개발 완료 후 수정 <strong>3회</strong> 무상 포함</li>
+            <li>초과 수정: 건당 <strong>50,000~100,000원</strong></li>
+            <li>기능 추가·변경은 별도 견적</li>
+            <li>수정 요청은 서면 또는 메신저로 취합 전달</li>
+          </ul>
+        </div>
+
+        <div class="card condition">
+          <h3>범위 제외 항목</h3>
+          <ul>
+            <li>뉴스레터 페이지 및 발송 자동화 제외</li>
+            <li>다중 객실, 쿠폰, 포인트, 정산 기능 제외</li>
+            <li>기업별 할인율, 승인제, 코드 발급은 별도 견적</li>
+            <li>도메인, 서버, PG 수수료, 촬영·번역 비용 별도</li>
+          </ul>
+        </div>
+
+        <div class="card condition">
+          <h3>검수 및 지연 조건</h3>
+          <ul>
+            <li>납품 후 7영업일 이내 서면 또는 메신저 검수</li>
+            <li>기간 내 수정 요청이 없으면 검수 완료로 간주</li>
+            <li>자료 제공, PG 심사, 도메인 정보 지연 시 납기 자동 연장</li>
+            <li>정책 변경으로 인한 재작업은 별도 협의</li>
+          </ul>
+        </div>
+
+        <div class="card condition">
+          <h3>유지보수</h3>
+          <ul>
+            <li>납품 후 <strong>1개월</strong> 무상 하자보수</li>
+            <li>단건 수정: <strong>50,000~100,000원/건</strong></li>
+            <li>월정 유지보수: <strong>100,000원/월</strong></li>
+            <li>예약 운영, 고객 응대, 결제 취소 처리는 별도</li>
+          </ul>
+        </div>
+
+        <div class="card condition">
+          <h3>납품 산출물</h3>
+          <ul>
+            <li>소스코드 전체 납품</li>
+            <li>배포 완료 URL</li>
+            <li>관리자 계정 및 사용 가이드</li>
+            <li>저작권은 잔금 완납 시 이전</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note-box">
+        본 견적은 현재 협의된 기능 범위 기준의 최종 견적입니다. 제휴기업 예약은 단일 할인율
+        또는 단일 혜택 정책 1종 기준이며, 결제는 일반 카드 결제 1종 기준입니다. 가상계좌,
+        계좌이체, 부분환불, 자동결제, 예약금/잔금 분리결제는 별도 개발 범위로 산정됩니다.
+      </div>
+
+      <div class="section-title">확인 서명</div>
+      <div class="signature-grid">
+        <div class="card signature">
+          <div class="label">개발자 확인 · DEVELOPER</div>
+          <p class="name">이우석</p>
+          <p class="signature-date">2026년 5월 12일</p>
+          <img class="sign-image" src="__SIGNATURE__" alt="이우석 서명" />
+        </div>
+        <div class="card signature">
+          <div class="label">클라이언트 확인 · CLIENT</div>
+          <p class="name">(주)크리오스</p>
+          <p class="signature-date">____년 ____월 ____일</p>
+          <p class="sign-placeholder">(서명 / 인)</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>본 견적서는 상호 협의 후 계약서로 대체될 수 있습니다</span>
+        <strong>woosuk547@naver.com · 010-5059-8558</strong>
+      </footer>
+    </section>
+  </body>
+</html>

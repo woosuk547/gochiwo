@@ -1,0 +1,3309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>인더스 문자 해독 연구</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0d0d0d; color: #e0e0e0; font-family: -apple-system, 'Segoe UI', sans-serif; }
+
+    header {
+      padding: 20px 32px;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .header-left h1 { font-size: 18px; font-weight: 700; color: #fff; }
+    .header-left p  { font-size: 12px; color: #444; margin-top: 2px; }
+
+    .btn {
+      padding: 9px 20px; border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+
+    /* ── 해독률 히어로 ── */
+    .hero {
+      padding: 32px 32px 24px;
+      border-bottom: 1px solid #1a1a1a;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    @media(max-width:700px){ .hero { grid-template-columns: 1fr; } }
+
+    .rate-display { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 12px; }
+    .rate-number { font-size: 64px; font-weight: 800; line-height: 1; color: #fff; }
+    .rate-label  { font-size: 13px; color: #555; padding-bottom: 8px; line-height: 1.5; }
+    .rate-bar-track { height: 8px; background: #1a1a1a; border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
+    .rate-bar-fill  { height: 100%; border-radius: 99px; background: linear-gradient(90deg,#ef4444,#f59e0b,#10b981); transition: width 1s ease; }
+
+    .tier-breakdown { display: flex; gap: 12px; flex-wrap: wrap; }
+    .tier-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: #111; border: 1px solid #1e1e1e;
+      border-radius: 8px; padding: 8px 12px;
+    }
+    .tier-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .tier-chip .tc-count { font-size: 18px; font-weight: 700; }
+    .tier-chip .tc-label { font-size: 11px; color: #555; }
+
+    .method-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .method-card {
+      background: #111; border: 1px solid #1e1e1e; border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .method-card .mc-name { font-size: 12px; color: #888; margin-bottom: 4px; }
+    .method-card .mc-stat { font-size: 15px; font-weight: 600; }
+    .method-card .mc-bar  { height: 3px; background: #1a1a1a; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+    .method-card .mc-fill { height: 100%; border-radius: 2px; }
+
+    /* ── 상태 배너 ── */
+    .status-banner {
+      padding: 10px 32px;
+      background: #0f1a2e;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .status-banner.running { background: #0f1a2e; }
+    .status-banner.done    { background: #0a1f0a; }
+    .status-banner.error   { background: #1f0a0a; }
+    .status-banner .sb-msg { font-size: 13px; color: #888; flex: 1; }
+    .sb-bar { width: 160px; height: 4px; background: #1a2a3a; border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+    .sb-fill { height: 100%; background: #3b82f6; border-radius: 2px; transition: width 0.4s; }
+
+    /* ── 탭 ── */
+    .tabs { display: flex; gap: 2px; padding: 0 32px; border-bottom: 1px solid #1a1a1a; }
+    .tab {
+      padding: 12px 18px; font-size: 13px; cursor: pointer; color: #555; border: none;
+      background: transparent; border-bottom: 2px solid transparent; transition: all 0.15s;
+    }
+    .tab:hover { color: #aaa; }
+    .tab.active { color: #fff; border-bottom-color: #3b82f6; }
+
+    .content { padding: 24px 32px; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── 기호 그리드 ── */
+    .grid-controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    .flt-btn {
+      padding: 4px 12px; border-radius: 20px; font-size: 11px;
+      border: 1px solid #252525; background: transparent; color: #555; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .flt-btn:hover  { border-color: #444; color: #aaa; }
+    .flt-btn.active { border-color: #3b82f6; color: #3b82f6; background: rgba(59,130,246,0.08); }
+    .grid-info { margin-left: auto; font-size: 11px; color: #333; }
+
+    .sign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(68px,1fr)); gap: 5px; }
+    .sg {
+      background: #111; border: 1px solid #1e1e1e; border-radius: 8px;
+      padding: 8px 4px 6px; text-align: center; cursor: pointer;
+      transition: all 0.12s; position: relative; overflow: hidden;
+    }
+    .sg:hover { transform: translateY(-1px); border-color: #333; }
+    .sg .glyph { font-size: 17px; font-family: monospace; font-weight: 700; line-height: 1; margin-bottom: 3px; }
+    .sg .sid   { font-size: 9px; color: #333; }
+    .sg .conf-bar { position: absolute; bottom: 0; left: 0; height: 3px; border-radius: 0 0 8px 8px; }
+
+    /* 신뢰도 색상 */
+    .t-confirmed .glyph { color: #10b981; }
+    .t-confirmed        { border-color: #10b98133; }
+    .t-partial   .glyph { color: #3b82f6; }
+    .t-partial          { border-color: #3b82f633; }
+    .t-clue      .glyph { color: #f59e0b; }
+    .t-clue             { border-color: #f59e0b33; }
+    .t-unknown   .glyph { color: #333; }
+
+    /* ── 기호 상세 ── */
+    .sign-detail {
+      background: #0f0f0f; border: 1px solid #1e1e1e; border-radius: 12px;
+      padding: 20px; margin-bottom: 16px; display: none;
+    }
+    .sign-detail.show { display: block; }
+    .sd-header { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+    .sd-glyph  {
+      width: 60px; height: 60px; border-radius: 10px; background: #1a1a1a;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-family: monospace; font-weight: 700; flex-shrink: 0;
+    }
+    .sd-meta h3 { font-size: 18px; font-weight: 700; }
+    .sd-meta p  { font-size: 12px; color: #555; margin-top: 3px; }
+    .sd-methods { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+    @media(max-width:600px){ .sd-methods { grid-template-columns: repeat(2,1fr); } }
+    .sd-method {
+      background: #161616; border-radius: 8px; padding: 10px 12px;
+      border-left: 3px solid #252525;
+    }
+    .sd-method.hit  { border-left-color: #10b981; }
+    .sd-method.miss { border-left-color: #333; }
+    .sd-method .sdm-name  { font-size: 10px; color: #444; margin-bottom: 4px; }
+    .sd-method .sdm-role  { font-size: 13px; font-weight: 600; }
+    .sd-method .sdm-score { font-size: 11px; color: #555; margin-top: 2px; }
+
+    /* ── 방법 비교 패널 ── */
+    .method-compare { display: flex; flex-direction: column; gap: 16px; }
+    .mc-row {
+      background: #111; border: 1px solid #1e1e1e; border-radius: 12px; padding: 20px;
+    }
+    .mc-row-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .mc-row-header h3 { font-size: 14px; font-weight: 600; }
+    .mc-coverage { font-size: 12px; color: #555; }
+    .mc-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+    .mc-stat-item { }
+    .mc-stat-item .msi-val   { font-size: 20px; font-weight: 700; }
+    .mc-stat-item .msi-label { font-size: 11px; color: #444; }
+
+    /* ── 반복 구문 패널 ── */
+    .phrase-list { display: flex; flex-direction: column; gap: 8px; }
+    .phrase-row {
+      background: #111; border: 1px solid #1e1e1e; border-radius: 8px;
+      padding: 12px 16px; display: flex; align-items: center; gap: 16px;
+    }
+    .phrase-signs { display: flex; gap: 4px; flex: 1; }
+    .psign { padding: 4px 10px; background: #1a1a1a; border-radius: 5px; font-size: 12px; font-family: monospace; color: #93c5fd; }
+    .phrase-count { font-size: 22px; font-weight: 700; color: #3b82f6; width: 40px; text-align: right; }
+    .phrase-label { font-size: 11px; color: #333; width: 30px; }
+
+    /* ── 미실행 안내 ── */
+    .empty-state {
+      text-align: center; padding: 80px 20px; color: #2a2a2a;
+    }
+    .empty-state .es-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state p { font-size: 14px; color: #444; margin-bottom: 24px; }
+
+    /* 공통 */
+    .tag {
+      display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;
+    }
+    .tag-green  { background: rgba(16,185,129,0.12); color: #10b981; }
+    .tag-blue   { background: rgba(59,130,246,0.12); color: #60a5fa; }
+    .tag-yellow { background: rgba(245,158,11,0.12); color: #fbbf24; }
+    .tag-gray   { background: rgba(100,100,100,0.12); color: #666; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>인더스 문자 해독 연구</h1>
+    <p>기원전 2600–1900년 · 현재까지 미해독 · 6가지 독립 방법으로 기능적 역할 추론</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="liveDot" style="width:8px;height:8px;border-radius:50%;background:#252525;transition:background 0.3s"></div>
+    <div id="liveLabel" style="font-size:12px;color:#444">대기 중</div>
+    <div style="font-size:11px;color:#2a2a2a;margin-left:4px">CLI: python cli.py all</div>
+  </div>
+</header>
+
+<!-- 히어로: 실제 해독률 -->
+<div class="hero" id="heroSection">
+  <div>
+    <!-- 이중 해독률: 알고리즘 vs 실제 학술 -->
+    <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin-bottom:8px">
+      <div class="rate-display" style="flex:1;min-width:160px">
+        <div class="rate-number" id="rateNum">—</div>
+        <div class="rate-label">알고리즘 해독률<br>
+          <span style="color:#2a2a2a;font-size:10px" id="rateSourceLabel">합성 코퍼스 · 개선 엔진</span>
+        </div>
+      </div>
+      <div style="width:1px;background:#1a1a1a;align-self:stretch"></div>
+      <div class="rate-display" style="flex:1;min-width:160px">
+        <div class="rate-number" id="realRateNum" style="color:#10b981">—</div>
+        <div class="rate-label" style="color:#10b981">실제 코퍼스 해독률<br>
+          <span style="color:#1a4a2a;font-size:10px">179개 실제 비문 · 학술 제안 기반</span>
+        </div>
+      </div>
+    </div>
+    <div class="rate-bar-track" style="margin-bottom:4px">
+      <div class="rate-bar-fill" id="rateBar" style="width:0%"></div>
+    </div>
+    <div class="rate-bar-track" style="height:4px;margin-bottom:12px">
+      <div style="height:4px;background:#10b981;border-radius:4px;transition:width .6s ease" id="realRateBar" style="width:0%"></div>
+    </div>
+    <div class="tier-breakdown" id="tierBreakdown">
+      <div class="tier-chip"><span class="tier-dot" style="background:#10b981"></span><div><div class="tc-count" id="t-confirmed">—</div><div class="tc-label">확정 해독 (≥80%)</div></div></div>
+      <div class="tier-chip"><span class="tier-dot" style="background:#3b82f6"></span><div><div class="tc-count" id="t-partial">—</div><div class="tc-label">부분 해독 (50–80%)</div></div></div>
+      <div class="tier-chip"><span class="tier-dot" style="background:#f59e0b"></span><div><div class="tc-count" id="t-clue">—</div><div class="tc-label">단서 있음 (20–50%)</div></div></div>
+      <div class="tier-chip"><span class="tier-dot" style="background:#252525"></span><div><div class="tc-count" id="t-unknown">—</div><div class="tc-label">미해독</div></div></div>
+    </div>
+    <!-- 실제 코퍼스 티어 -->
+    <div id="realTierBreakdown" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid #1a1a1a">
+      <div style="font-size:10px;color:#10b981;margin-bottom:6px">실제 코퍼스 기호 분류 (Parpola 학술 제안 기준)</div>
+      <div class="tier-breakdown">
+        <div class="tier-chip"><span class="tier-dot" style="background:#10b981"></span><div><div class="tc-count" id="rt-confirmed">—</div><div class="tc-label">확정 (conf≥0.30)</div></div></div>
+        <div class="tier-chip"><span class="tier-dot" style="background:#3b82f6"></span><div><div class="tc-count" id="rt-partial">—</div><div class="tc-label">부분 (0.20~0.30)</div></div></div>
+        <div class="tier-chip"><span class="tier-dot" style="background:#f59e0b"></span><div><div class="tc-count" id="rt-clue">—</div><div class="tc-label">단서 (0.10~0.20)</div></div></div>
+        <div class="tier-chip"><span class="tier-dot" style="background:#252525"></span><div><div class="tc-count" id="rt-unknown">—</div><div class="tc-label">미해독</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="method-grid" id="methodGrid">
+    <div class="method-card"><div class="mc-name">위치 편향 (χ²)</div><div class="mc-stat" id="ms-pos">대기</div><div class="mc-bar"><div class="mc-fill" id="mf-pos" style="width:0%;background:#3b82f6"></div></div></div>
+    <div class="method-card"><div class="mc-name">빈도 계층</div><div class="mc-stat" id="ms-freq">대기</div><div class="mc-bar"><div class="mc-fill" id="mf-freq" style="width:0%;background:#10b981"></div></div></div>
+    <div class="method-card"><div class="mc-name">HMM 상태 추론</div><div class="mc-stat" id="ms-hmm">대기</div><div class="mc-bar"><div class="mc-fill" id="mf-hmm" style="width:0%;background:#f59e0b"></div></div></div>
+    <div class="method-card"><div class="mc-name">반복 구문 탐지</div><div class="mc-stat" id="ms-rep">대기</div><div class="mc-bar"><div class="mc-fill" id="mf-rep" style="width:0%;background:#8b5cf6"></div></div></div>
+    <div class="method-card"><div class="mc-name">상호정보량 (MI)</div><div class="mc-stat" id="ms-mi">대기</div><div class="mc-bar"><div class="mc-fill" id="mf-mi" style="width:0%;background:#06b6d4"></div></div></div>
+    <div class="method-card"><div class="mc-name">방법 간 교차검증</div><div class="mc-stat" id="ms-cross">대기</div><div class="mc-bar"><div class="mc-fill" id="mf-cross" style="width:0%;background:#ec4899"></div></div></div>
+  </div>
+</div>
+
+<!-- 진행 상태 배너 -->
+<div class="status-banner" id="statusBanner" style="display:none">
+  <div class="sb-bar"><div class="sb-fill" id="sbFill" style="width:0%"></div></div>
+  <div class="sb-msg" id="sbMsg"></div>
+  <div style="font-size:11px;color:#2a3a4a;flex-shrink:0">자동 갱신 중</div>
+</div>
+
+<!-- 탭 -->
+<div class="tabs">
+  <button class="tab active" data-p="signs">기호 탐색</button>
+  <button class="tab" data-p="methods">방법별 결과</button>
+  <button class="tab" data-p="phrases">반복 구문</button>
+  <button class="tab" data-p="top">해독 유망 기호</button>
+  <button class="tab" data-p="advanced">고급 알고리즘</button>
+  <button class="tab" data-p="extra">추가 알고리즘</button>
+  <button class="tab" data-p="novel">신규+앙상블</button>
+  <button class="tab" data-p="frontier">프론티어</button>
+  <button class="tab" data-p="improved">개선된 엔진</button>
+  <button class="tab" data-p="discovery">발견 알고리즘</button>
+  <button class="tab" data-p="autolearn">자율 학습</button>
+  <button class="tab" data-p="deeplearn">딥러닝</button>
+  <button class="tab" data-p="genetic">유전 알고리즘</button>
+  <button class="tab" data-p="realcorpus" style="color:#10b981;font-weight:700">실제 코퍼스 분석</button>
+  <button class="tab" data-p="discoveryreal" style="color:#f59e0b;font-weight:700">독립 발견 엔진</button>
+  <button class="tab" data-p="bootstrap" style="color:#3b82f6;font-weight:700">통계 검증</button>
+  <button class="tab" data-p="dravidian" style="color:#a78bfa;font-weight:700">드라비다어 비교</button>
+  <button class="tab" data-p="decipher" style="color:#ef4444;font-weight:700;border:1px solid #ef444466;border-radius:4px">해독 시도</button>
+</div>
+
+<div class="content">
+
+  <!-- 기호 탐색 -->
+  <div id="panel-signs" class="panel active">
+    <div class="grid-controls" id="gridControls">
+      <button class="flt-btn active" data-t="all"       onclick="filterGrid('all',this)">전체</button>
+      <button class="flt-btn"        data-t="confirmed" onclick="filterGrid('confirmed',this)">확정 해독</button>
+      <button class="flt-btn"        data-t="partial"   onclick="filterGrid('partial',this)">부분 해독</button>
+      <button class="flt-btn"        data-t="clue"      onclick="filterGrid('clue',this)">단서 있음</button>
+      <button class="flt-btn"        data-t="unknown"   onclick="filterGrid('unknown',this)">미해독</button>
+      <span class="grid-info" id="gridInfo"></span>
+    </div>
+    <div class="sign-detail" id="signDetail"></div>
+    <div class="sign-grid" id="signGrid">
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="es-icon">🔬</div>
+        <p>상단 "해독 분석 실행" 버튼을 누르면<br>6가지 방법으로 각 기호의 역할을 분석합니다.</p>
+        <button class="btn btn-primary btn-sm" onclick="runDecipherment()">지금 실행</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 방법별 결과 -->
+  <div id="panel-methods" class="panel">
+    <div class="method-compare" id="methodCompare">
+      <div class="empty-state">
+        <div class="es-icon">📊</div>
+        <p>분석 완료 후 방법별 결과를 비교할 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 반복 구문 -->
+  <div id="panel-phrases" class="panel">
+    <div id="phraseList">
+      <div class="empty-state">
+        <div class="es-icon">🔁</div>
+        <p>분석 완료 후 여러 비문에서 반복 등장하는 구문을 표시합니다.<br>반복 구문 = 고유명사·직함·관용 표현 후보</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 해독 유망 기호 -->
+  <div id="panel-top" class="panel">
+    <div id="topList">
+      <div class="empty-state">
+        <div class="es-icon">⭐</div>
+        <p>분석 완료 후 신뢰도 높은 기호 순으로 정렬합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 프론티어 알고리즘 -->
+  <div id="panel-frontier" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">프론티어 — 근본 질문에 답하다</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">언어인가 비언어인가 · 행정체계인가 · 표어문자인가 음절문자인가</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" style="width:160px"><div class="sb-fill" id="frontierFill" style="width:0%"></div></div>
+        <span id="frontierMsg" style="font-size:12px;color:#555">대기 중</span>
+        <div style="font-size:11px;color:#2a2a2a">CLI: python cli.py frontier</div>
+      </div>
+    </div>
+    <div id="frontierContent">
+      <div class="empty-state">
+        <div class="es-icon">🌌</div>
+        <p>인더스 문자의 가장 근본적인 질문들을 정량적으로 검증합니다</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 추가 알고리즘 -->
+  <div id="panel-extra" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">추가 알고리즘 분석</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">LDA · Zipf-Mandelbrot · 고차 n-gram · 압축률 · HMM · 접사 비대칭</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" style="width:160px"><div class="sb-fill" id="extraFill" style="width:0%"></div></div>
+        <span id="extraMsg" style="font-size:12px;color:#555">대기 중</span>
+        <div style="font-size:11px;color:#2a2a2a">CLI: python cli.py extra</div>
+      </div>
+    </div>
+    <div id="extraContent">
+      <div class="empty-state">
+        <div class="es-icon">🔬</div>
+        <p>LDA 토픽 모델링 · Zipf-Mandelbrot · 고차 n-gram · gzip 복잡도 · HMM · 접사 비대칭 분석</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 신규 알고리즘 + 앙상블 -->
+  <div id="panel-novel" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">신규 알고리즘 + 동적 앙상블</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">PMI SVD · NMF · KL발산 · 스펙트럴 · MCMC · MDL · Fleiss kappa 앙상블</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" style="width:160px"><div class="sb-fill" id="novelFill" style="width:0%"></div></div>
+        <span id="novelMsg" style="font-size:12px;color:#555">대기 중</span>
+        <div style="font-size:11px;color:#2a2a2a">CLI: python cli.py novel</div>
+      </div>
+    </div>
+    <div id="novelContent">
+      <div class="empty-state">
+        <div class="es-icon">🧬</div>
+        <p>인더스 문자에 미시도된 6종 알고리즘 + 전체 앙상블 통합</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 개선된 엔진 -->
+  <div id="panel-improved" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">개선된 학습 엔진 — 프론티어 발견 기반</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">발견 기반 복합 점수 · 사이트별 투표 · MDL SOV 빔서치 · EM 가중치 재조정</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" style="width:160px"><div class="sb-fill" id="improvedFill" style="width:0%"></div></div>
+        <span id="improvedMsg" style="font-size:12px;color:#555">대기 중</span>
+        <div style="font-size:11px;color:#2a2a2a">CLI: python cli.py improved</div>
+      </div>
+    </div>
+    <div id="improvedContent">
+      <div class="empty-state">
+        <div class="es-icon">🚀</div>
+        <p>프론티어 발견 (SOV 구조, PageRank 40%, 언어 점수 61.5%)을<br>직접 제약 조건으로 적용한 개선된 해독 엔진</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 발견 알고리즘 -->
+  <div id="panel-discovery" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">발견 알고리즘 — 최신 계산언어학 방법론</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">CRF 시퀀스 레이블러 · Masked Sign Prediction (Ithaca) · Bayesian 치환 암호 (Ravi &amp; Knight)</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" style="width:160px"><div class="sb-fill" id="discoveryFill" style="width:0%"></div></div>
+        <span id="discoveryMsg" style="font-size:12px;color:#555">대기 중</span>
+        <div style="font-size:11px;color:#2a2a2a">CLI: python cli.py discovery</div>
+      </div>
+    </div>
+    <div id="discoveryContent">
+      <div class="empty-state">
+        <div class="es-icon">🔭</div>
+        <p>CRF(2001) · Ithaca(Nature 2022) · Ravi &amp; Knight(ACL 2011) 방법론 적용</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 자율 학습 대시보드 -->
+  <div id="panel-autolearn" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">자율 반복 개선 루프</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">Coordinate Descent · 파라미터 공간 탐색 · 약점 분석 · 자동 재시작</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="alStatus" style="font-size:12px;padding:3px 8px;border-radius:4px;background:#222;color:#aaa">대기 중</span>
+        <div style="font-size:11px;color:#555">별도 터미널: python auto_improve.py</div>
+      </div>
+    </div>
+    <!-- 진행 요약 -->
+    <div id="alSummary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px"></div>
+    <!-- 해독률 히스토리 차트 -->
+    <div style="background:#111;border-radius:8px;padding:16px;margin-bottom:16px">
+      <div style="font-size:13px;color:#aaa;margin-bottom:8px">해독률 추이</div>
+      <canvas id="alChart" height="120" style="width:100%"></canvas>
+    </div>
+    <!-- 현재 파라미터 -->
+    <div style="background:#111;border-radius:8px;padding:16px;margin-bottom:16px">
+      <div style="font-size:13px;color:#aaa;margin-bottom:8px">현재 최적 파라미터</div>
+      <div id="alParams" style="font-family:monospace;font-size:12px;color:#ccc;line-height:1.8"></div>
+    </div>
+    <!-- 최근 개선 로그 -->
+    <div style="background:#111;border-radius:8px;padding:16px">
+      <div style="font-size:13px;color:#aaa;margin-bottom:8px">최근 라운드 기록</div>
+      <div id="alLog" style="font-family:monospace;font-size:12px;color:#ccc;max-height:200px;overflow-y:auto"></div>
+    </div>
+  </div>
+
+  <!-- 딥러닝 탭 -->
+  <div id="panel-deeplearn" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">딥러닝 자율 학습 — IndusBERT (Transformer)</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">PyTorch · MPS 가속 · BERT 스타일 마스킹 예측 · 자기지도 학습</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="dlStatus" style="font-size:12px;padding:3px 8px;border-radius:4px;background:#222;color:#aaa">대기 중</span>
+        <button onclick="startDL()" style="padding:5px 12px;border-radius:5px;background:#6366f1;color:#fff;border:none;cursor:pointer;font-size:12px">학습 시작</button>
+      </div>
+    </div>
+    <div id="dlSummary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px"></div>
+    <div style="background:#111;border-radius:8px;padding:16px;margin-bottom:16px">
+      <div style="font-size:13px;color:#aaa;margin-bottom:8px">학습 곡선 (Loss / 해독률)</div>
+      <canvas id="dlChart" height="120" style="width:100%"></canvas>
+    </div>
+    <div id="dlLog" style="background:#111;border-radius:8px;padding:16px;font-family:monospace;font-size:12px;color:#ccc;max-height:200px;overflow-y:auto"></div>
+  </div>
+
+  <!-- 유전 알고리즘 탭 -->
+  <div id="panel-genetic" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">유전 알고리즘 자율 학습</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">토너먼트 선택 · 균일 교차 · Gaussian 돌연변이 · 엘리트 보존</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="gaStatus" style="font-size:12px;padding:3px 8px;border-radius:4px;background:#222;color:#aaa">대기 중</span>
+        <button onclick="startGA()" style="padding:5px 12px;border-radius:5px;background:#10b981;color:#fff;border:none;cursor:pointer;font-size:12px">진화 시작</button>
+      </div>
+    </div>
+    <div id="gaSummary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px"></div>
+    <div style="background:#111;border-radius:8px;padding:16px;margin-bottom:16px">
+      <div style="font-size:13px;color:#aaa;margin-bottom:8px">세대별 해독률 (최고 / 평균 / 최저)</div>
+      <canvas id="gaChart" height="120" style="width:100%"></canvas>
+    </div>
+    <div style="background:#111;border-radius:8px;padding:16px;margin-bottom:16px">
+      <div style="font-size:13px;color:#aaa;margin-bottom:8px">최적 파라미터</div>
+      <div id="gaParams" style="font-family:monospace;font-size:12px;color:#ccc;line-height:1.8"></div>
+    </div>
+    <div id="gaLog" style="background:#111;border-radius:8px;padding:16px;font-family:monospace;font-size:12px;color:#ccc;max-height:180px;overflow-y:auto"></div>
+  </div>
+
+  <!-- 실제 코퍼스 분석 탭 -->
+  <div id="panel-realcorpus" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#10b981">실제 인더스 문자 코퍼스 분석</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">
+          출처: mayig/indus-valley-script-corpus (Parpola CISI 기반) · 모헨조다로 실제 비문 179개
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="loadRealCorpus()" style="background:#10b981;color:#000;border:none;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer">통계 분석</button>
+        <button onclick="runRealDecipher()" id="btnRealDecipher" style="background:#6366f1;color:#fff;border:none;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer">메인 엔진 실행 (실제 코퍼스)</button>
+      </div>
+    </div>
+    <div id="realCorpusContent">
+      <div class="empty-state"><p style="color:#10b981">위 버튼을 눌러 실제 코퍼스 분석을 시작하세요</p></div>
+    </div>
+  </div>
+
+  <!-- 독립 발견 엔진 -->
+  <div id="panel-discoveryreal" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#f59e0b">독립 발견 엔진 — 5가지 통계 방법</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">
+          실제 179개 비문 기반 · 위치엔트로피 · Skip-gram · 대체클래스 · 템플릿마이닝 · 공출현네트워크
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" id="drBar" style="width:160px"><div class="sb-fill" id="drFill" style="width:0%;background:#f59e0b"></div></div>
+        <span id="drMsg" style="font-size:12px;color:#555">대기 중</span>
+        <button onclick="startRealDiscovery()" id="btnDiscoveryReal" style="background:#f59e0b;color:#000;border:none;border-radius:6px;padding:8px 16px;font-weight:700;cursor:pointer">발견 엔진 실행</button>
+      </div>
+    </div>
+    <div id="discoveryRealContent">
+      <div class="empty-state">
+        <div class="es-icon" style="color:#f59e0b">🔍</div>
+        <p style="color:#f59e0b">5가지 독립 발견 방법으로 인더스 문자의 새로운 패턴을 발굴합니다.<br>
+        Parpola/Mahadevan이 수작업으로 놓친 통계적 구조를 자동 검출합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 해독 시도 패널 -->
+  <div id="panel-decipher" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#ef4444">인더스 문자 해독 시도</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">
+          Rebus 원리 + Proto-Dravidian 어휘 + 유전 알고리즘 최적화 · Parpola 1994 기반
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="sb-bar" id="rebusBar" style="width:160px"><div class="sb-fill" id="rebusFill" style="width:0%;background:#ef4444"></div></div>
+        <span id="rebusMsg" style="font-size:12px;color:#555">대기 중</span>
+        <button onclick="startRebus()" id="btnRebus" style="background:#ef4444;color:#fff;border:none;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer">1. Rebus 매핑</button>
+        <button onclick="startGeneticDecipher()" id="btnGenDecipher" style="background:#111;color:#ef4444;border:1px solid #ef4444;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer">2. GA 최적화</button>
+      </div>
+    </div>
+    <div id="decipherContent">
+      <div class="empty-state">
+        <div class="es-icon" style="color:#ef4444">🔑</div>
+        <p style="color:#ef4444">"1. Rebus 매핑" 버튼으로 시작하세요.<br>
+        182개 기호에 Proto-Dravidian 음가 후보를 할당하고, 커버리지 높은 비문을 번역 시도합니다.<br>
+        이후 "2. GA 최적화"로 드라비다어 일관성 기준 최적 할당을 탐색합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 통계 검증 패널 -->
+  <div id="panel-bootstrap" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#3b82f6">통계 유의성 검증 — Bootstrap + Permutation Test</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">
+          발견 결과가 우연인지 정량화 · p &lt; 0.05 = 통계적으로 유의 · 논문 게재 필수 요건
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" id="bsBar" style="width:160px"><div class="sb-fill" id="bsFill" style="width:0%;background:#3b82f6"></div></div>
+        <span id="bsMsg" style="font-size:12px;color:#555">대기 중</span>
+        <button onclick="startBootstrap()" id="btnBootstrap" style="background:#3b82f6;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-weight:700;cursor:pointer">검증 실행</button>
+      </div>
+    </div>
+    <div id="bootstrapContent">
+      <div class="empty-state">
+        <div class="es-icon" style="color:#3b82f6">📊</div>
+        <p style="color:#3b82f6">Bootstrap 500회 재샘플링 + Permutation Test로 발견 결과의 통계적 유의성을 검증합니다.<br>
+        p &lt; 0.05인 결과만 논문에서 주장 가능합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 드라비다어 비교 패널 -->
+  <div id="panel-dravidian" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#a78bfa">프로토-드라비다어 비교 분석</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">
+          Krishnamurti 2003 · Burrow &amp; Emeneau 1984 · 6개 핵심 어휘 위치 패턴 검증
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" id="dravBar" style="width:160px"><div class="sb-fill" id="dravFill" style="width:0%;background:#a78bfa"></div></div>
+        <span id="dravMsg" style="font-size:12px;color:#555">대기 중</span>
+        <button onclick="startDravidian()" id="btnDravidian" style="background:#a78bfa;color:#000;border:none;border-radius:6px;padding:8px 16px;font-weight:700;cursor:pointer">분석 실행</button>
+      </div>
+    </div>
+    <div id="dravidianContent">
+      <div class="empty-state">
+        <div class="es-icon" style="color:#a78bfa">🔤</div>
+        <p style="color:#a78bfa">프로토-드라비다어 기초 어휘와 인더스 기호의 위치 패턴을 비교합니다.<br>
+        mīn(물고기/별), āṇ(칭호), kaṇ(눈/계산) 등 6개 어휘의 위치 패턴이 일치하면 드라비다어 기원 가설 지지.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 고급 알고리즘 -->
+  <div id="panel-advanced" class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:15px;font-weight:600;color:#fff">고급 알고리즘 분석</div>
+        <div style="font-size:12px;color:#444;margin-top:3px">Rao 2009 · Parpola 1994 · Nuhn 2013 · Yadav 2013</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="sb-bar" id="advBar" style="width:160px"><div class="sb-fill" id="advFill" style="width:0%"></div></div>
+        <span id="advMsg" style="font-size:12px;color:#555">대기 중</span>
+        <div style="font-size:11px;color:#2a2a2a">CLI: python cli.py advanced</div>
+      </div>
+    </div>
+
+    <div id="advContent">
+      <div class="empty-state">
+        <div class="es-icon">🧠</div>
+        <p>6가지 고급 알고리즘으로 인더스 문자를 분석합니다.<br>
+        Markov 엔트로피 · PageRank · 드라비다어 가설 · 빔서치 · 알로그래프 탐지 · 당혹도</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const GLYPHS = ['𒀭','𒀸','𒁁','𒁈','𒁍','𒁔','𒁲','𒂅','𒂊','𒂍','𒂗','𒃻','𒄀','𒄊','𒄑','𒄩','𒅀','𒅃','𒅆','𒅍',
+  '𒅒','𒅗','𒅚','𒅢','𒆳','𒇀','𒇔','𒇽','𒈙','𒈠','𒈦','𒉏','𒉘','𒉡','𒊒','𒊺','𒋀','𒋣','𒌍','𒌓',
+  '𒌦','𒍝','𒍣','𒍩','𒌷','𒇴','𒁾','𒆠','𒋗','𒍝'];
+const TIER_COLORS = { confirmed:'#10b981', partial:'#3b82f6', clue:'#f59e0b', unknown:'#252525' };
+const ROLE_LABELS = { prefix:'접두사 후보', suffix:'접미사 후보', root:'명사/어근 후보', function:'기능어 후보', hapax:'희귀어', unknown:'미분류' };
+const METHOD_NAMES = { positional:'위치 편향', frequency:'빈도 계층', hmm:'HMM 상태', repeat:'반복 구문', mi:'상호정보량', cross:'교차검증' };
+
+let allResults = [];
+let currentFilter = 'all';
+let selectedSign = null;
+let pollTimer = null;
+
+function glyph(id) { return GLYPHS[id % GLYPHS.length]; }
+
+// ── 탭 ────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-' + t.dataset.p).classList.add('active');
+  });
+});
+
+// ── 상태 표시 ─────────────────────────────────────────────
+function setLiveIndicator(status) {
+  const dot   = document.getElementById('liveDot');
+  const label = document.getElementById('liveLabel');
+  if (status === 'running') {
+    dot.style.background = '#3b82f6';
+    dot.style.animation = 'pulse 1.2s infinite';
+    label.style.color = '#3b82f6';
+    label.textContent = '분석 중';
+  } else if (status === 'done') {
+    dot.style.background = '#10b981';
+    dot.style.animation = '';
+    label.style.color = '#10b981';
+    label.textContent = '완료';
+  } else {
+    dot.style.background = '#252525';
+    dot.style.animation = '';
+    label.style.color = '#444';
+    label.textContent = '대기 중';
+  }
+}
+
+function startPoll() {
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    const s = await fetch('/api/decipher/status').then(r => r.json());
+    document.getElementById('sbMsg').textContent = s.message || '—';
+    document.getElementById('sbFill').style.width = s.progress + '%';
+    document.getElementById('statusBanner').className = 'status-banner ' + s.status;
+    document.getElementById('statusBanner').style.display = 'flex';
+    setLiveIndicator(s.status);
+    if (s.status === 'done' || s.status === 'error') {
+      clearInterval(pollTimer);
+      if (s.status === 'done') loadResults();
+    }
+  }, 1000);
+}
+
+// ── 결과 로드 ─────────────────────────────────────────────
+async function loadResults() {
+  const data = await fetch('/api/decipher/results').then(r => r.json());
+  allResults = data.results;
+
+  // 히어로 업데이트
+  document.getElementById('rateNum').textContent = data.decipherment_rate + '%';
+  document.getElementById('rateBar').style.width = data.decipherment_rate + '%';
+  const b = data.breakdown;
+  document.getElementById('t-confirmed').textContent = b.confirmed;
+  document.getElementById('t-partial').textContent   = b.partial;
+  document.getElementById('t-clue').textContent      = b.clue;
+  document.getElementById('t-unknown').textContent   = b.unknown;
+
+  // 방법별 통계
+  const ms = data.method_stats;
+  const total = b.total;
+  const methodMap = [
+    ['위치 편향 (χ²)', 'pos',   ms['위치 편향 (χ²)']?.significant ?? 0,  ms['위치 편향 (χ²)']?.coverage ?? 0],
+    ['빈도 계층',      'freq',  ms['빈도 계층']?.function_words ?? 0,    ms['빈도 계층']?.coverage ?? 0],
+    ['HMM 상태',       'hmm',   ms['HMM 상태']?.coverage ?? 0,           ms['HMM 상태']?.coverage ?? 0],
+    ['반복 구문 탐지', 'rep',   ms['반복 구문']?.phrases_found ?? 0,      ms['반복 구문']?.coverage ?? 0],
+    ['상호정보량',     'mi',    ms['상호정보량']?.coverage ?? 0,          ms['상호정보량']?.coverage ?? 0],
+    ['교차 검증',      'cross', ms['교차 검증']?.multi_agree ?? 0,        ms['교차 검증']?.coverage ?? 0],
+  ];
+  methodMap.forEach(([, key, val, cov]) => {
+    document.getElementById('ms-' + key).textContent = val.toLocaleString() + '개';
+    document.getElementById('mf-' + key).style.width = (cov / total * 100) + '%';
+  });
+
+  renderGrid(allResults);
+  renderMethods(ms, total);
+  renderPhrases(data.repeated_phrases);
+  renderTop(allResults);
+}
+
+// ── 기호 그리드 ───────────────────────────────────────────
+function filterGrid(t, btn) {
+  currentFilter = t;
+  document.querySelectorAll('.flt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid(allResults);
+}
+
+function renderGrid(results) {
+  if (!results.length) return;
+  const filtered = currentFilter === 'all' ? results : results.filter(r => r.tier === currentFilter);
+  document.getElementById('gridInfo').textContent = filtered.length + '개 기호';
+  document.getElementById('signGrid').innerHTML = filtered
+    .sort((a, b) => b.confidence - a.confidence)
+    .map(r => {
+      const color = TIER_COLORS[r.tier];
+      return `<div class="sg t-${r.tier}" onclick="selectSign(${r.sign_id})" id="sg-${r.sign_id}">
+        <div class="glyph">${glyph(r.sign_id)}</div>
+        <div class="sid">${r.sign}</div>
+        <div class="conf-bar" style="width:${r.confidence}%;background:${color}"></div>
+      </div>`;
+    }).join('');
+}
+
+// ── 기호 상세 ──────────────────────────────────────────────
+function selectSign(id) {
+  if (selectedSign === id) {
+    selectedSign = null;
+    document.getElementById('signDetail').classList.remove('show');
+    return;
+  }
+  selectedSign = id;
+  const r = allResults.find(x => x.sign_id === id);
+  if (!r) return;
+
+  const tierColor = TIER_COLORS[r.tier];
+  const tierLabel = { confirmed:'확정 해독', partial:'부분 해독', clue:'단서 있음', unknown:'미해독' }[r.tier];
+
+  const methodCards = Object.entries(r.scores).map(([key, score]) => {
+    const role = r.details[key]?.role || 'unknown';
+    const hit = score > 0.3;
+    return `<div class="sd-method ${hit ? 'hit' : 'miss'}">
+      <div class="sdm-name">${METHOD_NAMES[key] || key}</div>
+      <div class="sdm-role">${ROLE_LABELS[role] || role}</div>
+      <div class="sdm-score">${(score * 100).toFixed(0)}% 신뢰도</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('signDetail').innerHTML = `
+    <div class="sd-header">
+      <div class="sd-glyph" style="color:${tierColor}">${glyph(id)}</div>
+      <div class="sd-meta">
+        <h3>${r.sign} <span class="tag tag-${r.tier === 'confirmed' ? 'green' : r.tier === 'partial' ? 'blue' : r.tier === 'clue' ? 'yellow' : 'gray'}">${tierLabel}</span></h3>
+        <p>${ROLE_LABELS[r.role] || r.role} · 신뢰도 ${r.confidence}% · ${r.methods_agreed}개 방법 일치</p>
+      </div>
+    </div>
+    <div class="sd-methods">${methodCards}</div>
+  `;
+  document.getElementById('signDetail').classList.add('show');
+}
+
+// ── 방법별 비교 ───────────────────────────────────────────
+function renderMethods(ms, total) {
+  const entries = [
+    { name:'위치 편향 (χ² 검정)', key:'위치 편향 (χ²)', desc:'기호의 위치 분포가 균일하지 않으면 문법 기능 신호. p < 0.05 기준.',
+      stat1: { val: ms['위치 편향 (χ²)']?.significant ?? 0, label:'유의미한 기호' },
+      stat2: { val: ms['위치 편향 (χ²)']?.coverage ?? 0, label:'분석 커버리지' }, color:'#3b82f6' },
+    { name:'빈도 계층 분류', key:'빈도 계층', desc:'상위 5% = 기능어, 5~30% = 내용어, 나머지 = 희귀어.',
+      stat1: { val: ms['빈도 계층']?.function_words ?? 0, label:'기능어 후보' },
+      stat2: { val: ms['빈도 계층']?.coverage ?? 0, label:'분류된 기호' }, color:'#10b981' },
+    { name:'HMM 품사 상태 추론', key:'HMM 상태', desc:'비지도 은닉 마르코프 모델로 문법 상태(접두·어근·접미) 추론.',
+      stat1: { val: ms['HMM 상태']?.coverage ?? 0, label:'상태 할당 기호' },
+      stat2: { val: ms['HMM 상태']?.available ? '활성' : '미설치', label:'hmmlearn' }, color:'#f59e0b' },
+    { name:'반복 구문 탐지', key:'반복 구문', desc:'3회 이상 반복 등장하는 시퀀스 = 고유명사·직함·관용 표현 후보.',
+      stat1: { val: ms['반복 구문']?.phrases_found ?? 0, label:'반복 구문 수' },
+      stat2: { val: ms['반복 구문']?.coverage ?? 0, label:'구문 참여 기호' }, color:'#8b5cf6' },
+    { name:'상호정보량 (PMI)', key:'상호정보량', desc:'기호 쌍의 PMI 분포로 접사 vs 독립 기호 구별.',
+      stat1: { val: ms['상호정보량']?.coverage ?? 0, label:'PMI 분석 기호' },
+      stat2: { val: '—', label: '' }, color:'#06b6d4' },
+    { name:'방법 간 교차 검증', key:'교차 검증', desc:'2개 이상 방법이 동일 역할에 동의하면 신뢰도 가중치 상승.',
+      stat1: { val: ms['교차 검증']?.multi_agree ?? 0, label:'2개+ 방법 일치' },
+      stat2: { val: ms['교차 검증']?.coverage ?? 0, label:'교차검증 기호' }, color:'#ec4899' },
+  ];
+
+  document.getElementById('methodCompare').innerHTML = entries.map(e => `
+    <div class="mc-row">
+      <div class="mc-row-header">
+        <h3 style="color:${e.color}">${e.name}</h3>
+        <span class="mc-coverage">${e.desc}</span>
+      </div>
+      <div class="mc-stats">
+        <div class="mc-stat-item"><div class="msi-val" style="color:${e.color}">${e.stat1.val.toLocaleString?.() ?? e.stat1.val}</div><div class="msi-label">${e.stat1.label}</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${e.stat2.val.toLocaleString?.() ?? e.stat2.val}</div><div class="msi-label">${e.stat2.label}</div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── 반복 구문 ─────────────────────────────────────────────
+function renderPhrases(phrases) {
+  if (!phrases?.length) return;
+  document.getElementById('phraseList').innerHTML =
+    `<div style="font-size:13px;color:#555;margin-bottom:16px;">3회 이상 반복 등장하는 기호 시퀀스 · 고유명사, 직함, 관용 표현 후보</div>
+    <div class="phrase-list">` +
+    phrases.map((p, i) => `
+      <div class="phrase-row">
+        <div style="font-size:12px;color:#333;width:24px">#${i+1}</div>
+        <div class="phrase-signs">${p.phrase.map(s => `<span class="psign">${glyph(parseInt(s.slice(1)))} ${s}</span>`).join('')}</div>
+        <div class="phrase-count">${p.count}</div>
+        <div class="phrase-label">회 반복</div>
+      </div>
+    `).join('') +
+    '</div>';
+}
+
+// ── 상위 해독 기호 ────────────────────────────────────────
+function renderTop(results) {
+  const top = [...results].sort((a, b) => b.confidence - a.confidence).slice(0, 30);
+  document.getElementById('topList').innerHTML =
+    `<div style="font-size:13px;color:#555;margin-bottom:16px;">신뢰도 상위 30개 · 여러 방법이 동의한 기호일수록 해독 가능성이 높습니다</div>` +
+    top.map((r, i) => {
+      const color = TIER_COLORS[r.tier];
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #141414;cursor:pointer" onclick="selectSign(${r.sign_id})">
+        <div style="width:24px;color:#333;font-size:12px">${i+1}</div>
+        <div style="font-size:20px;font-family:monospace;color:${color};width:28px">${glyph(r.sign_id)}</div>
+        <div style="width:48px;font-size:13px;font-family:monospace;color:#888">${r.sign}</div>
+        <div style="flex:1">
+          <div style="font-size:13px;color:#ccc">${ROLE_LABELS[r.role] || r.role}</div>
+          <div style="font-size:11px;color:#444;margin-top:2px">${r.methods_agreed}개 방법 일치</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:18px;font-weight:700;color:${color}">${r.confidence}%</div>
+          <div style="font-size:10px;color:#333">${{confirmed:'확정',partial:'부분',clue:'단서',unknown:'미해독'}[r.tier]}</div>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+// ── 프론티어 알고리즘 폴링 ───────────────────────────────
+let frontierPollTimer = null;
+
+function startFrontierPoll() {
+  if (frontierPollTimer) clearInterval(frontierPollTimer);
+  frontierPollTimer = setInterval(async () => {
+    const s = await fetch('/api/frontier/status').then(r => r.json());
+    document.getElementById('frontierFill').style.width = s.progress + '%';
+    document.getElementById('frontierMsg').textContent = s.message || '대기 중';
+    if (s.status === 'done') { clearInterval(frontierPollTimer); loadFrontierResults(); }
+    if (s.status === 'error') { clearInterval(frontierPollTimer); }
+  }, 1500);
+}
+
+async function loadFrontierResults() {
+  const data = await fetch('/api/frontier/results').then(r => r.json());
+  document.getElementById('frontierContent').innerHTML = renderFrontier(data);
+}
+
+function renderFrontier(d) {
+  const sections = [];
+
+  // 1. 언어/비언어 판정 — 히어로 카드
+  if (d.language_test) {
+    const lt = d.language_test;
+    const score = lt.language_score;
+    const verdict = lt.verdict || '';
+    const verdictColor = score >= 55 ? '#10b981' : score <= 35 ? '#ef4444' : '#f59e0b';
+    const m = lt.metrics || {};
+    const farmer = lt.farmer_argument || {};
+    const sig = lt.signal_breakdown || {};
+
+    const sigBars = Object.entries(sig).map(([k, v]) => {
+      const labels = {
+        hapax_ratio:'Hapax 비율', yule_k:'Yule\'s K', ttr:'TTR',
+        mean_length:'평균 비문 길이', top10_share:'상위10 점유율',
+        rare_ratio:'희귀 기호 비율', repeat_ratio:'자기 반복률'
+      };
+      return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+        <div style="width:140px;font-size:11px;color:#666">${labels[k]||k}</div>
+        <div style="flex:1;height:5px;background:#1a1a1a;border-radius:2px">
+          <div style="width:${Math.round(v*100)}%;height:100%;background:${v>0.5?'#10b981':'#ef4444'};border-radius:2px;max-width:100%"></div>
+        </div>
+        <div style="width:35px;text-align:right;font-size:11px;color:#888">${(v*100).toFixed(0)}%</div>
+      </div>`;
+    }).join('');
+
+    const cmpRows = Object.entries(lt.comparison||{}).map(([label, vals]) => {
+      const isOurs = label.includes('이번');
+      return `<tr style="border-bottom:1px solid #111">
+        <td style="padding:6px 10px;font-size:12px;color:${isOurs?'#93c5fd':'#666'}">${label}</td>
+        <td style="padding:6px 10px;font-size:12px;color:${isOurs?'#fff':'#555'};font-weight:${isOurs?700:400}">${vals.language_score}</td>
+        <td style="padding:6px 10px;font-size:11px;color:#444">${vals.hapax}</td>
+        <td style="padding:6px 10px;font-size:11px;color:#444">${vals.ttr}</td>
+      </tr>`;
+    }).join('');
+
+    const farmerChecks = [
+      {label:'Hapax > 65%', val: farmer.hapax_too_high},
+      {label:'평균 길이 < 4.5', val: farmer.texts_too_short},
+      {label:'희귀 기호 우세', val: farmer.rare_signs_dominant},
+    ];
+
+    sections.push(`<div class="mc-row" style="border-color:${verdictColor}44">
+      <div class="mc-row-header">
+        <h3 style="color:${verdictColor}">언어 / 비언어 직접 검증 — Farmer(2004) vs Rao(2009)</h3>
+      </div>
+      <div style="display:flex;align-items:center;gap:24px;margin-bottom:20px;flex-wrap:wrap">
+        <div style="text-align:center">
+          <div style="font-size:56px;font-weight:800;color:${verdictColor};line-height:1">${score}%</div>
+          <div style="font-size:12px;color:#555;margin-top:4px">언어 점수</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600;color:${verdictColor};margin-bottom:12px">${verdict}</div>
+          ${sigBars}
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        ${farmerChecks.map(f => `
+          <div style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:${f.val?'rgba(239,68,68,0.1)':'rgba(16,185,129,0.1)'};border-radius:6px">
+            <span style="font-size:14px">${f.val?'✗':'✓'}</span>
+            <span style="font-size:12px;color:${f.val?'#ef4444':'#10b981'}">Farmer: ${f.label}</span>
+          </div>`).join('')}
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="border-bottom:1px solid #222">
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">비교 대상</th>
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">언어 점수</th>
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">Hapax 비율</th>
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">TTR</th>
+        </tr></thead>
+        <tbody>${cmpRows}</tbody>
+      </table>
+    </div>`);
+  }
+
+  // 2. 아이코노그래피 — 표어문자 vs 음절문자
+  if (d.iconography) {
+    const ico = d.iconography;
+    const lscore = ico.logographic_score || 0;
+    const lcolor = lscore >= 60 ? '#f59e0b' : '#6366f1';
+    const catCards = Object.entries(ico.category_stats || {}).map(([key, cat]) => {
+      const posColor = cat.dominant_position === '어두' ? '#3b82f6' : cat.dominant_position === '어말' ? '#10b981' : '#f59e0b';
+      return `<div style="background:#0f0f0f;border:1px solid #1a1a1a;border-radius:8px;padding:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:12px;font-weight:600;color:#e0e0e0">${cat.label}</span>
+          <span style="font-size:11px;color:${posColor};background:${posColor}22;padding:1px 6px;border-radius:3px">${cat.dominant_position}</span>
+        </div>
+        <div style="font-size:11px;color:#444;margin-bottom:6px">${cat.description}</div>
+        <div style="font-size:11px;color:#666;margin-bottom:4px">${cat.role_hypothesis}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:3px">
+          ${cat.top_signs.map(s=>`<span style="padding:2px 6px;background:#1a1a1a;border-radius:3px;font-family:monospace;font-size:10px;color:#fbbf24">${s}</span>`).join('')}
+        </div>
+        <div style="font-size:10px;color:#333;margin-top:4px">빈도 ${cat.freq_pct}% · ${cat.n_signs}개 기호</div>
+      </div>`;
+    }).join('');
+
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:${lcolor}">시각적 아이코노그래피 분석 — 표어문자 vs 음절문자</h3></div>
+      <div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:${lcolor};font-size:36px">${lscore}%</div><div class="msi-label">표어문자 특성 점수</div></div>
+        <div style="flex:1;padding-top:4px">
+          <div style="font-size:13px;font-weight:600;color:${lcolor};margin-bottom:4px">${ico.script_type_hypothesis}</div>
+          <div style="font-size:11px;color:#444">${ico.total_categorized_signs}개 기호 시각 범주 분류 완료</div>
+          <div style="font-size:11px;color:#333;margin-top:4px">${ico.note}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+        ${catCards}
+      </div>
+    </div>`);
+  }
+
+  // 3. 행정 토큰 모델
+  if (d.admin_token) {
+    const at = d.admin_token;
+    const fitColor = at.tripart_fit_score > 60 ? '#10b981' : '#f59e0b';
+    const mkRow = (items, label) => items.slice(0,5).map(x => {
+      const ratio = x.head_ratio ?? x.tail_ratio ?? x.mid_ratio ?? 0;
+      return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${x.sign}</span>
+        <div style="flex:1;height:4px;background:#1a1a1a;border-radius:2px">
+          <div style="width:${Math.round(ratio*100)}%;height:100%;background:#38bdf8;border-radius:2px;max-width:100%"></div>
+        </div>
+        <span style="font-size:11px;color:#888">${(ratio*100).toFixed(0)}%</span>
+      </div>`;
+    }).join('');
+
+    const objRows = Object.entries(at.object_type_distribution||{}).map(([obj, signs]) =>
+      `<div style="padding:8px 0;border-bottom:1px solid #111">
+        <div style="font-size:11px;color:#555;margin-bottom:4px">${obj}</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          ${signs.map(s=>`<span style="padding:2px 7px;background:#1a1a1a;border-radius:3px;font-size:11px;font-family:monospace;color:#a78bfa">${s.sign}<span style="color:#333;margin-left:3px">${s.pct}%</span></span>`).join('')}
+        </div>
+      </div>`
+    ).join('');
+
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:${fitColor}">행정 토큰 모델 — 수메르 3중 구조 검증</h3>
+        <span class="mc-coverage">소유자 + 물품 + 수량</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:${fitColor};font-size:36px">${at.tripart_fit_score}%</div><div class="msi-label">3중 구조 적합도</div></div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600;color:${fitColor};margin-bottom:4px">${at.interpretation}</div>
+          <div style="font-size:12px;color:#6b7280;margin-top:4px">${at.site_diversity}</div>
+          <div style="font-size:11px;color:#444;margin-top:4px">사이트 간 KL 발산 평균: ${at.avg_site_kl}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px">
+        <div><div style="font-size:11px;color:#444;margin-bottom:6px">어두 기호 (소유자 후보)</div>${mkRow(at.owner_sign_candidates||[])}</div>
+        <div><div style="font-size:11px;color:#444;margin-bottom:6px">중간 기호 (물품 후보)</div>${mkRow(at.commodity_sign_candidates||[])}</div>
+        <div><div style="font-size:11px;color:#444;margin-bottom:6px">어말 기호 (수량 후보)</div>${mkRow(at.quantity_sign_candidates||[])}</div>
+      </div>
+      <div style="font-size:11px;color:#444;margin-bottom:8px">유물 종류별 주요 기호</div>
+      ${objRows}
+    </div>`);
+  }
+
+  // 4. 텐서 분해
+  if (d.tensor) {
+    const td = d.tensor;
+    const compCards = (td.components||[]).map(c =>
+      `<div style="background:#0f0f0f;border:1px solid #1a1a1a;border-radius:8px;padding:12px">
+        <div style="font-size:11px;color:#444;margin-bottom:6px">성분 ${c.component} — ${c.dominant_site} × ${c.dominant_object}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px">
+          ${c.top_signs.map(s=>`<span style="padding:2px 6px;background:#1a1a1a;border-radius:3px;font-family:monospace;font-size:10px;color:#34d399">${s}</span>`).join('')}
+        </div>
+        <div style="font-size:10px;color:#333">${c.interpretation}</div>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#34d399">3D 텐서 분해 (PARAFAC) — Site × ObjectType × Sign</h3>
+        <span class="mc-coverage">재구성 오차 ${td.reconstruction_error} · rank=${td.rank}</span></div>
+      <div style="font-size:11px;color:#444;margin-bottom:12px">${td.note}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-bottom:16px">${compCards}</div>
+      ${Object.keys(td.site_exclusive_signs||{}).length ? `
+        <div style="font-size:11px;color:#444;margin-bottom:8px">사이트 전용 기호 (한 사이트 집중)</div>
+        ${Object.entries(td.site_exclusive_signs).map(([site, signs]) =>
+          `<div style="padding:6px 0;border-bottom:1px solid #111">
+            <span style="font-size:12px;color:#888;margin-right:10px">${site}</span>
+            ${signs.slice(0,5).map(s=>`<span style="padding:2px 6px;background:#1a1a1a;border-radius:3px;font-family:monospace;font-size:10px;color:#fb923c;margin-right:4px">${s.sign}</span>`).join('')}
+          </div>`
+        ).join('')}` : ''}
+    </div>`);
+  }
+
+  // 5. 패러다임 대립
+  if (d.paradigm) {
+    const pa = d.paradigm;
+    const pairRows = (pa.top_pairs||[]).slice(0,10).map(p =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${p.sign_a}</span>
+        <span style="color:#ef4444;font-size:13px">⊥</span>
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${p.sign_b}</span>
+        <div style="flex:1">
+          <div style="font-size:11px;color:#555">${p.interpretation}</div>
+          <div style="font-size:10px;color:#333">기대 공기: ${p.expected_cooc}회 · 실제: 0회</div>
+        </div>
+        <span style="font-size:11px;color:#f87171;width:40px;text-align:right">${p.freq_a + p.freq_b}</span>
+      </div>`
+    ).join('');
+    const grpRows = (pa.opposition_groups||[]).slice(0,5).map(g =>
+      `<div style="padding:6px 0;border-bottom:1px solid #111;display:flex;align-items:center;gap:8px">
+        <div style="display:flex;flex-wrap:wrap;gap:3px;flex:1">
+          ${g.signs.map(s=>`<span style="padding:2px 6px;background:#1a1a1a;border-radius:3px;font-family:monospace;font-size:10px;color:#c084fc">${s}</span>`).join('')}
+        </div>
+        <span style="font-size:11px;color:#555">${g.size}개</span>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#c084fc">패러다임 대립 분석 — 상보적 분포</h3>
+        <span class="mc-coverage">${pa.opposition_pairs_found}개 쌍 발견</span></div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${pa.interpretation}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div><div style="font-size:11px;color:#444;margin-bottom:8px">상위 대립 쌍 (⊥ = 절대 함께 등장 안 함)</div>${pairRows}</div>
+        <div><div style="font-size:11px;color:#444;margin-bottom:8px">대립 그룹 (같은 의미 범주 후보)</div>${grpRows}</div>
+      </div>
+      <div style="font-size:11px;color:#333;margin-top:8px">${pa.note}</div>
+    </div>`);
+  }
+
+  // 6. Transformer 어텐션
+  if (d.transformer) {
+    const tr = d.transformer;
+    const pairRows = (tr.top_attention_pairs||[]).slice(0,10).map(p =>
+      `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #111">
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${p.from_sign}</span>
+        <span style="color:#38bdf8;font-size:12px">→</span>
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${p.to_sign}</span>
+        <div style="flex:1;height:4px;background:#1a1a1a;border-radius:2px">
+          <div style="width:${Math.min(100,Math.round(p.attention*5000))}%;height:100%;background:#38bdf8;border-radius:2px;max-width:100%"></div>
+        </div>
+        <span style="font-size:10px;color:#38bdf8;width:60px;text-align:right">${p.attention.toFixed(4)}</span>
+      </div>`
+    ).join('');
+    const attendedRows = (tr.most_attended_signs||[]).map((s,i) =>
+      `<div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+        <span style="width:20px;font-size:11px;color:#333">${i+1}</span>
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${s.sign}</span>
+        <div style="flex:1;height:4px;background:#1a1a1a;border-radius:2px">
+          <div style="width:${Math.min(100,Math.round(s.total_attention/((tr.most_attended_signs[0]||{}).total_attention||1)*100))}%;height:100%;background:#818cf8;border-radius:2px;max-width:100%"></div>
+        </div>
+        <span style="font-size:10px;color:#818cf8">${s.total_attention.toFixed(3)}</span>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#38bdf8">Transformer Self-Attention (${tr.n_heads}-head, numpy)</h3>
+        <span class="mc-coverage">${tr.n_sequences_processed}개 시퀀스 · d_model=${tr.d_model}</span></div>
+      <div style="font-size:11px;color:#444;margin-bottom:12px">${tr.note}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div><div style="font-size:11px;color:#444;margin-bottom:8px">최고 주의 쌍 (A → B 의존)</div>${pairRows}</div>
+        <div><div style="font-size:11px;color:#444;margin-bottom:8px">가장 주목받는 기호 (문법 허브)</div>${attendedRows}</div>
+      </div>
+    </div>`);
+  }
+
+  return sections.length
+    ? `<div class="method-compare">${sections.join('')}</div>`
+    : '<div class="empty-state"><p>결과 없음</p></div>';
+}
+
+// ── 신규 알고리즘 폴링 ───────────────────────────────────
+let novelPollTimer = null;
+
+function startNovelPoll() {
+  if (novelPollTimer) clearInterval(novelPollTimer);
+  novelPollTimer = setInterval(async () => {
+    const s = await fetch('/api/novel/status').then(r => r.json());
+    document.getElementById('novelFill').style.width = s.progress + '%';
+    document.getElementById('novelMsg').textContent = s.message || '대기 중';
+    if (s.status === 'done') { clearInterval(novelPollTimer); loadNovelResults(); }
+    if (s.status === 'error') { clearInterval(novelPollTimer); }
+  }, 1500);
+}
+
+async function loadNovelResults() {
+  const data = await fetch('/api/novel/results').then(r => r.json());
+  document.getElementById('novelContent').innerHTML = renderNovel(data);
+}
+
+function renderNovel(d) {
+  const sections = [];
+
+  // 앙상블 히어로
+  if (d.ensemble) {
+    const e = d.ensemble;
+    const bd = e.breakdown || {};
+    const weightRows = Object.entries(e.algorithm_weights || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([m, w]) => {
+        const labels = {
+          decipher_base:'기본 해독 엔진', pagerank:'PageRank', markov:'Markov 엔트로피',
+          affix_suffix:'접미사 비대칭', affix_prefix:'접두사 비대칭', hmm_conf:'HMM 신뢰도',
+          nmf_strength:'NMF 강도', pmi_similarity:'PMI SVD 유사도',
+        };
+        return `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #111">
+          <div style="width:160px;font-size:12px;color:#888">${labels[m]||m}</div>
+          <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+            <div style="width:${Math.round(w*100*4)}%;height:100%;background:#6366f1;border-radius:3px;max-width:100%"></div>
+          </div>
+          <div style="width:50px;text-align:right;font-size:12px;color:#818cf8">${(w*100).toFixed(1)}%</div>
+        </div>`;
+      }).join('');
+    const topRows = (e.top_signs || []).slice(0, 15).map((r, i) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${r.sign}</div>
+        <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${Math.round(r.score*100)}%;height:100%;background:#6366f1;border-radius:3px"></div>
+        </div>
+        <div style="width:45px;text-align:right;font-size:12px;color:#818cf8">${(r.score*100).toFixed(1)}%</div>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row" style="border-color:#6366f155">
+      <div class="mc-row-header"><h3 style="color:#818cf8">동적 앙상블 통합 — Fleiss kappa 가중치</h3><span class="mc-coverage">${e.n_algorithms_combined}개 알고리즘 · ${e.n_signs_scored}개 기호</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#818cf8;font-size:36px">${e.ensemble_rate}%</div><div class="msi-label">앙상블 통합 해독률</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#10b981">${bd.confirmed||0}</div><div class="msi-label">확정 (≥80%)</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#3b82f6">${bd.partial||0}</div><div class="msi-label">부분 (50–80%)</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#f59e0b">${bd.clue||0}</div><div class="msi-label">단서 (20–50%)</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#444">${bd.unknown||0}</div><div class="msi-label">미해독</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div><div style="font-size:11px;color:#444;margin-bottom:10px">알고리즘별 가중치 (일치도 비례)</div>${weightRows}</div>
+        <div><div style="font-size:11px;color:#444;margin-bottom:10px">앙상블 상위 15 기호</div>${topRows}</div>
+      </div>
+      <div style="font-size:11px;color:#333;margin-top:12px">${e.note}</div>
+    </div>`);
+  }
+
+  // KL 발산
+  if (d.kl_compare) {
+    const kl = d.kl_compare;
+    const rankRows = (kl.ranked || []).map((r, i) => {
+      const isFirst = i === 0;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;font-size:11px;color:#333">${i+1}</div>
+        <div style="flex:1;font-size:12px;color:${isFirst?'#34d399':'#888'}">${r.script}</div>
+        <div style="width:120px;height:5px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${Math.round((1-r.js_divergence)*200)}%;height:100%;background:${isFirst?'#34d399':'#2a2a2a'};border-radius:3px;max-width:100%"></div>
+        </div>
+        <div style="width:55px;text-align:right;font-size:12px;color:${isFirst?'#34d399':'#555'}">JS=${r.js_divergence}</div>
+      </div>`;
+    }).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#34d399">KL 발산 교차 스크립트 비교</h3><span class="mc-coverage">낮을수록 유사한 분포</span></div>
+      <div style="font-size:14px;font-weight:600;color:#34d399;margin-bottom:16px">가장 유사: ${kl.closest_script}</div>
+      ${rankRows}
+      <div style="font-size:11px;color:#333;margin-top:8px">${kl.note}</div>
+    </div>`);
+  }
+
+  // MCMC
+  if (d.mcmc) {
+    const mc = d.mcmc;
+    const llRows = (mc.ll_history || []).map((v, i) =>
+      `<div style="display:flex;align-items:center;gap:8px;padding:3px 0">
+        <div style="width:70px;font-size:11px;color:#444">${i*5000}iter</div>
+        <div style="flex:1;height:4px;background:#1a1a1a;border-radius:2px">
+          <div style="width:${Math.min(100, Math.round((v - (mc.ll_history[0]||v)) / ((mc.best_log_likelihood - (mc.ll_history[0]||v))||1) * 100))}%;height:100%;background:#f59e0b;border-radius:2px;max-width:100%"></div>
+        </div>
+        <div style="width:80px;text-align:right;font-size:10px;color:#888">${v}</div>
+      </div>`
+    ).join('');
+    const readRows = (mc.proposed_readings || []).slice(0, 12).map(r =>
+      `<div style="display:flex;gap:10px;padding:4px 0;border-bottom:1px solid #0f0f0f">
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${r.sign}</span>
+        <span style="font-family:monospace;color:#34d399;width:60px">${r.proposed_syllable}</span>
+        <span style="font-size:11px;color:#444">${r.frequency_pct}%</span>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#f59e0b">MCMC Metropolis-Hastings 베이지안 치환</h3>
+        <span class="mc-coverage">${mc.n_iterations.toLocaleString()} 반복 · 수렴: ${mc.convergence}</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#f59e0b">${mc.best_log_likelihood}</div><div class="msi-label">최적 로그우도</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${(mc.final_acceptance_rate*100).toFixed(1)}%</div><div class="msi-label">최종 수락률</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div><div style="font-size:11px;color:#444;margin-bottom:8px">로그우도 수렴 과정</div>${llRows}</div>
+        <div><div style="font-size:11px;color:#444;margin-bottom:8px">제안 음절 매핑 (상위 12)</div>${readRows}</div>
+      </div>
+      <div style="font-size:11px;color:#333;margin-top:8px">${mc.note}</div>
+    </div>`);
+  }
+
+  // MDL
+  if (d.mdl) {
+    const ml = d.mdl;
+    const ruleRows = (ml.top_rules || []).slice(0, 12).map((r, i) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;font-size:11px;color:#333">${i+1}</div>
+        <div style="display:flex;gap:4px;flex:1">
+          ${r.pattern.map(s=>`<span style="padding:2px 8px;background:#1a1a1a;border-radius:4px;font-family:monospace;font-size:11px;color:#c4b5fd">${s}</span>`).join('<span style="color:#333;font-size:11px;padding:0 2px">→</span>')}
+          <span style="padding:2px 8px;background:#161630;border-radius:4px;font-family:monospace;font-size:11px;color:#818cf8">Rule${r.rule_id}</span>
+        </div>
+        <div style="width:40px;text-align:right;font-size:12px;color:#a78bfa">${r.occurrences}회</div>
+        <div style="font-size:11px;color:#444;width:80px">${r.interpretation}</div>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#c4b5fd">MDL 문법 추출 (Sequitur)</h3><span class="mc-coverage">최소 기술 길이 원칙</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#c4b5fd">${ml.n_rules_extracted}</div><div class="msi-label">추출된 문법 규칙</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${ml.compression_ratio}</div><div class="msi-label">압축률</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${ml.original_length.toLocaleString()}</div><div class="msi-label">원본 길이</div></div>
+      </div>
+      <div style="font-size:12px;color:#10b981;margin-bottom:12px">${ml.interpretation}</div>
+      ${ruleRows}
+      <div style="font-size:11px;color:#333;margin-top:8px">${ml.note}</div>
+    </div>`);
+  }
+
+  // 스펙트럴 클러스터링
+  if (d.spectral) {
+    const sp = d.spectral;
+    const clusterCards = (sp.clusters || []).map(c =>
+      `<div style="background:#0f0f0f;border:1px solid #1a1a1a;border-radius:8px;padding:12px">
+        <div style="font-size:11px;color:#444;margin-bottom:6px">${c.role} (${c.size}개, 평균차수 ${c.avg_degree})</div>
+        <div style="display:flex;flex-wrap:wrap;gap:3px">
+          ${c.top_signs.map(s=>`<span style="padding:2px 7px;background:#1a1a1a;border-radius:3px;font-family:monospace;font-size:10px;color:#7dd3fc">${s}</span>`).join('')}
+        </div>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#7dd3fc">스펙트럴 클러스터링 (Normalized Cuts)</h3>
+        <span class="mc-coverage">Eigengap k=${sp.n_clusters_found}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:12px">${clusterCards}</div>
+    </div>`);
+  }
+
+  // PMI SVD
+  if (d.pmi_svd) {
+    const ps = d.pmi_svd;
+    const pairRows = (ps.top_similar_pairs || []).slice(0, 10).map(p =>
+      `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #111">
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${p.sign}</span>
+        <span style="color:#333;font-size:11px">↔</span>
+        <span style="font-family:monospace;color:#fbbf24;width:60px">${p.most_similar}</span>
+        <div style="flex:1;height:4px;background:#1a1a1a;border-radius:2px">
+          <div style="width:${Math.round(p.similarity*100)}%;height:100%;background:#38bdf8;border-radius:2px"></div>
+        </div>
+        <span style="font-size:11px;color:#38bdf8">${(p.similarity*100).toFixed(1)}%</span>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#38bdf8">PMI 행렬 SVD (GloVe 스타일)</h3>
+        <span class="mc-coverage">dim=${ps.dim} · 어휘 ${ps.vocab_size}</span></div>
+      <div style="font-size:12px;color:#555;margin-bottom:12px">${ps.note}</div>
+      ${pairRows}
+    </div>`);
+  }
+
+  return sections.length
+    ? `<div class="method-compare">${sections.join('')}</div>`
+    : '<div class="empty-state"><p>결과 없음</p></div>';
+}
+
+// ── 추가 알고리즘 폴링 ───────────────────────────────────
+let extraPollTimer = null;
+
+function startExtraPoll() {
+  if (extraPollTimer) clearInterval(extraPollTimer);
+  extraPollTimer = setInterval(async () => {
+    const s = await fetch('/api/extra/status').then(r => r.json());
+    document.getElementById('extraFill').style.width = s.progress + '%';
+    document.getElementById('extraMsg').textContent = s.message || '대기 중';
+    if (s.status === 'done') { clearInterval(extraPollTimer); loadExtraResults(); }
+    if (s.status === 'error') { clearInterval(extraPollTimer); }
+  }, 1000);
+}
+
+async function loadExtraResults() {
+  const data = await fetch('/api/extra/results').then(r => r.json());
+  document.getElementById('extraContent').innerHTML = renderExtra(data);
+}
+
+function renderExtra(d) {
+  const sections = [];
+
+  // 1. Zipf-Mandelbrot
+  if (d.zipf) {
+    const z = d.zipf;
+    const cmpRows = Object.entries(z.comparison).map(([label, val]) => {
+      const hi = label.includes('이번');
+      return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #111">
+        <span style="font-size:12px;color:${hi?'#93c5fd':'#666'}">${label}</span>
+        <span style="font-size:12px;font-weight:${hi?700:400};color:${hi?'#fff':'#555'}">s=${val.s ?? val}  q=${val.q ?? '—'}</span>
+      </div>`;
+    }).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#a78bfa">Zipf-Mandelbrot 커브 피팅</h3><span class="mc-coverage">자연어 판별 핵심 지표</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#a78bfa">${z.zipf_s}</div><div class="msi-label">Zipf 지수 s</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${z.zipf_r2}</div><div class="msi-label">R² (피팅 정확도)</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${z.mandelbrot_q}</div><div class="msi-label">Mandelbrot q</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${z.total_signs}</div><div class="msi-label">고유 기호 수</div></div>
+      </div>
+      <div style="font-size:12px;color:#10b981;margin-bottom:12px">${z.interpretation}</div>
+      ${cmpRows}
+    </div>`);
+  }
+
+  // 2. 고차 n-gram
+  if (d.ngram_high) {
+    const n = d.ngram_high;
+    const bars = [
+      { label: 'H1 (단순)', val: n.h1, max: 6, color: '#3b82f6' },
+      { label: 'H2 (바이그램)', val: n.h2, max: 6, color: '#06b6d4' },
+      { label: 'H3 (트라이그램)', val: n.h3, max: 6, color: '#10b981' },
+      { label: 'H4 (4-gram)', val: n.h4, max: 6, color: '#a3e635' },
+    ].map(b => `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+      <div style="width:130px;font-size:12px;color:#888">${b.label}</div>
+      <div style="flex:1;height:6px;background:#1a1a1a;border-radius:3px">
+        <div style="width:${(b.val/b.max*100).toFixed(1)}%;height:100%;background:${b.color};border-radius:3px"></div>
+      </div>
+      <div style="width:55px;text-align:right;font-size:13px;font-weight:600;color:${b.color}">${b.val}</div>
+    </div>`).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#10b981">고차 n-gram 엔트로피</h3><span class="mc-coverage">H4로 갈수록 낮아지면 강한 문법 구조</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#10b981">${n.entropy_reduction_2_to_3}%</div><div class="msi-label">H2→H3 엔트로피 감소</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${n.entropy_reduction_3_to_4}%</div><div class="msi-label">H3→H4 엔트로피 감소</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${n.n_trigrams.toLocaleString()}</div><div class="msi-label">트라이그램 수</div></div>
+      </div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${n.interpretation}</div>
+      ${bars}
+    </div>`);
+  }
+
+  // 3. 압축률
+  if (d.compression) {
+    const c = d.compression;
+    const cmpRows = Object.entries(c.comparison).map(([label, val]) => {
+      const hi = label.includes('이번');
+      const barW = Math.min(100, val * 100);
+      return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:180px;font-size:12px;color:${hi?'#93c5fd':'#666'}">${label}</div>
+        <div style="flex:1;height:6px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${barW}%;height:100%;background:${hi?'#f59e0b':'#2a2a2a'};border-radius:3px"></div>
+        </div>
+        <div style="width:50px;text-align:right;font-size:12px;font-weight:${hi?700:400};color:${hi?'#fbbf24':'#555'}">${val}</div>
+      </div>`;
+    }).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#f59e0b">gzip 압축률 — Kolmogorov 복잡도</h3><span class="mc-coverage">낮을수록 반복 구조 풍부</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#f59e0b">${c.compression_ratio}</div><div class="msi-label">압축률</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${c.structure_score}%</div><div class="msi-label">구조 점수 (vs 무작위)</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${(c.original_bytes/1024).toFixed(1)}KB</div><div class="msi-label">원본 크기</div></div>
+      </div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${c.interpretation}</div>
+      ${cmpRows}
+      <div style="font-size:11px;color:#333;margin-top:8px">${c.note}</div>
+    </div>`);
+  }
+
+  // 4. HMM
+  if (d.hmm_full?.available) {
+    const h = d.hmm_full;
+    const stateCards = h.state_signs.map(s =>
+      `<div style="background:#0f0f0f;border:1px solid #1a1a1a;border-radius:8px;padding:12px 14px">
+        <div style="font-size:11px;color:#444;margin-bottom:8px">상태 ${s.state} — ${s.label}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">
+          ${s.top_signs.map(sg =>
+            `<span style="padding:3px 8px;background:#1a1a1a;border-radius:4px;font-size:11px;font-family:monospace;color:#93c5fd">${sg.sign}</span>`
+          ).join('')}
+        </div>
+      </div>`
+    ).join('');
+    const transRows = h.transmat.map((row, i) =>
+      `<tr><td style="padding:4px 8px;color:#444;font-size:11px">상태${i}</td>` +
+      row.map(v => `<td style="padding:4px 8px;text-align:center;font-size:11px;color:${v>0.3?'#60a5fa':'#444'}">${v}</td>`).join('') +
+      '</tr>'
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#60a5fa">HMM 품사 상태 추론 (hmmlearn)</h3><span class="mc-coverage">${h.n_states}개 은닉 상태 · ${h.n_sequences}개 시퀀스</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:16px">
+        ${stateCards}
+      </div>
+      <div style="font-size:12px;color:#555;margin-bottom:10px">상태 전이 행렬</div>
+      <table style="border-collapse:collapse;font-size:11px">
+        <thead><tr><td style="padding:4px 8px"></td>${h.state_signs.map(s=>`<th style="padding:4px 8px;color:#444">상태${s.state}</th>`).join('')}</tr></thead>
+        <tbody>${transRows}</tbody>
+      </table>
+    </div>`);
+  }
+
+  // 5. 접사 비대칭
+  if (d.affix) {
+    const a = d.affix;
+    const asym = a.asymmetry_index;
+    const asymColor = asym > 0.05 ? '#10b981' : asym < -0.05 ? '#ef4444' : '#f59e0b';
+    const prefRows = (a.top_prefix_candidates || []).slice(0, 6).map(p =>
+      `<div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${p.sign}</span>
+        <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${Math.round(p.ratio*100*3)}%;height:100%;background:#ef4444;border-radius:3px;max-width:100%"></div>
+        </div>
+        <span style="font-size:11px;color:#888">${(p.ratio*100).toFixed(1)}%</span>
+      </div>`
+    ).join('');
+    const sufRows = (a.top_suffix_candidates || []).slice(0, 6).map(p =>
+      `<div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+        <span style="font-family:monospace;color:#fbbf24;width:50px">${p.sign}</span>
+        <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${Math.round(p.ratio*100*3)}%;height:100%;background:#10b981;border-radius:3px;max-width:100%"></div>
+        </div>
+        <span style="font-size:11px;color:#888">${(p.ratio*100).toFixed(1)}%</span>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:${asymColor}">접사 비대칭성 분석</h3><span class="mc-coverage">${a.n_analyzed}개 기호 분석</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:${asymColor}">${asym > 0 ? '+' : ''}${asym}</div><div class="msi-label">비대칭 지수 (양수=접미사 우세)</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#ef4444">${(a.overall_prefix_ratio*100).toFixed(1)}%</div><div class="msi-label">평균 어두 비율</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#10b981">${(a.overall_suffix_ratio*100).toFixed(1)}%</div><div class="msi-label">평균 어말 비율</div></div>
+      </div>
+      <div style="font-size:12px;color:${asymColor};margin-bottom:16px">${a.interpretation}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div><div style="font-size:11px;color:#444;margin-bottom:8px">접두사 후보 (어두 빈출)</div>${prefRows}</div>
+        <div><div style="font-size:11px;color:#444;margin-bottom:8px">접미사 후보 (어말 빈출)</div>${sufRows}</div>
+      </div>
+    </div>`);
+  }
+
+  // 6. LDA
+  if (d.lda && d.lda.topics) {
+    const topicCards = d.lda.topics.map(t =>
+      `<div style="background:#0f0f0f;border:1px solid #1a1a1a;border-radius:8px;padding:14px">
+        <div style="font-size:12px;font-weight:600;color:#e0e0e0;margin-bottom:4px">${t.label}</div>
+        <div style="font-size:11px;color:#444;margin-bottom:10px">${t.interpretation}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">
+          ${t.top_signs.map(s =>
+            `<span style="padding:3px 8px;background:#1a1a1a;border-radius:4px;font-size:11px;font-family:monospace;color:#c4b5fd">${s.sign}</span>`
+          ).join('')}
+        </div>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#c4b5fd">LDA 토픽 모델링</h3><span class="mc-coverage">${d.lda.n_documents}개 비문 · 어휘 ${d.lda.vocab_size}개</span></div>
+      <div style="font-size:11px;color:#444;margin-bottom:16px">${d.lda.note}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+        ${topicCards}
+      </div>
+    </div>`);
+  }
+
+  return sections.length
+    ? `<div class="method-compare">${sections.join('')}</div>`
+    : '<div class="empty-state"><p>결과 없음</p></div>';
+}
+
+// ── 고급 알고리즘 폴링 ────────────────────────────────────
+let advPollTimer = null;
+
+function startAdvPoll() {
+  if (advPollTimer) clearInterval(advPollTimer);
+  advPollTimer = setInterval(async () => {
+    const s = await fetch('/api/advanced/status').then(r => r.json());
+    document.getElementById('advFill').style.width = s.progress + '%';
+    document.getElementById('advMsg').textContent = s.message || '대기 중';
+    if (s.status === 'done') {
+      clearInterval(advPollTimer);
+      loadAdvResults();
+    }
+    if (s.status === 'error') {
+      clearInterval(advPollTimer);
+      document.getElementById('advMsg').textContent = '오류: ' + s.message;
+    }
+  }, 1000);
+}
+
+async function loadAdvResults() {
+  const data = await fetch('/api/advanced/results').then(r => r.json());
+  document.getElementById('advContent').innerHTML = renderAdvanced(data);
+}
+
+function renderAdvanced(d) {
+  const sections = [];
+
+  // 1. Markov 엔트로피
+  if (d.markov) {
+    const m = d.markov;
+    const cmpRows = Object.entries(m.comparison).map(([label, val]) => {
+      const isOurs = label.includes('이번');
+      const barW = Math.min(100, (val / 4) * 100);
+      const color = isOurs ? '#3b82f6' : '#2a2a2a';
+      return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:200px;font-size:12px;color:${isOurs?'#93c5fd':'#666'}">${label}</div>
+        <div style="flex:1;height:6px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${barW}%;height:100%;background:${color};border-radius:3px;transition:width 0.6s"></div>
+        </div>
+        <div style="width:50px;text-align:right;font-size:13px;font-weight:${isOurs?700:400};color:${isOurs?'#fff':'#555'}">${val}</div>
+      </div>`;
+    }).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#3b82f6">Markov 2차 모델 — 조건부 엔트로피</h3>
+        <span class="mc-coverage">Rao et al. 2009 PNAS 재현</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#3b82f6">${m.h1}</div><div class="msi-label">H1 (1차 조건부 엔트로피)</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${m.h2}</div><div class="msi-label">H2 (2차 조건부 엔트로피)</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${m.h0}</div><div class="msi-label">H0 (단순 엔트로피)</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${m.vocab_size}</div><div class="msi-label">고유 기호 수</div></div>
+      </div>
+      <div style="font-size:12px;color:#10b981;margin-bottom:12px">${m.interpretation}</div>
+      ${cmpRows}
+      <div style="font-size:11px;color:#333;margin-top:10px">출처: ${m.paper}</div>
+    </div>`);
+  }
+
+  // 2. PageRank
+  if (d.pagerank) {
+    const p = d.pagerank;
+    const topRows = (p.top10 || []).map((item, i) => {
+      const barW = Math.round(item.pagerank * 100);
+      return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;font-size:14px;color:#8b5cf6;width:50px">${item.sign}</div>
+        <div style="flex:1;height:6px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${barW}%;height:100%;background:#8b5cf6;border-radius:3px"></div>
+        </div>
+        <div style="width:45px;text-align:right;font-size:12px;color:#a78bfa">${item.pagerank.toFixed(4)}</div>
+      </div>`;
+    }).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#8b5cf6">PageRank 중심성 — 문법적 허브 탐지</h3>
+        <span class="mc-coverage">높은 PageRank = 기능어·한정사 후보</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#8b5cf6">${p.total_nodes}</div><div class="msi-label">분석 기호 수</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${p.total_edges}</div><div class="msi-label">공기 엣지 수</div></div>
+      </div>
+      ${topRows}
+    </div>`);
+  }
+
+  // 3. 드라비다어 가설
+  if (d.dravidian) {
+    const dr = d.dravidian;
+    const propRows = (dr.proposals || []).map(p => {
+      const confPct = Math.round(p.confidence * 100);
+      const confColor = confPct >= 25 ? '#10b981' : confPct >= 18 ? '#f59e0b' : '#555';
+      return `<tr style="border-bottom:1px solid #111">
+        <td style="padding:8px 10px;font-family:monospace;color:#fbbf24">${p.sign}</td>
+        <td style="padding:8px 10px;color:#a3e635;font-family:monospace">${p.reading}</td>
+        <td style="padding:8px 10px;color:#ccc">${p.meaning}</td>
+        <td style="padding:8px 10px;color:${confColor}">${confPct}%</td>
+        <td style="padding:8px 10px;color:#444;font-size:11px">${p.source}</td>
+      </tr>`;
+    }).join('');
+    const fit = dr.positional_fit || {};
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#a3e635">드라비다어 가설 (Parpola 1994)</h3>
+        <span class="mc-coverage">가설 상태 — 학계 미검증</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#a3e635">${dr.dravidian_score}%</div><div class="msi-label">SOV 어순 적합도</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${dr.total_proposed}</div><div class="msi-label">음소값 제안 기호</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${dr.coverage_pct}%</div><div class="msi-label">어휘 커버리지</div></div>
+      </div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${fit.interpretation || ''}</div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="border-bottom:1px solid #222">
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">기호</th>
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">추정 음가</th>
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">의미</th>
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">신뢰도</th>
+          <th style="padding:6px 10px;text-align:left;font-size:11px;color:#444">출처</th>
+        </tr></thead>
+        <tbody>${propRows}</tbody>
+      </table>
+    </div>`);
+  }
+
+  // 4. 빔 서치
+  if (d.beam_search) {
+    const bs = d.beam_search;
+    const beamRows = (bs.proposed_readings || []).slice(0, 15).map((r, i) => `
+      <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${r.sign}</div>
+        <div style="font-family:monospace;color:#34d399;width:70px">${r.proposed_syllable}</div>
+        <div style="flex:1;font-size:11px;color:#444">${r.frequency.toLocaleString()} 회 (${r.frequency_pct}%)</div>
+      </div>`).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#34d399">빔 서치 치환 암호 해독 (Nuhn 2013 ACL)</h3>
+        <span class="mc-coverage">검증 불가 가설 — Proto-Dravidian 음절 후보</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#34d399">${bs.best_score}</div><div class="msi-label">빔 서치 최종 점수</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${bs.beam_width}</div><div class="msi-label">빔 너비</div></div>
+      </div>
+      <div style="font-size:11px;color:#444;margin-bottom:12px">${bs.note}</div>
+      ${beamRows}
+    </div>`);
+  }
+
+  // 5. 알로그래프
+  if (d.allograph) {
+    const al = d.allograph;
+    const pairRows = (al.pairs || []).slice(0, 10).map(p => `
+      <div style="display:flex;align-items:center;gap:12px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="font-family:monospace;color:#f472b6;width:55px">${p.sign_a}</div>
+        <div style="color:#333">↔</div>
+        <div style="font-family:monospace;color:#f472b6;width:55px">${p.sign_b}</div>
+        <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${Math.round(p.similarity*100)}%;height:100%;background:#f472b6;border-radius:3px"></div>
+        </div>
+        <div style="width:50px;text-align:right;font-size:12px;color:#fb7185">${(p.similarity*100).toFixed(1)}%</div>
+      </div>`).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#f472b6">알로그래프 탐지 (Yadav & Vahia 2013)</h3>
+        <span class="mc-coverage">코사인 유사도 &gt; 0.92 — 시각적 검증 필요</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#f472b6">${al.pairs?.length ?? 0}</div><div class="msi-label">알로그래프 후보 쌍</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${al.original_vocab}</div><div class="msi-label">분석 기호 수</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${al.reduction_pct}%</div><div class="msi-label">어휘 축소율</div></div>
+      </div>
+      ${pairRows}
+    </div>`);
+  }
+
+  // 6. 당혹도
+  if (d.perplexity) {
+    const pp = d.perplexity;
+    const cmpRows = Object.entries(pp.comparison).map(([label, val]) => {
+      const isOurs = label.includes('이번');
+      const barW = Math.min(100, (val / 50) * 100);
+      return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:200px;font-size:12px;color:${isOurs?'#93c5fd':'#666'}">${label}</div>
+        <div style="flex:1;height:6px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${barW}%;height:100%;background:${isOurs?'#06b6d4':'#2a2a2a'};border-radius:3px"></div>
+        </div>
+        <div style="width:55px;text-align:right;font-size:13px;font-weight:${isOurs?700:400};color:${isOurs?'#fff':'#555'}">${typeof val==='number'?val.toFixed(1):val}</div>
+      </div>`;
+    }).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#06b6d4">n-gram 당혹도 비교</h3>
+        <span class="mc-coverage">낮을수록 예측 가능 = 언어 구조에 가까움</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#06b6d4">${pp.perplexity}</div><div class="msi-label">바이그램 당혹도</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${pp.vocab_size}</div><div class="msi-label">어휘 크기</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${pp.n_bigrams.toLocaleString()}</div><div class="msi-label">바이그램 수</div></div>
+      </div>
+      <div style="font-size:12px;color:#10b981;margin-bottom:12px">${pp.interpretation}</div>
+      ${cmpRows}
+    </div>`);
+  }
+
+  return sections.length
+    ? `<div class="method-compare">${sections.join('')}</div>`
+    : '<div class="empty-state"><p>결과 없음</p></div>';
+}
+
+// ── 발견 알고리즘 폴링 ──────────────────────────────────
+let discoveryPollTimer = null;
+
+function startDiscoveryPoll() {
+  if (discoveryPollTimer) clearInterval(discoveryPollTimer);
+  discoveryPollTimer = setInterval(async () => {
+    const s = await fetch('/api/discovery/status').then(r => r.json());
+    document.getElementById('discoveryFill').style.width = s.progress + '%';
+    document.getElementById('discoveryMsg').textContent = s.message || '대기 중';
+    if (s.status === 'done') { clearInterval(discoveryPollTimer); loadDiscoveryResults(); }
+    if (s.status === 'error') { clearInterval(discoveryPollTimer); }
+  }, 1500);
+}
+
+async function loadDiscoveryResults() {
+  const data = await fetch('/api/discovery/results').then(r => r.json());
+  document.getElementById('discoveryContent').innerHTML = renderDiscovery(data);
+}
+
+function renderDiscovery(d) {
+  const sections = [];
+
+  // 1. 통합 보정 히어로
+  if (d.boosted) {
+    const b = d.boosted;
+    const rate = b.decipherment_rate || 0;
+    const diff = b.improvement || 0;
+    const diffColor = diff >= 0 ? '#10b981' : '#ef4444';
+    const bd = b.breakdown || {};
+    const src = b.boost_sources || {};
+    const topRows = (b.top_improved || []).slice(0, 15).map((r, i) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${r.sign}</div>
+        <div style="width:50px;text-align:right;font-size:12px;color:#888">${r.base_conf}%</div>
+        <div style="color:#333;font-size:11px;padding:0 6px">→</div>
+        <div style="width:55px;font-size:12px;font-weight:600;color:#10b981">${r.adjusted_conf}%</div>
+        <div style="flex:1;font-size:10px;color:#555">${(r.reasons||[]).join(' · ')}</div>
+        <div style="font-size:11px;color:#34d399;width:40px;text-align:right">×${r.multiplier}</div>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row" style="border-color:#10b98155">
+      <div class="mc-row-header"><h3 style="color:#34d399">CRF + MSP + BSC 통합 보정 — 최종 결과</h3></div>
+      <div style="display:flex;gap:32px;margin-bottom:20px;flex-wrap:wrap;align-items:flex-end">
+        <div style="text-align:center">
+          <div style="font-size:64px;font-weight:800;color:#34d399;line-height:1">${rate}%</div>
+          <div style="font-size:12px;color:#555;margin-top:4px">통합 보정 해독률</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:32px;font-weight:700;color:${diffColor};line-height:1">${diff>=0?'+':''}${diff}%p</div>
+          <div style="font-size:12px;color:#555;margin-top:4px">기준(22.6%) 대비</div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div class="mc-stat-item"><div class="msi-val" style="color:#10b981">${bd.confirmed||0}</div><div class="msi-label">확정 (≥80%)</div></div>
+          <div class="mc-stat-item"><div class="msi-val" style="color:#3b82f6">${bd.partial||0}</div><div class="msi-label">부분 (50–80%)</div></div>
+          <div class="mc-stat-item"><div class="msi-val" style="color:#f59e0b">${bd.clue||0}</div><div class="msi-label">단서 (20–50%)</div></div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="padding:8px 14px;background:#0a1f0a;border-radius:6px;font-size:12px">CRF 고신뢰: <span style="color:#34d399;font-weight:600">${src.crf_high||0}개</span></div>
+          <div style="padding:8px 14px;background:#0a1520;border-radius:6px;font-size:12px">MSP 앵커: <span style="color:#38bdf8;font-weight:600">${src.msp_anchor||0}개</span></div>
+          <div style="padding:8px 14px;background:#1a120a;border-radius:6px;font-size:12px">BSC 정렬: <span style="color:#f59e0b;font-weight:600">${src.bsc_aligned||0}개</span></div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#444;margin-bottom:10px">보정 상위 기호</div>
+      ${topRows}
+    </div>`);
+  }
+
+  // 2. CRF 결과
+  if (d.crf) {
+    const crf = d.crf;
+    if (!crf.available) {
+      sections.push(`<div class="mc-row"><div class="mc-row-header"><h3 style="color:#888">CRF — 미설치</h3></div><p style="color:#444;font-size:12px">${crf.error}</p></div>`);
+    } else {
+      const labelDist = crf.label_distribution || {};
+      const topByLabel = crf.top_by_label || {};
+      const labelColors = { INIT:'#3b82f6', MED:'#f59e0b', TERM:'#10b981', SOLO:'#8b5cf6' };
+      const labelDesc = { INIT:'어두 (주어/명사 후보)', MED:'중간 (동사/목적어 후보)', TERM:'어말 (접미사 후보)', SOLO:'독립 (단독 사용)' };
+      const labelCards = Object.entries(topByLabel).map(([label, pairs]) => {
+        const col = labelColors[label] || '#888';
+        const rows = (pairs||[]).map(([sign, conf]) =>
+          `<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #111">
+            <span style="font-family:monospace;color:#fbbf24">${sign}</span>
+            <span style="font-size:11px;color:${col}">${(conf*100).toFixed(0)}%</span>
+          </div>`
+        ).join('');
+        return `<div style="background:#0f0f0f;border:1px solid #1a1a1a;border-radius:8px;padding:12px">
+          <div style="font-size:12px;font-weight:600;color:${col};margin-bottom:4px">${label} — ${labelDesc[label]||label}</div>
+          <div style="font-size:10px;color:#333;margin-bottom:8px">${labelDist[label]||0}개 기호</div>
+          ${rows}
+        </div>`;
+      }).join('');
+      sections.push(`<div class="mc-row">
+        <div class="mc-row-header"><h3 style="color:#a78bfa">CRF 시퀀스 레이블러 (Lafferty 2001)</h3>
+          <span class="mc-coverage">${crf.n_sequences||0}개 시퀀스 · ${crf.n_signs_labeled||0}개 기호</span></div>
+        <div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">
+          <div class="mc-stat-item"><div class="msi-val" style="color:#a78bfa">${crf.decipherment_rate}%</div><div class="msi-label">CRF 해독률</div></div>
+          ${Object.entries(labelDist).map(([l,n]) =>
+            `<div class="mc-stat-item"><div class="msi-val" style="color:${labelColors[l]||'#888'}">${n}</div><div class="msi-label">${l}</div></div>`
+          ).join('')}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px">
+          ${labelCards}
+        </div>
+        <div style="font-size:11px;color:#333;margin-top:8px">${crf.note||''}</div>
+      </div>`);
+    }
+  }
+
+  // 3. MSP 결과
+  if (d.msp) {
+    const msp = d.msp;
+    const anchorRows = (msp.grammar_anchors||[]).map((a,i) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${a.sign}</div>
+        <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${Math.round(a.confidence*100)}%;height:100%;background:#38bdf8;border-radius:3px"></div>
+        </div>
+        <div style="width:45px;text-align:right;font-size:11px;color:#38bdf8">${(a.confidence*100).toFixed(0)}%</div>
+        <div style="width:60px;text-align:right;font-size:10px;color:#444">H=${a.entropy?.toFixed(3)}</div>
+      </div>`
+    ).join('');
+    const contentRows = (msp.content_word_candidates||[]).map(c =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #111">
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${c.sign}</div>
+        <div style="flex:1;height:4px;background:#1a1a1a;border-radius:2px">
+          <div style="width:${Math.round(c.entropy*100)}%;height:100%;background:#ef4444;border-radius:2px;max-width:100%"></div>
+        </div>
+        <div style="width:50px;text-align:right;font-size:10px;color:#ef4444">H=${c.entropy?.toFixed(3)}</div>
+      </div>`
+    ).join('');
+    const bd = msp.breakdown || {};
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#38bdf8">Masked Sign Prediction — Ithaca 방식 (Assael et al. Nature 2022)</h3>
+        <span class="mc-coverage">어휘 ${msp.n_vocab}개 · 코퍼스 ${msp.n_corpus}개</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#38bdf8">${msp.decipherment_rate}%</div><div class="msi-label">MSP 해독률</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#10b981">${bd.confirmed||0}</div><div class="msi-label">문법 앵커 (확정)</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#3b82f6">${bd.partial||0}</div><div class="msi-label">부분</div></div>
+      </div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:12px">${msp.interpretation||''}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div style="font-size:11px;color:#444;margin-bottom:8px">문법 앵커 — 맥락이 강하게 결정 (접사/기능어)</div>
+          ${anchorRows}
+        </div>
+        <div>
+          <div style="font-size:11px;color:#444;margin-bottom:8px">내용어 후보 — 맥락 불확실 (자유 분포)</div>
+          ${contentRows}
+        </div>
+      </div>
+      <div style="font-size:11px;color:#333;margin-top:8px">${msp.note||''}</div>
+    </div>`);
+  }
+
+  // 4. BSC 결과
+  if (d.bsc) {
+    const bsc = d.bsc;
+    const readRows = (bsc.proposed_readings||[]).slice(0,15).map((r,i) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${r.sign}</div>
+        <div style="font-family:monospace;color:#a3e635;width:70px">${r.proposed_dravidian}</div>
+        <div style="flex:1;height:4px;background:#1a1a1a;border-radius:2px">
+          <div style="width:${Math.round(r.zipf_alignment*100)}%;height:100%;background:${r.zipf_alignment>0.8?'#10b981':'#444'};border-radius:2px"></div>
+        </div>
+        <div style="width:55px;text-align:right;font-size:10px;color:#888">${r.frequency_pct}%</div>
+        <div style="width:40px;text-align:right;font-size:10px;color:${r.zipf_alignment>0.8?'#10b981':'#444'}">${(r.zipf_alignment*100).toFixed(0)}%</div>
+      </div>`
+    ).join('');
+    const fw = bsc.fish_water_hypothesis || {};
+    const fwItems = Object.entries(fw.found||{}).map(([sign, syl]) =>
+      `<span style="padding:4px 10px;background:rgba(163,230,53,0.1);border:1px solid #a3e63533;border-radius:4px;font-size:12px;font-family:monospace">${sign} → <span style="color:#a3e635">${syl}</span></span>`
+    ).join(' ');
+    const tw = bsc.terminal_sign_dravidian || {};
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#a3e635">Bayesian 치환 암호 — Ravi &amp; Knight (ACL 2011)</h3>
+        <span class="mc-coverage">${bsc.n_restarts}회 재시작 · Zipf 보존 초기화</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#a3e635">${bsc.best_score}</div><div class="msi-label">최적 드라비다어 점수</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${(bsc.zipf_preservation*100).toFixed(0)}%</div><div class="msi-label">Zipf 순위 보존율</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#f59e0b">${tw.suffix_match||0}</div><div class="msi-label">어말 드라비다어 접미사 일치</div></div>
+      </div>
+      ${fw.count>0?`<div style="margin-bottom:16px">
+        <div style="font-size:11px;color:#444;margin-bottom:8px">물고기-물(mīn-nīr) 가설 발견 기호 <span style="color:#a3e635">${fw.count}개</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">${fwItems}</div>
+        <div style="font-size:11px;color:#555;margin-top:6px">${fw.note||''}</div>
+      </div>`:''}
+      <div style="font-size:11px;color:#444;margin-bottom:8px">제안 Proto-Dravidian 음가 매핑 (Zipf 정렬도 포함)</div>
+      ${readRows}
+      <div style="font-size:11px;color:#333;margin-top:8px">${bsc.note||''}</div>
+    </div>`);
+  }
+
+  return sections.length
+    ? `<div class="method-compare">${sections.join('')}</div>`
+    : '<div class="empty-state"><p>결과 없음</p></div>';
+}
+
+// ── 개선된 엔진 폴링 ────────────────────────────────────
+let improvedPollTimer = null;
+
+function startImprovedPoll() {
+  if (improvedPollTimer) clearInterval(improvedPollTimer);
+  improvedPollTimer = setInterval(async () => {
+    const s = await fetch('/api/improved/status').then(r => r.json());
+    document.getElementById('improvedFill').style.width = s.progress + '%';
+    document.getElementById('improvedMsg').textContent = s.message || '대기 중';
+    if (s.status === 'done') { clearInterval(improvedPollTimer); loadImprovedResults(); }
+    if (s.status === 'error') { clearInterval(improvedPollTimer); }
+  }, 1500);
+}
+
+async function loadImprovedResults() {
+  const data = await fetch('/api/improved/results').then(r => r.json());
+  document.getElementById('improvedContent').innerHTML = renderImproved(data);
+
+  // 히어로 섹션을 개선된 엔진 최고 해독률로 업데이트
+  const sv = data.site_voter || {};
+  const cr = data.constrained || {};
+  const svRate = sv.decipherment_rate || 0;
+  const crRate = cr.decipherment_rate || 0;
+  const best = svRate >= crRate ? sv : cr;
+  const bestRate = svRate >= crRate ? svRate : crRate;
+  if (bestRate > 0) {
+    document.getElementById('rateNum').textContent = bestRate + '%';
+    document.getElementById('rateBar').style.width = Math.min(bestRate, 100) + '%';
+    const bd = best.breakdown || {};
+    document.getElementById('t-confirmed').textContent = bd.confirmed ?? '—';
+    document.getElementById('t-partial').textContent   = bd.partial   ?? '—';
+    document.getElementById('t-clue').textContent      = bd.clue      ?? '—';
+    document.getElementById('t-unknown').textContent   = bd.unknown   ?? '—';
+    // 레이블 업데이트: 출처 표시
+    document.querySelector('.rate-label').innerHTML =
+      '실제 해독률<br><span style="color:#10b981;font-size:11px">개선된 엔진 (3회 반복 파이프라인) 기준</span>';
+  }
+}
+
+function renderImproved(d) {
+  const sections = [];
+  const baseline = 22.6;
+
+  // 1. EM 앙상블 히어로
+  if (d.adaptive_em) {
+    const em = d.adaptive_em;
+    const rate = em.decipherment_rate || 0;
+    const diff = (rate - baseline).toFixed(1);
+    const diffColor = rate >= baseline ? '#10b981' : '#ef4444';
+    const bd = em.breakdown || {};
+    const weightRows = Object.entries(em.final_weights || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([m, w]) => {
+        const labels = { base:'기본 해독 엔진', pagerank:'PageRank', affix:'접사 비대칭(SOV)',
+          hmm:'HMM 4상태', markov:'Markov 엔트로피', constrained:'발견 기반 복합점수', site_voter:'사이트별 투표' };
+        return `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #111">
+          <div style="width:180px;font-size:12px;color:#888">${labels[m]||m}</div>
+          <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+            <div style="width:${Math.round(w*100*3)}%;height:100%;background:#f59e0b;border-radius:3px;max-width:100%"></div>
+          </div>
+          <div style="width:50px;text-align:right;font-size:12px;color:#fbbf24">${(w*100).toFixed(1)}%</div>
+        </div>`;
+      }).join('');
+    const topRows = (em.top_signs || []).slice(0, 15).map((r, i) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${r.sign}</div>
+        <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${Math.round(r.score*100)}%;height:100%;background:#f59e0b;border-radius:3px"></div>
+        </div>
+        <div style="width:45px;text-align:right;font-size:12px;color:#fbbf24">${(r.score*100).toFixed(1)}%</div>
+      </div>`
+    ).join('');
+    const rationale = em.improvement_rationale || {};
+    sections.push(`<div class="mc-row" style="border-color:#f59e0b55">
+      <div class="mc-row-header"><h3 style="color:#fbbf24">EM 기반 가중치 자동 재조정 앙상블 — 최종 결과</h3>
+        <span class="mc-coverage">${em.n_algorithms}개 알고리즘 · ${em.em_iterations}회 EM 반복</span></div>
+      <div style="display:flex;gap:32px;margin-bottom:20px;flex-wrap:wrap;align-items:flex-end">
+        <div style="text-align:center">
+          <div style="font-size:64px;font-weight:800;color:#fbbf24;line-height:1">${rate}%</div>
+          <div style="font-size:12px;color:#555;margin-top:4px">개선 해독률</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:32px;font-weight:700;color:${diffColor};line-height:1">${diff >= 0 ? '+' : ''}${diff}%p</div>
+          <div style="font-size:12px;color:#555;margin-top:4px">기준(${baseline}%) 대비</div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div class="mc-stat-item"><div class="msi-val" style="color:#10b981">${bd.confirmed||0}</div><div class="msi-label">확정 (≥70%)</div></div>
+          <div class="mc-stat-item"><div class="msi-val" style="color:#3b82f6">${bd.partial||0}</div><div class="msi-label">부분 (45–70%)</div></div>
+          <div class="mc-stat-item"><div class="msi-val" style="color:#f59e0b">${bd.clue||0}</div><div class="msi-label">단서 (20–45%)</div></div>
+          <div class="mc-stat-item"><div class="msi-val" style="color:#444">${bd.unknown||0}</div><div class="msi-label">미해독</div></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:16px">
+        <div><div style="font-size:11px;color:#444;margin-bottom:10px">알고리즘별 수렴 가중치</div>${weightRows}</div>
+        <div><div style="font-size:11px;color:#444;margin-bottom:10px">앙상블 상위 15 기호</div>${topRows}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        ${Object.entries(rationale).map(([k, v]) =>
+          `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:#111;border-radius:6px">
+            <span style="color:#10b981;font-size:13px">✓</span>
+            <span style="font-size:12px;color:#666">${v}</span>
+          </div>`
+        ).join('')}
+      </div>
+    </div>`);
+  }
+
+  // 2. 발견 기반 복합 점수
+  if (d.constrained) {
+    const cs = d.constrained;
+    const topRows = (cs.sign_scores || []).slice(0, 10).map((r, i) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${r.sign}</div>
+        <div style="font-size:11px;color:#a78bfa;width:80px">${r.sov_role||''}</div>
+        <div style="flex:1;height:5px;background:#1a1a1a;border-radius:3px">
+          <div style="width:${Math.min(100,Math.round(r.combined_score))}%;height:100%;background:#a78bfa;border-radius:3px"></div>
+        </div>
+        <div style="width:45px;text-align:right;font-size:12px;color:#a78bfa">${r.combined_score}%</div>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#a78bfa">발견 기반 복합 점수 재계산</h3>
+        <span class="mc-coverage">PageRank 35% · SOV 15% · 위치 25% · 음절 10% · 빈도 15%</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#a78bfa">${cs.decipherment_rate}%</div><div class="msi-label">해독률</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${cs.total_scored}</div><div class="msi-label">분석 기호 수</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${cs.affix_applied}</div><div class="msi-label">접사 보너스 적용</div></div>
+      </div>
+      <div style="font-size:11px;color:#444;margin-bottom:10px">상위 복합 점수 기호</div>
+      ${topRows}
+      <div style="font-size:11px;color:#333;margin-top:8px">${cs.note||''}</div>
+    </div>`);
+  }
+
+  // 3. 사이트별 투표
+  if (d.site_voter) {
+    const sv = d.site_voter;
+    const siteRows = Object.entries(sv.site_stats || {}).map(([site, stat]) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #111">
+        <div style="width:100px;font-size:12px;color:#888">${site}</div>
+        <div style="width:50px;font-size:12px;color:#34d399">${stat.n_inscriptions}비문</div>
+        <div style="flex:1;font-size:11px;color:#444">${stat.unique_signs}개 기호</div>
+        <div style="font-size:11px;color:#555">${stat.top_sign}</div>
+      </div>`
+    ).join('');
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#34d399">사이트별 독립 추론 + 가중 투표</h3>
+        <span class="mc-coverage">텐서 분해 발견: 사이트별 기호 분포 유의미하게 다름</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#34d399">${sv.decipherment_rate}%</div><div class="msi-label">해독률</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${sv.n_sites}</div><div class="msi-label">사이트 수</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${sv.common_signs}</div><div class="msi-label">공통 기호 (전문어)</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${sv.exclusive_signs}</div><div class="msi-label">전용 기호 (지역어)</div></div>
+      </div>
+      <div style="font-size:11px;color:#444;margin-bottom:8px">사이트별 통계</div>
+      ${siteRows}
+    </div>`);
+  }
+
+  // 4. MDL SOV 빔서치
+  if (d.mdl_sov_beam) {
+    const mb = d.mdl_sov_beam;
+    const readRows = (mb.proposed_readings || []).slice(0, 12).map((r, i) =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #111">
+        <div style="width:20px;color:#333;font-size:11px">${i+1}</div>
+        <div style="font-family:monospace;color:#fbbf24;width:55px">${r.sign}</div>
+        <div style="font-family:monospace;color:#38bdf8;width:60px">${r.proposed_syllable}</div>
+        <div style="font-size:11px;color:#666;width:120px">${r.sov_role||''}</div>
+        <div style="font-size:11px;color:#444">${r.frequency_pct}%${r.mdl_boosted?' · MDL':''}</div>
+      </div>`
+    ).join('');
+    const sovDist = mb.sov_role_distribution || {};
+    sections.push(`<div class="mc-row">
+      <div class="mc-row-header"><h3 style="color:#38bdf8">MDL Prior + SOV 제약 빔서치</h3>
+        <span class="mc-coverage">${mb.n_mdl_rules_applied}개 MDL 규칙 prior 주입</span></div>
+      <div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="mc-stat-item"><div class="msi-val" style="color:#38bdf8">${mb.best_score}</div><div class="msi-label">최적 점수</div></div>
+        <div class="mc-stat-item"><div class="msi-val">${(mb.accept_ratio*100).toFixed(1)}%</div><div class="msi-label">수락률</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#3b82f6">${sovDist['어두']||0}</div><div class="msi-label">어두 (명사/주어)</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#f59e0b">${sovDist['중간']||0}</div><div class="msi-label">중간 (동사/목적어)</div></div>
+        <div class="mc-stat-item"><div class="msi-val" style="color:#10b981">${sovDist['어말']||0}</div><div class="msi-label">어말 (접미사)</div></div>
+      </div>
+      <div style="font-size:11px;color:#444;margin-bottom:10px">제안 Proto-Dravidian 음절 매핑 (상위 12)</div>
+      ${readRows}
+      <div style="font-size:11px;color:#333;margin-top:8px">${mb.note||''}</div>
+    </div>`);
+  }
+
+  return sections.length
+    ? `<div class="method-compare">${sections.join('')}</div>`
+    : '<div class="empty-state"><p>결과 없음</p></div>';
+}
+
+// ── 실제 코퍼스 분석 ──────────────────────────────────────
+async function loadRealCorpus() {
+  document.getElementById('realCorpusContent').innerHTML =
+    '<div class="empty-state"><p style="color:#10b981">분석 중...</p></div>';
+  try {
+    const d = await fetch('/api/real-corpus/stats').then(r => r.json());
+    document.getElementById('realCorpusContent').innerHTML = renderRealCorpus(d);
+    // 히어로 실제 해독률 즉시 반영
+    if (d.decipherment_rate > 0) {
+      document.getElementById('realRateNum').textContent = d.decipherment_rate + '%';
+      document.getElementById('realRateBar').style.width = Math.min(d.decipherment_rate, 100) + '%';
+      const rb = d.breakdown || {};
+      document.getElementById('rt-confirmed').textContent = rb.confirmed ?? '—';
+      document.getElementById('rt-partial').textContent   = rb.partial   ?? '—';
+      document.getElementById('rt-clue').textContent      = rb.clue      ?? '—';
+      document.getElementById('rt-unknown').textContent   = rb.unknown   ?? '—';
+      document.getElementById('realTierBreakdown').style.display = 'block';
+    }
+  } catch (e) {
+    document.getElementById('realCorpusContent').innerHTML =
+      `<div class="empty-state"><p style="color:#ef4444">오류: ${e.message}</p></div>`;
+  }
+}
+
+let realDecipherPollTimer = null;
+async function runRealDecipher() {
+  const btn = document.getElementById('btnRealDecipher');
+  btn.disabled = true; btn.textContent = '실행 중...';
+  await fetch('/api/real-decipher/run', {method: 'POST'}).catch(() => {});
+  realDecipherPollTimer = setInterval(async () => {
+    const s = await fetch('/api/real-decipher/status').then(r => r.json());
+    btn.textContent = s.message || '실행 중...';
+    if (s.status === 'done') {
+      clearInterval(realDecipherPollTimer);
+      btn.disabled = false; btn.textContent = '메인 엔진 실행 (실제 코퍼스)';
+      const r = await fetch('/api/real-decipher/results').then(r => r.json());
+      const el = document.getElementById('realDecipherResult');
+      if (el) {
+        el.style.display = 'block';
+        el.innerHTML = renderRealDecipherResult(r);
+      }
+    } else if (s.status === 'error') {
+      clearInterval(realDecipherPollTimer);
+      btn.disabled = false; btn.textContent = '메인 엔진 실행 (실제 코퍼스)';
+    }
+  }, 1500);
+}
+
+function renderRealDecipherResult(r) {
+  const gap = (r.best_rate - r.scholarly_rate).toFixed(1);
+  return `
+  <div style="background:#0a1a2a;border:1px solid #6366f133;border-radius:8px;padding:16px;margin-top:16px">
+    <div style="font-size:13px;font-weight:700;color:#6366f1;margin-bottom:12px">메인 엔진 결과 (실제 ${r.n_inscriptions}개 비문)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:12px">
+      <div class="stat-card"><div class="stat-val">${r.base_rate}%</div><div class="stat-lbl">기본 엔진</div></div>
+      <div class="stat-card"><div class="stat-val">${r.constrained_rate}%</div><div class="stat-lbl">보정 엔진</div></div>
+      <div class="stat-card"><div class="stat-val">${r.site_voter_rate}%</div><div class="stat-lbl">사이트 투표</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:#6366f1">${r.best_rate}%</div><div class="stat-lbl">알고리즘 최고</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:#10b981">${r.scholarly_rate}%</div><div class="stat-lbl">학술 제안 기반</div></div>
+    </div>
+    <div style="font-size:11px;color:#555">
+      알고리즘-학술 격차: <span style="color:#f59e0b">${gap > 0 ? '+' : ''}${gap}%p</span>
+      &nbsp;·&nbsp; 격차가 클수록 알고리즘이 학술 미발굴 패턴을 탐지한 것일 수 있음 (또는 과적합)
+    </div>
+  </div>`;
+}
+
+function renderRealCorpus(d) {
+  const roleColor = { INIT: '#f59e0b', MED: '#3b82f6', TERM: '#10b981' };
+  const severityColor = { HIGH: '#ef4444', MEDIUM: '#f59e0b', LOW: '#6b7280' };
+
+  // 핵심 발견 섹션
+  const findingsHtml = (d.findings || []).map(f => `
+    <div style="background:#111;border-left:3px solid ${severityColor[f.severity]||'#555'};padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:12px">
+      <div style="font-weight:600;color:#fff;margin-bottom:6px;font-size:13px">${f.title}</div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:6px">${f.detail}</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:11px">
+        <span style="color:#6366f1">언어학적 함의: ${f.linguistic_implication}</span>
+        <span style="color:#555">출처: ${f.references}</span>
+      </div>
+    </div>`).join('');
+
+  // 기호 프로필 테이블
+  const profilesHtml = (d.sign_profiles || []).slice(0, 30).map(p => {
+    const hasProposal = p.confidence > 0;
+    return `
+    <tr style="border-bottom:1px solid #1a1a1a">
+      <td style="padding:6px 10px;font-weight:700;color:#10b981">
+        ${p.sign_label}
+        ${p.sign_cluster==='FISH'?'<span style="color:#f59e0b;font-size:9px;margin-left:3px">●mīn</span>':''}
+        ${p.sign_cluster==='NUMERAL'?'<span style="color:#6366f1;font-size:9px;margin-left:3px">●NUM</span>':''}
+      </td>
+      <td style="padding:6px 10px;text-align:center;color:#888;font-size:11px">
+        ${p.mahadevan_id ? `M${p.mahadevan_id}` : '?'}
+      </td>
+      <td style="padding:6px 10px;text-align:center">${p.frequency} <span style="color:#555;font-size:10px">(${p.freq_pct}%)</span></td>
+      <td style="padding:6px 10px;text-align:center">
+        <span style="background:${roleColor[p.pos_role]||'#333'}22;color:${roleColor[p.pos_role]||'#aaa'};padding:2px 8px;border-radius:99px;font-size:11px">${p.pos_role}</span>
+      </td>
+      <td style="padding:6px 10px;font-size:10px;color:#555;max-width:180px;overflow:hidden">${(p.description||'').slice(0,45)}</td>
+      <td style="padding:6px 10px">
+        ${hasProposal
+          ? `<span style="color:#a78bfa;font-weight:600">${p.reading}</span>
+             <span style="color:#555;font-size:10px;margin-left:4px">(${(p.confidence*100).toFixed(0)}%)</span>
+             <div style="font-size:10px;color:#444;margin-top:2px">${p.hypothesis}</div>`
+          : `<span style="color:#333">미분석</span>`}
+      </td>
+    </tr>`;
+  }).join('');
+
+  // 바이그램 상위 10
+  const bigramHtml = (d.top_bigrams || []).slice(0, 10).map(b =>
+    `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #1a1a1a">
+      <span style="color:#10b981;font-weight:700;width:100px">${b.a} → ${b.b}</span>
+      <div style="flex:1;background:#1a1a1a;border-radius:4px;height:8px">
+        <div style="background:#10b981;width:${Math.min(b.count*8,100)}%;height:8px;border-radius:4px"></div>
+      </div>
+      <span style="color:#555;font-size:11px;width:30px;text-align:right">${b.count}</span>
+    </div>`
+  ).join('');
+
+  // 어두-어말 쌍
+  const pairHtml = (d.init_term_pairs || []).slice(0, 8).map(p =>
+    `<div style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:6px;padding:8px 12px;font-size:12px">
+      <span style="color:#f59e0b">${p.init}</span>
+      <span style="color:#555;margin:0 6px">···</span>
+      <span style="color:#10b981">${p.term}</span>
+      <span style="color:#444;margin-left:8px">${p.count}회</span>
+    </div>`
+  ).join('');
+
+  return `
+  <!-- 헤더 통계 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:24px">
+    <div class="stat-card"><div class="stat-val" style="color:#10b981">${d.n_inscriptions}</div><div class="stat-lbl">실제 비문 수</div></div>
+    <div class="stat-card"><div class="stat-val">${d.n_tokens}</div><div class="stat-lbl">총 기호 토큰</div></div>
+    <div class="stat-card"><div class="stat-val">${d.n_unique_signs}</div><div class="stat-lbl">고유 기호 종류</div></div>
+    <div class="stat-card"><div class="stat-val">${d.avg_length}</div><div class="stat-lbl">평균 비문 길이</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#6366f1">${d.zipf_r2}</div><div class="stat-lbl">Zipf R² (언어성)</div></div>
+  </div>
+
+  <!-- 데이터 출처 알림 -->
+  <div style="background:#0a2a1a;border:1px solid #10b98133;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#10b981">
+    출처: <strong>${d.source}</strong><br>
+    <span style="color:#555;font-size:11px">
+      이 분석은 실제 인더스 문자 비문 데이터를 기반으로 합니다. 해독 결과는 학술 가설이며 확정된 번역이 아닙니다.
+      참고: Parpola 1994, Rao et al. 2009 PNAS, Yadav & Vahia 2013
+    </span>
+  </div>
+
+  <!-- 핵심 발견 -->
+  <div style="margin-bottom:24px">
+    <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:12px">핵심 언어학적 발견 (실제 데이터 기반)</div>
+    ${findingsHtml || '<div style="color:#555">발견 없음</div>'}
+  </div>
+
+  <!-- 기호 프로필 -->
+  <div style="margin-bottom:24px">
+    <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:12px">기호별 통계 및 학술 제안 (상위 30개)</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="color:#555;border-bottom:1px solid #222">
+            <th style="padding:6px 10px;text-align:left">기호</th>
+            <th style="padding:6px 10px">Mahadevan</th>
+            <th style="padding:6px 10px">빈도</th>
+            <th style="padding:6px 10px">위치역할</th>
+            <th style="padding:6px 10px;text-align:left;max-width:180px">기호 설명</th>
+            <th style="padding:6px 10px;text-align:left">학술 제안 (Parpola/Mahadevan)</th>
+          </tr>
+        </thead>
+        <tbody>${profilesHtml}</tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 바이그램 + 어두-어말 쌍 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px">최다 연속 기호 쌍 (바이그램)</div>
+      ${bigramHtml}
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px">어두-어말 공존 패턴 (칭호+접미사 쌍)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${pairHtml}</div>
+    </div>
+  </div>
+
+  <!-- 물고기 기호군 클러스터 -->
+  ${(() => {
+    const fish = (d.fish_cluster || {}).signs || [];
+    if (!fish.length) return '';
+    return `<div style="margin-bottom:20px">
+      <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:10px">
+        물고기 기호군 (mīn 이론) — ${fish.length}종 · 총 ${(d.fish_cluster||{}).total_tokens||0}회
+      </div>
+      <div style="background:#1a1000;border:1px solid #f59e0b33;border-radius:8px;padding:14px;font-size:12px">
+        <div style="color:#f59e0b;margin-bottom:8px">
+          Parpola 핵심 이론: 타밀어 mīn(물고기) = mīn(별) 동음이의어 → 별자리·신 이름 표기 체계
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          ${fish.map(p => `
+          <div style="background:#111;border:1px solid #f59e0b44;border-radius:6px;padding:8px 12px;min-width:140px">
+            <div style="font-weight:700;color:#f59e0b">${p.sign_label} <span style="color:#555;font-size:10px">M${p.mahadevan_id||'?'}</span></div>
+            <div style="color:#888;font-size:10px;margin-top:2px">${(p.description||'').slice(0,45)}</div>
+            <div style="color:#aaa;margin-top:4px">${p.frequency}회 &nbsp; <span style="color:#10b981">${p.reading||'?'}</span></div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  })()}
+
+  <!-- 메인 엔진 결과 placeholder -->
+  <div id="realDecipherResult" style="display:none"></div>
+
+  <!-- 학술 면책 -->
+  <div style="background:#111;border-radius:8px;padding:14px 16px;font-size:11px;color:#444;margin-top:8px">
+    <strong style="color:#555">학술적 한계:</strong>
+    현재 분석은 모헨조다로 출토 179개 비문(Parpola CISI 기반)을 사용합니다. 전체 코퍼스는 약 4,000+개 비문으로 구성됩니다.
+    인더스 문자는 현재까지 완전히 해독되지 않은 고대 문자이며, 이 플랫폼의 분석 결과는 통계적 패턴과 기존 학술 가설의 재현에 한정됩니다.
+    언어 계통 미확정(드라비다어계 가설이 유력하나 논쟁 중), 이중언어 대역문 없음이 해독의 근본적 장벽입니다.
+  </div>`;
+}
+
+// ── 독립 발견 엔진 ─────────────────────────────────────────
+let drPollTimer = null;
+
+async function startRealDiscovery() {
+  const btn = document.getElementById('btnDiscoveryReal');
+  btn.disabled = true; btn.textContent = '실행 중...';
+  document.getElementById('drMsg').textContent = '시작 중...';
+  document.getElementById('drFill').style.width = '5%';
+
+  try {
+    const res = await fetch('/api/discovery-real/run', {method:'POST'});
+    if (!res.ok) {
+      const e = await res.json();
+      alert(e.detail || '실행 실패'); btn.disabled=false; btn.textContent='발견 엔진 실행'; return;
+    }
+    drPollTimer = setInterval(async () => {
+      const s = await fetch('/api/discovery-real/status').then(r => r.json());
+      document.getElementById('drMsg').textContent = s.message || '—';
+      document.getElementById('drFill').style.width = (s.progress || 0) + '%';
+      if (s.status === 'done') {
+        clearInterval(drPollTimer);
+        btn.disabled=false; btn.textContent='발견 엔진 실행';
+        const data = await fetch('/api/discovery-real/results').then(r => r.json());
+        document.getElementById('discoveryRealContent').innerHTML = renderRealDiscovery(data);
+      } else if (s.status === 'error') {
+        clearInterval(drPollTimer);
+        btn.disabled=false; btn.textContent='발견 엔진 실행';
+        document.getElementById('discoveryRealContent').innerHTML =
+          `<div class="empty-state"><p style="color:#ef4444">오류: ${s.message}</p></div>`;
+      }
+    }, 1200);
+  } catch(e) {
+    alert('네트워크 오류: ' + e); btn.disabled=false; btn.textContent='발견 엔진 실행';
+  }
+}
+
+function renderRealDiscovery(data) {
+  const methods = data.methods || {};
+  const summary = data.summary || {};
+
+  // ── 요약 카드
+  const sumCards = `
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px">
+    <div class="stat-card"><div class="stat-val" style="color:#f59e0b">${summary.total_novel_pairs||0}</div><div class="stat-lbl">신규 기호 쌍</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#10b981">${summary.total_clusters||0}</div><div class="stat-lbl">발견 클러스터</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#3b82f6">${summary.total_templates||0}</div><div class="stat-lbl">반복 템플릿</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#6366f1">${summary.top_pagerank_sign||'?'}</div><div class="stat-lbl">최고 PageRank</div></div>
+  </div>`;
+
+  // ── Method 1: 위치 엔트로피
+  const pe = methods.positional_entropy || {};
+  const slotNames = ['INIT(어두)','Q2(25%)','MED(중간)','Q4(75%)','TERM(어말)'];
+  const normEnt = pe.norm_entropy || [];
+  const peHtml = normEnt.length ? `
+  <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="color:#555;border-bottom:1px solid #222">
+        <th style="padding:6px 10px;text-align:left">슬롯</th>
+        <th style="padding:6px 10px">엔트로피</th>
+        <th style="padding:6px 10px">토큰 수</th>
+        <th style="padding:6px 10px;text-align:left">최다 기호 (top-3)</th>
+      </tr></thead>
+      <tbody>${normEnt.map((s,i) => {
+        const dom = (s.dominant||[]).map(d=>`<span style="color:#f59e0b">${d.sign}</span> ${d.pct}%`).join(' &nbsp; ');
+        const hi = s.entropy < 3.0 ? '#f59e0b' : '#888';
+        return `<tr style="border-bottom:1px solid #111">
+          <td style="padding:5px 10px;color:#fff;font-weight:700">${slotNames[i]||s.name||''}</td>
+          <td style="padding:5px 10px;text-align:center;color:${hi};font-weight:${s.entropy<3?'700':'400'}">${(s.entropy||0).toFixed(3)}</td>
+          <td style="padding:5px 10px;text-align:center;color:#555">${s.total||0}</td>
+          <td style="padding:5px 10px">${dom}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+  </div>
+  <div style="margin-top:8px;font-size:11px;color:#555">
+    문법 슬롯 증거 점수: <span style="color:#f59e0b;font-weight:700">${(pe.grammar_slot_evidence||0).toFixed(3)}</span>
+    ${pe.grammar_slot_evidence>0.4 ? ' — <span style="color:#10b981">강한 문법 구조 확인</span>' : ''}
+  </div>` : '<div style="color:#555;font-size:12px">데이터 없음</div>';
+
+  // ── Method 2: Skip-gram 유사 쌍
+  const sg = methods.skipgram || {};
+  const simPairs = sg.similar_pairs || [];
+  const sgHtml = simPairs.length ? `
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+    ${simPairs.slice(0,20).map(p => `
+      <div style="background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:6px 10px;font-size:12px">
+        <span style="color:#f59e0b;font-weight:700">${p.a}</span>
+        <span style="color:#444"> ↔ </span>
+        <span style="color:#f59e0b;font-weight:700">${p.b}</span>
+        <span style="color:#555;font-size:10px;margin-left:6px">${(p.similarity||0).toFixed(3)}</span>
+        ${p.both_in_proposals ? '<span style="color:#10b981;font-size:10px;margin-left:4px">학술확인</span>' : ''}
+        ${p.novel ? '<span style="color:#f59e0b;font-size:10px;margin-left:4px">신규</span>' : ''}
+      </div>`).join('')}
+  </div>
+  <div style="font-size:11px;color:#555">총 ${sg.n_pairs||0}쌍 · k-means ${sg.n_clusters||0}클러스터</div>` :
+  '<div style="color:#555;font-size:12px">데이터 없음 (코퍼스 크기 부족 가능)</div>';
+
+  // ── Method 3: 대체 클래스
+  const sc = methods.substitution||{};
+  const scPairs = sc.pairs || [];
+  const scHtml = scPairs.length ? `
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+    ${scPairs.slice(0,16).map(p => `
+      <div style="background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:6px 10px;font-size:12px">
+        <span style="color:#6366f1;font-weight:700">${p.a}</span>
+        <span style="color:#444"> ≡ </span>
+        <span style="color:#6366f1;font-weight:700">${p.b}</span>
+        <span style="color:#555;font-size:10px;margin-left:6px">${(p.similarity||0).toFixed(3)}</span>
+        ${p.novel ? '<span style="color:#f59e0b;font-size:10px;margin-left:4px">신규</span>' : ''}
+      </div>`).join('')}
+  </div>
+  <div style="font-size:11px;color:#555">신규 쌍 ${sc.n_novel||0}개 · 검증된 쌍 ${sc.n_validated||0}개</div>` :
+  '<div style="color:#555;font-size:12px">데이터 없음 (최소 빈도 부족 가능)</div>';
+
+  // ── Method 4: 템플릿 마이닝
+  const tm = methods.templates||{};
+  const tmTemplates = tm.templates || [];
+  const tmHtml = tmTemplates.length ? `
+  <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="color:#555;border-bottom:1px solid #222">
+        <th style="padding:6px;text-align:left">역할 패턴</th>
+        <th style="padding:6px">빈도</th>
+        <th style="padding:6px;text-align:left">대표 예시</th>
+      </tr></thead>
+      <tbody>${tmTemplates.slice(0,12).map(t => `
+        <tr style="border-bottom:1px solid #111">
+          <td style="padding:5px 6px">
+            ${(t.roles||[]).map(r => `<span style="background:#1a1a1a;border-radius:3px;padding:2px 5px;font-size:11px;color:#3b82f6;margin-right:3px">${r}</span>`).join('')}
+          </td>
+          <td style="padding:5px 6px;text-align:center;color:#f59e0b;font-weight:700">${t.count||0}</td>
+          <td style="padding:5px 6px;color:#888;font-size:11px">${(t.examples||[]).slice(0,2).join(', ')}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:8px;font-size:11px;color:#555">총 ${tm.n_templates||0}개 템플릿 · 최고빈도: ${tm.top_role_sequence||'?'}</div>` :
+  '<div style="color:#555;font-size:12px">데이터 없음</div>';
+
+  // ── Method 5: 공출현 네트워크
+  const net = methods.network||{};
+  const hubs = net.hubs || [];
+  const auths = net.authorities || [];
+  const netHtml = hubs.length ? `
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:8px">허브 기호 (PageRank 상위)</div>
+      ${hubs.slice(0,8).map((h,i) => `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="color:#555;font-size:11px;width:16px">${i+1}</span>
+          <span style="color:#f59e0b;font-weight:700;font-size:13px">${h.sign||''}</span>
+          <div style="flex:1;background:#111;border-radius:3px;height:6px;overflow:hidden">
+            <div style="background:#f59e0b;height:100%;width:${Math.min(100,(h.pagerank||0)*10000)}%"></div>
+          </div>
+          <span style="color:#555;font-size:10px">${((h.pagerank||0)*1000).toFixed(2)}</span>
+        </div>`).join('')}
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:8px">연결 중심성 상위</div>
+      ${auths.slice(0,8).map((a,i) => `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="color:#555;font-size:11px;width:16px">${i+1}</span>
+          <span style="color:#6366f1;font-weight:700;font-size:13px">${a.sign||''}</span>
+          <div style="flex:1;background:#111;border-radius:3px;height:6px;overflow:hidden">
+            <div style="background:#6366f1;height:100%;width:${Math.min(100,(a.degree||0)*5)}%"></div>
+          </div>
+          <span style="color:#555;font-size:10px">${a.degree||0}</span>
+        </div>`).join('')}
+    </div>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:#555">
+    총 ${net.n_signs||0}개 기호 노드 · ${net.n_edges||0}개 공출현 엣지 · PageRank 최고: <span style="color:#f59e0b">${net.top_pagerank_sign||'?'}</span>
+  </div>` : '<div style="color:#555;font-size:12px">데이터 없음</div>';
+
+  // ── 최종 조합
+  return `
+  ${sumCards}
+
+  <!-- Method 1 -->
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:12px">
+      Method 1: 위치 엔트로피 프로파일
+      <span style="font-size:11px;color:#555;font-weight:400;margin-left:8px">문법 슬롯 구조 정량화</span>
+    </div>
+    ${peHtml}
+  </div>
+
+  <!-- Method 2 -->
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:12px">
+      Method 2: Skip-gram 기호 임베딩
+      <span style="font-size:11px;color:#555;font-weight:400;margin-left:8px">기능 유사 기호 자동 클러스터링</span>
+    </div>
+    ${sgHtml}
+  </div>
+
+  <!-- Method 3 -->
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#6366f1;margin-bottom:12px">
+      Method 3: 분포적 대체 클래스
+      <span style="font-size:11px;color:#555;font-weight:400;margin-left:8px">기능 동등 기호 쌍 발견</span>
+    </div>
+    ${scHtml}
+  </div>
+
+  <!-- Method 4 -->
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#3b82f6;margin-bottom:12px">
+      Method 4: 비문 템플릿 마이닝
+      <span style="font-size:11px;color:#555;font-weight:400;margin-left:8px">반복 문법 구조 패턴 추출</span>
+    </div>
+    ${tmHtml}
+  </div>
+
+  <!-- Method 5 -->
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:12px">
+      Method 5: 공출현 네트워크 (PageRank)
+      <span style="font-size:11px;color:#555;font-weight:400;margin-left:8px">허브·중심성 분석</span>
+    </div>
+    ${netHtml}
+  </div>
+
+  <div style="background:#111;border-radius:8px;padding:12px 16px;font-size:11px;color:#444;margin-top:8px">
+    <strong style="color:#555">논문 기여 가능성:</strong>
+    위치 엔트로피의 문법 슬롯 증거, Skip-gram이 발견한 신규 유사 쌍, 템플릿 구조는
+    기존 Parpola/Mahadevan 수작업 분석과 독립적으로 도출된 통계적 패턴입니다.
+    이 결과를 Journal of Indological Studies 또는 Digital Humanities Quarterly에 투고 가능합니다.
+  </div>`;
+}
+
+// ── 해독 시도 ─────────────────────────────────────────────
+async function startRebus() {
+  const btn = document.getElementById('btnRebus');
+  btn.disabled = true; btn.textContent = '매핑 중...';
+  document.getElementById('rebusMsg').textContent = '시작 중...';
+  document.getElementById('rebusFill').style.width = '5%';
+  try {
+    const res = await fetch('/api/rebus/run', {method:'POST'});
+    if (!res.ok) { const e=await res.json(); alert(e.detail||'실패'); btn.disabled=false; btn.textContent='1. Rebus 매핑'; return; }
+    const poll = setInterval(async () => {
+      const s = await fetch('/api/rebus/status').then(r=>r.json());
+      document.getElementById('rebusMsg').textContent = s.message||'—';
+      document.getElementById('rebusFill').style.width = (s.progress||0)+'%';
+      if (s.status==='done') {
+        clearInterval(poll); btn.disabled=false; btn.textContent='1. Rebus 매핑';
+        const d = await fetch('/api/rebus/results').then(r=>r.json());
+        document.getElementById('decipherContent').innerHTML = renderRebus(d);
+      } else if (s.status==='error') {
+        clearInterval(poll); btn.disabled=false; btn.textContent='1. Rebus 매핑';
+        document.getElementById('decipherContent').innerHTML = `<div class="empty-state"><p style="color:#ef4444">오류: ${s.message}</p></div>`;
+      }
+    }, 1000);
+  } catch(e) { alert('오류: '+e); btn.disabled=false; btn.textContent='1. Rebus 매핑'; }
+}
+
+async function startGeneticDecipher() {
+  const btn = document.getElementById('btnGenDecipher');
+  btn.disabled = true; btn.textContent = '최적화 중...';
+  document.getElementById('rebusMsg').textContent = 'GA 최적화 시작...';
+  try {
+    const res = await fetch('/api/genetic-decipher/run', {method:'POST'});
+    if (!res.ok) { const e=await res.json(); alert(e.detail||'실패'); btn.disabled=false; btn.textContent='2. GA 최적화'; return; }
+    const poll = setInterval(async () => {
+      const s = await fetch('/api/genetic-decipher/status').then(r=>r.json());
+      document.getElementById('rebusMsg').textContent = s.message||'—';
+      document.getElementById('rebusFill').style.width = (s.progress||0)+'%';
+      if (s.status==='done') {
+        clearInterval(poll); btn.disabled=false; btn.textContent='2. GA 최적화';
+        const d = await fetch('/api/genetic-decipher/results').then(r=>r.json());
+        const existing = document.getElementById('decipherContent').innerHTML;
+        document.getElementById('decipherContent').innerHTML = existing + renderGAResult(d);
+      } else if (s.status==='error') {
+        clearInterval(poll); btn.disabled=false; btn.textContent='2. GA 최적화';
+        document.getElementById('rebusMsg').textContent = '오류: '+s.message;
+      }
+    }, 1000);
+  } catch(e) { alert('오류: '+e); btn.disabled=false; btn.textContent='2. GA 최적화'; }
+}
+
+function renderRebus(d) {
+  const s = d.summary || {};
+  const trans = d.translations || [];
+  const coverageColor = s.coverage_pct >= 50 ? '#10b981' : s.coverage_pct >= 30 ? '#f59e0b' : '#ef4444';
+
+  const transRows = trans.map(t => {
+    const coverBg = t.coverage >= 70 ? '#0a1f0a' : t.coverage >= 40 ? '#1a1200' : '#1a0a0a';
+    const coverColor = t.coverage >= 70 ? '#10b981' : t.coverage >= 40 ? '#f59e0b' : '#ef4444';
+    const tokens = t.tokens || [];
+    const tokenHtml = tokens.map(tk => `
+      <span style="display:inline-block;margin:2px;padding:3px 7px;border-radius:4px;font-size:11px;
+        background:${tk.confidence>=0.7?'#1a2a1a':'#1a1a1a'};
+        border:1px solid ${tk.confidence>=0.7?'#10b98155':'#333'};
+        color:${tk.confidence>=0.7?'#10b981':'#555'}">
+        <span style="font-weight:700">${tk.sign}</span>
+        ${tk.reading!=='?'?`<br><span style="color:#f59e0b;font-size:10px">${tk.reading}</span>`:''}
+        ${tk.meaning!=='[미해독]'?`<br><span style="color:#888;font-size:9px">${tk.meaning.slice(0,8)}</span>`:''}
+      </span>`).join('');
+
+    const patternColors = {
+      'TITLE+STAR+CLAN':'#f59e0b','TITLE+CLAN':'#3b82f6',
+      'STAR+NUM':'#10b981','SEAL+CLAN':'#a78bfa',
+      'TITLE':'#ef4444','NUMERAL':'#6b7280','PARTIAL':'#333'
+    };
+    const patternColor = patternColors[t.pattern] || '#555';
+
+    return `
+    <div style="background:${coverBg};border:1px solid ${patternColor}44;border-radius:10px;padding:16px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-weight:700;color:#fff;font-size:14px">${t.inscription_id}</span>
+          <span style="background:${patternColor}22;color:${patternColor};font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700">${t.pattern||''}</span>
+          <span style="color:#444;font-size:11px">${(t.description||'').slice(0,45)}</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="color:#555;font-size:10px">${t.interp_confidence||''}</span>
+          <span style="color:${coverColor};font-weight:700;font-size:12px">${t.coverage}% 해독</span>
+        </div>
+      </div>
+
+      <!-- 기호 토큰 -->
+      <div style="margin-bottom:10px">${tokenHtml}</div>
+
+      <!-- 음가 -->
+      ${t.phoneme_str !== '—' ? `
+      <div style="font-size:11px;margin-bottom:8px">
+        <span style="color:#444">음가:</span>
+        <span style="color:#f59e0b;font-family:monospace;margin-left:6px">${t.phoneme_str}</span>
+      </div>` : ''}
+
+      <!-- 핵심: 한국어 해석 -->
+      <div style="background:#0a0a0a;border-left:3px solid ${patternColor};border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:8px">
+        <div style="font-size:10px;color:#555;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">한국어 해석 (가설)</div>
+        <div style="font-size:13px;color:#fff;line-height:1.6;font-weight:500">${t.korean||'—'}</div>
+      </div>
+
+      <!-- 핵심: 영어 해석 -->
+      <div style="background:#0a0a0a;border-left:3px solid #333;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:6px">
+        <div style="font-size:10px;color:#555;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">English interpretation (hypothesis)</div>
+        <div style="font-size:12px;color:#aaa;line-height:1.6;font-style:italic">${t.english||'—'}</div>
+      </div>
+
+      <div style="font-size:10px;color:#333;margin-top:4px">${t.note||''}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <!-- 요약 카드 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px">
+    <div class="stat-card"><div class="stat-val" style="color:#10b981">${s.confirmed||0}</div><div class="stat-lbl">학술 확정 기호</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#f59e0b">${s.candidates||0}</div><div class="stat-lbl">후보 기호</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#555">${s.unknown||0}</div><div class="stat-lbl">미해독</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:${coverageColor}">${s.coverage_pct||0}%</div><div class="stat-lbl">음가 커버리지</div></div>
+  </div>
+
+  <div style="background:#0d0d0d;border:1px solid #ef444433;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#888">
+    <strong style="color:#ef4444">주의:</strong>
+    이 번역은 Parpola(1994), Mahadevan(1977)의 학술 가설과 Proto-Dravidian rebus 원리를 기반으로 한
+    <strong>가설적 해석</strong>입니다. 확정된 번역이 아닙니다.
+    confidence ≥ 0.7 기호만 번역에 포함됩니다.
+  </div>
+
+  <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:12px">
+    해독률 높은 비문 (상위 ${trans.length}개)
+  </div>
+  ${transRows}
+
+  <div id="gaResultSection"></div>`;
+}
+
+function renderGAResult(d) {
+  const sc = d.best_score || {};
+  const scoreColor = sc.total >= 0.5 ? '#10b981' : sc.total >= 0.3 ? '#f59e0b' : '#ef4444';
+  const hist = d.history || [];
+  const histMini = hist.filter((_,i) => i % Math.max(1, Math.floor(hist.length/20)) === 0);
+
+  return `
+  <div style="background:#0d0d0d;border:1px solid #ef444433;border-radius:10px;padding:16px;margin-top:20px">
+    <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:12px">유전 알고리즘 최적화 결과</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+      <div class="stat-card"><div class="stat-val" style="color:${scoreColor}">${sc.total||0}</div><div class="stat-lbl">총 일관성 점수</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:#3b82f6">${sc.positional||0}</div><div class="stat-lbl">위치 일관성</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:#a78bfa">${sc.cooccurrence||0}</div><div class="stat-lbl">공출현 일관성</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:#10b981">${sc.morpheme||0}</div><div class="stat-lbl">형태소 일관성</div></div>
+    </div>
+    <div style="font-size:11px;color:#666;margin-bottom:10px">${d.interpretation||''}</div>
+    ${histMini.length ? `
+    <div style="font-size:11px;color:#555;margin-bottom:6px">점수 변화 (${d.n_generations}세대)</div>
+    <div style="display:flex;align-items:flex-end;gap:2px;height:40px">
+      ${histMini.map(v => `<div style="flex:1;background:#ef4444;opacity:0.7;height:${Math.max(4,v*100)}%"></div>`).join('')}
+    </div>` : ''}
+  </div>`;
+}
+
+// ── 통계 검증 (Bootstrap) ─────────────────────────────────
+async function startBootstrap() {
+  const btn = document.getElementById('btnBootstrap');
+  btn.disabled = true; btn.textContent = '검증 중...';
+  document.getElementById('bsMsg').textContent = '시작 중...';
+  document.getElementById('bsFill').style.width = '5%';
+  try {
+    const res = await fetch('/api/bootstrap/run', {method:'POST'});
+    if (!res.ok) { const e = await res.json(); alert(e.detail||'실패'); btn.disabled=false; btn.textContent='검증 실행'; return; }
+    const poll = setInterval(async () => {
+      const s = await fetch('/api/bootstrap/status').then(r=>r.json());
+      document.getElementById('bsMsg').textContent = s.message||'—';
+      document.getElementById('bsFill').style.width = (s.progress||0)+'%';
+      if (s.status==='done') {
+        clearInterval(poll); btn.disabled=false; btn.textContent='검증 실행';
+        const d = await fetch('/api/bootstrap/results').then(r=>r.json());
+        document.getElementById('bootstrapContent').innerHTML = renderBootstrap(d);
+      } else if (s.status==='error') {
+        clearInterval(poll); btn.disabled=false; btn.textContent='검증 실행';
+        document.getElementById('bootstrapContent').innerHTML = `<div class="empty-state"><p style="color:#ef4444">오류: ${s.message}</p></div>`;
+      }
+    }, 1500);
+  } catch(e) { alert('오류: '+e); btn.disabled=false; btn.textContent='검증 실행'; }
+}
+
+function renderBootstrap(d) {
+  const ov = d.overall || {};
+  const pg = d.permutation_grammar || {};
+  const bs = d.bootstrap_entropy || [];
+  const pairs = d.pair_significance || [];
+
+  const overallBg = ov.publish_ready ? '#0a2a0a' : '#1a0a00';
+  const overallColor = ov.publish_ready ? '#10b981' : '#f59e0b';
+
+  const bsRows = bs.map(s => `
+    <tr style="border-bottom:1px solid #111">
+      <td style="padding:5px 10px;color:#fff;font-weight:700">${s.slot}</td>
+      <td style="padding:5px 10px;text-align:center;color:#3b82f6">${s.mean}</td>
+      <td style="padding:5px 10px;text-align:center;color:#555">[${s.ci_lo}, ${s.ci_hi}]</td>
+      <td style="padding:5px 10px;text-align:center">${s.stable ? '<span style="color:#10b981">안정</span>' : '<span style="color:#f59e0b">불안정</span>'}</td>
+    </tr>`).join('');
+
+  const pairRows = pairs.map(p => `
+    <tr style="border-bottom:1px solid #111">
+      <td style="padding:5px 10px;color:#f59e0b;font-weight:700">${p.pair}</td>
+      <td style="padding:5px 10px;text-align:center;color:#888">${p.observed_cooccurrence}</td>
+      <td style="padding:5px 10px;text-align:center;color:${p.p_value<0.05?'#10b981':'#ef4444'};font-weight:700">${p.p_value}</td>
+      <td style="padding:5px 10px;text-align:center">${p.significant ? '<span style="color:#10b981">유의 (*)</span>' : '<span style="color:#555">비유의</span>'}</td>
+    </tr>`).join('');
+
+  return `
+  <div style="background:${overallBg};border:1px solid ${overallColor}44;border-radius:10px;padding:16px;margin-bottom:20px;text-align:center">
+    <div style="font-size:22px;font-weight:700;color:${overallColor}">${ov.publish_ready ? '논문 투고 가능' : '추가 검증 필요'}</div>
+    <div style="font-size:13px;color:#888;margin-top:6px">${ov.recommendation||''}</div>
+    <div style="display:flex;justify-content:center;gap:24px;margin-top:14px">
+      <div><div style="font-size:18px;font-weight:700;color:#3b82f6">${ov.stable_entropy_slots||0}/5</div><div style="font-size:11px;color:#555">안정 슬롯</div></div>
+      <div><div style="font-size:18px;font-weight:700;color:#f59e0b">${ov.significant_pairs||0}</div><div style="font-size:11px;color:#555">유의 기호쌍</div></div>
+      <div><div style="font-size:18px;font-weight:700;color:${pg.significant?'#10b981':'#ef4444'}">${pg.p_value}</div><div style="font-size:11px;color:#555">문법슬롯 p값</div></div>
+    </div>
+  </div>
+
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#3b82f6;margin-bottom:10px">Bootstrap 엔트로피 95% 신뢰구간 (500회 재샘플링)</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="color:#555;border-bottom:1px solid #222">
+        <th style="padding:6px 10px;text-align:left">슬롯</th>
+        <th style="padding:6px 10px">평균 엔트로피</th>
+        <th style="padding:6px 10px">95% CI</th>
+        <th style="padding:6px 10px">안정성</th>
+      </tr></thead>
+      <tbody>${bsRows}</tbody>
+    </table>
+  </div>
+
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#3b82f6;margin-bottom:10px">Permutation Test — 문법 슬롯 구조</div>
+    <div style="font-size:12px;color:#888">${pg.interpretation||''}</div>
+  </div>
+
+  ${pairs.length ? `
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px">
+    <div style="font-size:13px;font-weight:700;color:#3b82f6;margin-bottom:10px">기호 쌍 유의성 검증 (Skip-gram 상위 쌍)</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="color:#555;border-bottom:1px solid #222">
+        <th style="padding:6px 10px;text-align:left">기호 쌍</th>
+        <th style="padding:6px 10px">공출현 빈도</th>
+        <th style="padding:6px 10px">p값</th>
+        <th style="padding:6px 10px">판정</th>
+      </tr></thead>
+      <tbody>${pairRows}</tbody>
+    </table>
+  </div>` : ''}`;
+}
+
+// ── 드라비다어 비교 ───────────────────────────────────────────
+async function startDravidian() {
+  const btn = document.getElementById('btnDravidian');
+  btn.disabled = true; btn.textContent = '분석 중...';
+  document.getElementById('dravMsg').textContent = '시작 중...';
+  document.getElementById('dravFill').style.width = '10%';
+  try {
+    const res = await fetch('/api/dravidian/run', {method:'POST'});
+    if (!res.ok) { const e = await res.json(); alert(e.detail||'실패'); btn.disabled=false; btn.textContent='분석 실행'; return; }
+    const poll = setInterval(async () => {
+      const s = await fetch('/api/dravidian/status').then(r=>r.json());
+      document.getElementById('dravMsg').textContent = s.message||'—';
+      document.getElementById('dravFill').style.width = (s.progress||0)+'%';
+      if (s.status==='done') {
+        clearInterval(poll); btn.disabled=false; btn.textContent='분석 실행';
+        const d = await fetch('/api/dravidian/results').then(r=>r.json());
+        document.getElementById('dravidianContent').innerHTML = renderDravidian(d);
+      } else if (s.status==='error') {
+        clearInterval(poll); btn.disabled=false; btn.textContent='분석 실행';
+        document.getElementById('dravidianContent').innerHTML = `<div class="empty-state"><p style="color:#ef4444">오류: ${s.message}</p></div>`;
+      }
+    }, 1000);
+  } catch(e) { alert('오류: '+e); btn.disabled=false; btn.textContent='분석 실행'; }
+}
+
+function renderDravidian(d) {
+  const confirmed = d.confirmed || [];
+  const partial   = d.partial   || [];
+  const findings  = d.findings  || {};
+  const supportColor = confirmed.length >= 4 ? '#10b981' : confirmed.length >= 2 ? '#f59e0b' : '#ef4444';
+
+  const wordRows = Object.entries(findings).map(([word, f]) => {
+    const pr = f.position_profile || {};
+    const fit = f.position_fit;
+    return `
+    <tr style="border-bottom:1px solid #111">
+      <td style="padding:8px 10px">
+        <div style="font-weight:700;color:#a78bfa;font-size:13px">${word}</div>
+        <div style="color:#555;font-size:10px">${f.dravidian_reflex||''}</div>
+      </td>
+      <td style="padding:8px 10px;font-size:11px;color:#888">${f.meaning}</td>
+      <td style="padding:8px 10px;text-align:center;color:#f59e0b">${pr.total||0}</td>
+      <td style="padding:8px 10px;text-align:center;color:#888">${pr.init_pct||0}%</td>
+      <td style="padding:8px 10px;text-align:center;color:#888">${pr.term_pct||0}%</td>
+      <td style="padding:8px 10px;text-align:center">${fit ? '<span style="color:#10b981;font-weight:700">부합</span>' : '<span style="color:#555">불일치</span>'}</td>
+      <td style="padding:8px 10px;font-size:10px;color:#444;max-width:180px">${f.hypothesis||''}</td>
+    </tr>`;
+  }).join('');
+
+  return `
+  <div style="background:#120a1a;border:1px solid ${supportColor}44;border-radius:10px;padding:16px;margin-bottom:20px;text-align:center">
+    <div style="font-size:20px;font-weight:700;color:${supportColor}">${d.dravidian_support||'—'}</div>
+    <div style="font-size:13px;color:#888;margin-top:6px">${d.interpretation||''}</div>
+    <div style="display:flex;justify-content:center;gap:24px;margin-top:14px">
+      <div><div style="font-size:20px;font-weight:700;color:#10b981">${confirmed.length}</div><div style="font-size:11px;color:#555">위치 부합</div></div>
+      <div><div style="font-size:20px;font-weight:700;color:#f59e0b">${partial.length}</div><div style="font-size:11px;color:#555">부분 부합</div></div>
+      <div><div style="font-size:20px;font-weight:700;color:#555">${d.not_found_in_corpus?.length||0}</div><div style="font-size:11px;color:#555">미발견</div></div>
+    </div>
+  </div>
+
+  <div style="background:#0d0d0d;border:1px solid #222;border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#a78bfa;margin-bottom:12px">어휘별 위치 패턴 분석</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="color:#555;border-bottom:1px solid #222">
+          <th style="padding:6px 10px;text-align:left">드라비다어</th>
+          <th style="padding:6px 10px;text-align:left">의미</th>
+          <th style="padding:6px 10px">코퍼스 빈도</th>
+          <th style="padding:6px 10px">어두%</th>
+          <th style="padding:6px 10px">어말%</th>
+          <th style="padding:6px 10px">판정</th>
+          <th style="padding:6px 10px;text-align:left">가설</th>
+        </tr></thead>
+        <tbody>${wordRows}</tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="background:#111;border-radius:8px;padding:12px 16px;font-size:11px;color:#444">
+    <strong style="color:#555">참고문헌:</strong>
+    ${(d.references||[]).join(' · ')}
+    <br><span style="color:#333;margin-top:4px;display:block">
+      ${d.key_finding||''}
+    </span>
+  </div>`;
+}
+
+// ── 초기 상태 확인 + 주기적 재폴링 ───────────────────────
+async function initDashboard() {
+  // summary 로드 → 알고리즘 해독률 + 실제 코퍼스 해독률 동시 표시
+  try {
+    const sum = await fetch('/api/summary').then(r => r.json());
+
+    // 알고리즘 해독률 (개선 엔진)
+    if (sum.best_rate > 0) {
+      document.getElementById('rateNum').textContent = sum.best_rate + '%';
+      document.getElementById('rateBar').style.width = Math.min(sum.best_rate, 100) + '%';
+      const bd = sum.best_breakdown || {};
+      if (bd.confirmed !== undefined) {
+        document.getElementById('t-confirmed').textContent = bd.confirmed;
+        document.getElementById('t-partial').textContent   = bd.partial;
+        document.getElementById('t-clue').textContent      = bd.clue;
+        document.getElementById('t-unknown').textContent   = bd.unknown ?? 0;
+        document.getElementById('rateSourceLabel').textContent = '합성 코퍼스 · 개선 엔진 (3회 반복)';
+      }
+    }
+
+    // 실제 코퍼스 해독률
+    if (sum.real_rate > 0) {
+      document.getElementById('realRateNum').textContent = sum.real_rate + '%';
+      document.getElementById('realRateBar').style.width = Math.min(sum.real_rate, 100) + '%';
+      const rb = sum.real_breakdown || {};
+      if (rb.confirmed !== undefined) {
+        document.getElementById('rt-confirmed').textContent = rb.confirmed;
+        document.getElementById('rt-partial').textContent   = rb.partial;
+        document.getElementById('rt-clue').textContent      = rb.clue;
+        document.getElementById('rt-unknown').textContent   = rb.unknown ?? 0;
+        document.getElementById('realTierBreakdown').style.display = 'block';
+      }
+    }
+  } catch (_) {}
+
+  const s = await fetch('/api/decipher/status').then(r => r.json());
+  setLiveIndicator(s.status);
+  if (s.status === 'done') {
+    document.getElementById('statusBanner').style.display = 'flex';
+    document.getElementById('sbMsg').textContent = s.message || '완료';
+    document.getElementById('sbFill').style.width = '100%';
+    loadResults();
+  } else if (s.status === 'running') {
+    document.getElementById('statusBanner').style.display = 'flex';
+    startPoll();
+  }
+
+  const adv = await fetch('/api/advanced/status').then(r => r.json());
+  if (adv.status === 'done') {
+    document.getElementById('advFill').style.width = '100%';
+    document.getElementById('advMsg').textContent = adv.message || '완료';
+    loadAdvResults();
+  } else if (adv.status === 'running') {
+    startAdvPoll();
+  }
+
+  const ext = await fetch('/api/extra/status').then(r => r.json());
+  if (ext.status === 'done') {
+    document.getElementById('extraFill').style.width = '100%';
+    document.getElementById('extraMsg').textContent = ext.message || '완료';
+    loadExtraResults();
+  } else if (ext.status === 'running') {
+    startExtraPoll();
+  }
+
+  const nov = await fetch('/api/novel/status').then(r => r.json());
+  if (nov.status === 'done') {
+    document.getElementById('novelFill').style.width = '100%';
+    document.getElementById('novelMsg').textContent = nov.message || '완료';
+    loadNovelResults();
+  } else if (nov.status === 'running') {
+    startNovelPoll();
+  }
+
+  const fr = await fetch('/api/frontier/status').then(r => r.json());
+  if (fr.status === 'done') {
+    document.getElementById('frontierFill').style.width = '100%';
+    document.getElementById('frontierMsg').textContent = fr.message || '완료';
+    loadFrontierResults();
+  } else if (fr.status === 'running') {
+    startFrontierPoll();
+  }
+
+  const imp = await fetch('/api/improved/status').then(r => r.json());
+  if (imp.status === 'done') {
+    document.getElementById('improvedFill').style.width = '100%';
+    document.getElementById('improvedMsg').textContent = imp.message || '완료';
+    loadImprovedResults();
+  } else if (imp.status === 'running') {
+    startImprovedPoll();
+  }
+
+  const disc = await fetch('/api/discovery/status').then(r => r.json());
+  if (disc.status === 'done') {
+    document.getElementById('discoveryFill').style.width = '100%';
+    document.getElementById('discoveryMsg').textContent = disc.message || '완료';
+    loadDiscoveryResults();
+  } else if (disc.status === 'running') {
+    startDiscoveryPoll();
+  }
+}
+
+// CLI가 분석을 시작하면 자동으로 감지하기 위한 30초 주기 재확인
+setInterval(async () => {
+  const s = await fetch('/api/decipher/status').then(r => r.json());
+  if (s.status === 'running' && !pollTimer) startPoll();
+
+  const adv = await fetch('/api/advanced/status').then(r => r.json());
+  if (adv.status === 'running' && !advPollTimer) startAdvPoll();
+
+  const ext = await fetch('/api/extra/status').then(r => r.json());
+  if (ext.status === 'running' && !extraPollTimer) startExtraPoll();
+
+  const nov = await fetch('/api/novel/status').then(r => r.json());
+  if (nov.status === 'running' && !novelPollTimer) startNovelPoll();
+
+  const fr = await fetch('/api/frontier/status').then(r => r.json());
+  if (fr.status === 'running' && !frontierPollTimer) startFrontierPoll();
+
+  const imp = await fetch('/api/improved/status').then(r => r.json());
+  if (imp.status === 'running' && !improvedPollTimer) startImprovedPoll();
+
+  const disc = await fetch('/api/discovery/status').then(r => r.json());
+  if (disc.status === 'running' && !discoveryPollTimer) startDiscoveryPoll();
+}, 30000);
+
+initDashboard();
+
+// ── 딥러닝 대시보드 ─────────────────────────────────────────
+async function startDL() {
+  await fetch('/api/dl/run', {method:'POST'});
+  startDLPoll();
+}
+function startDLPoll() {
+  if (window._dlTimer) return;
+  window._dlTimer = setInterval(async () => {
+    const d = await fetch('/api/dl/status').then(r => r.json());
+    renderDL(d);
+    if (d.status === 'done' || d.status === 'error') { clearInterval(window._dlTimer); window._dlTimer = null; }
+  }, 2000);
+}
+function renderDL(d) {
+  const c = d.status === 'running' ? '#6366f1' : d.status === 'done' ? '#22c55e' : '#888';
+  const el = document.getElementById('dlStatus');
+  el.textContent = d.status === 'running' ? `Ep ${d.epoch||0}/${d.total_epochs||0}` : d.status;
+  el.style.background = c + '22'; el.style.color = c;
+  document.getElementById('dlSummary').innerHTML = `
+    <div class="stat-card"><div class="stat-val">${d.epoch||0}</div><div class="stat-lbl">에폭</div></div>
+    <div class="stat-card"><div class="stat-val">${(d.loss||0).toFixed(4)}</div><div class="stat-lbl">Loss</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#22c55e">${d.best_rate||0}%</div><div class="stat-lbl">최고 해독률</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#6366f1">${d.decipherment_rate||0}%</div><div class="stat-lbl">현재 해독률</div></div>`;
+  document.getElementById('dlLog').innerHTML = `<div>${d.message||''}</div>`;
+}
+function drawDLChart(history) {
+  const canvas = document.getElementById('dlChart');
+  if (!canvas || !history.length) return;
+  const W = canvas.clientWidth || 600, H = 120;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  const losses = history.map(h => h.loss||0);
+  const rates  = history.map(h => h.rate||0);
+  const n = history.length;
+  const scaleX = i => (i / Math.max(n-1,1)) * (W-40) + 20;
+  const drawLine = (data, color, minV, maxV) => {
+    const sy = v => H - 10 - ((v-minV)/(maxV-minV+1e-9)) * (H-20);
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+    data.forEach((v,i) => i===0 ? ctx.moveTo(scaleX(i), sy(v)) : ctx.lineTo(scaleX(i), sy(v)));
+    ctx.stroke();
+  };
+  const maxL = Math.max(...losses), minL = Math.min(...losses);
+  drawLine(losses, '#f87171', minL, maxL);
+  drawLine(rates, '#22c55e', 0, 100);
+  ctx.fillStyle='#f87171'; ctx.font='10px sans-serif'; ctx.fillText('Loss', 2, 12);
+  ctx.fillStyle='#22c55e'; ctx.fillText('Rate%', 30, 12);
+}
+
+// ── 유전 알고리즘 대시보드 ───────────────────────────────────
+async function startGA() {
+  await fetch('/api/genetic/run', {method:'POST'});
+  startGAPoll();
+}
+function startGAPoll() {
+  if (window._gaTimer) return;
+  window._gaTimer = setInterval(async () => {
+    const d = await fetch('/api/genetic/status').then(r => r.json());
+    renderGA(d);
+    if (d.status === 'done' || d.status === 'error') { clearInterval(window._gaTimer); window._gaTimer = null; }
+  }, 2000);
+}
+function renderGA(d) {
+  const c = d.status === 'running' ? '#10b981' : d.status === 'done' ? '#22c55e' : '#888';
+  const el = document.getElementById('gaStatus');
+  el.textContent = d.status === 'running' ? `Gen ${d.generation||0}/${d.total_generations||0}` : d.status;
+  el.style.background = c + '22'; el.style.color = c;
+  document.getElementById('gaSummary').innerHTML = `
+    <div class="stat-card"><div class="stat-val">${d.generation||0}</div><div class="stat-lbl">세대</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#22c55e">${(d.best_rate||0).toFixed(1)}%</div><div class="stat-lbl">최고 해독률</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#3b82f6">${(d.avg_rate||0).toFixed(1)}%</div><div class="stat-lbl">평균 해독률</div></div>
+    <div class="stat-card"><div class="stat-val">${(d.diversity||0).toFixed(3)}</div><div class="stat-lbl">집단 다양성</div></div>`;
+  const params = d.best_params || {};
+  document.getElementById('gaParams').innerHTML = Object.entries(params)
+    .map(([k,v]) => `<span style="color:#6b7280">${k.padEnd(22)}</span> <span style="color:#fbbf24">${v}</span>`)
+    .join('<br>');
+  document.getElementById('gaLog').innerHTML = `<div style="color:#aaa">${d.message||''}</div>`;
+}
+function drawGAChart(history) {
+  const canvas = document.getElementById('gaChart');
+  if (!canvas || !history.length) return;
+  const W = canvas.clientWidth||600, H = 120;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const bests  = history.map(h=>h.best||0);
+  const avgs   = history.map(h=>h.avg||0);
+  const worsts = history.map(h=>h.worst||0);
+  const n = history.length;
+  const minV = Math.min(...worsts)-1, maxV = Math.max(...bests)+1;
+  const sx = i => (i/Math.max(n-1,1))*(W-40)+20;
+  const sy = v => H-10-((v-minV)/(maxV-minV)*(H-20));
+  const line = (data, color) => {
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=2;
+    data.forEach((v,i) => i===0 ? ctx.moveTo(sx(i),sy(v)) : ctx.lineTo(sx(i),sy(v)));
+    ctx.stroke();
+  };
+  line(worsts,'#f87171'); line(avgs,'#3b82f6'); line(bests,'#22c55e');
+  ctx.fillStyle='#6b7280'; ctx.font='10px sans-serif';
+  ctx.fillText(`${minV.toFixed(1)}%`, 2, H-10);
+  ctx.fillText(`${maxV.toFixed(1)}%`, 2, 15);
+}
+
+// 탭 전환 시 폴링 관리
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const p = btn.dataset.p;
+    if (p === 'deeplearn') {
+      fetch('/api/dl/status').then(r=>r.json()).then(d => { renderDL(d); if(d.status==='running') startDLPoll(); });
+    } else { if (window._dlTimer) { clearInterval(window._dlTimer); window._dlTimer=null; } }
+    if (p === 'genetic') {
+      fetch('/api/genetic/status').then(r=>r.json()).then(d => { renderGA(d); if(d.status==='running') startGAPoll(); });
+    } else { if (window._gaTimer) { clearInterval(window._gaTimer); window._gaTimer=null; } }
+  });
+});
+
+// ── 자율 학습 대시보드 ───────────────────────────────────────
+let alChartCtx = null, alHistory = [];
+
+function renderAutoLearn(d) {
+  const statusEl = document.getElementById('alStatus');
+  const statusColor = d.status === 'running' ? '#3b82f6' : d.status === 'done' ? '#22c55e' : '#888';
+  statusEl.textContent = d.status === 'running' ? `R${d.round || 0} 실행 중` :
+                          d.status === 'done' ? '완료' : d.status || '대기 중';
+  statusEl.style.background = statusColor + '22';
+  statusEl.style.color = statusColor;
+
+  // 요약 카드
+  const base = d.baseline_rate || 0;
+  const best = d.best_rate || 0;
+  const cur  = d.current_rate || best;
+  const imp  = (best - base).toFixed(1);
+  document.getElementById('alSummary').innerHTML = `
+    <div class="stat-card"><div class="stat-val">${base}%</div><div class="stat-lbl">기준 해독률</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#22c55e">${best}%</div><div class="stat-lbl">최고 해독률</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#3b82f6">+${imp}%p</div><div class="stat-lbl">총 개선</div></div>
+    <div class="stat-card"><div class="stat-val">${d.round || 0}</div><div class="stat-lbl">완료 라운드</div></div>
+  `;
+
+  // 차트 업데이트
+  const hist = d.history || [];
+  if (hist.length) {
+    alHistory = hist;
+    drawAlChart();
+  }
+
+  // 파라미터 표시
+  const params = d.current_params || d.best_params || {};
+  document.getElementById('alParams').innerHTML = Object.entries(params)
+    .map(([k, v]) => `<span style="color:#6b7280">${k.padEnd(22)}</span> <span style="color:#fbbf24">${v}</span>`)
+    .join('<br>');
+
+  // 최근 로그
+  const logEl = document.getElementById('alLog');
+  logEl.innerHTML = (d.history || []).slice(-20).reverse()
+    .map(h => `<div style="color:${h.rate >= (h.best_rate||0) ? '#22c55e' : '#aaa'}">`
+      + `R${String(h.round).padStart(3,'0')} rate=<b>${(h.rate||0).toFixed(1)}%</b>  best=${(h.best_rate||0).toFixed(1)}%</div>`)
+    .join('');
+}
+
+function drawAlChart() {
+  const canvas = document.getElementById('alChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.clientWidth || 600, H = 120;
+  canvas.width = W; canvas.height = H;
+  ctx.clearRect(0, 0, W, H);
+
+  const rates = alHistory.map(h => h.rate || 0);
+  const bests = alHistory.map(h => h.best_rate || 0);
+  if (!rates.length) return;
+
+  const minV = Math.min(...rates, ...bests) - 1;
+  const maxV = Math.max(...rates, ...bests) + 1;
+  const scaleX = (i) => (i / (rates.length - 1)) * (W - 40) + 20;
+  const scaleY = (v) => H - 10 - ((v - minV) / (maxV - minV)) * (H - 20);
+
+  const drawLine = (data, color) => {
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+    data.forEach((v, i) => i === 0 ? ctx.moveTo(scaleX(i), scaleY(v)) : ctx.lineTo(scaleX(i), scaleY(v)));
+    ctx.stroke();
+  };
+  drawLine(rates, '#3b82f6');
+  drawLine(bests, '#22c55e');
+
+  // 레이블
+  ctx.fillStyle = '#666'; ctx.font = '10px sans-serif';
+  ctx.fillText(`${minV.toFixed(1)}%`, 2, H - 10);
+  ctx.fillText(`${maxV.toFixed(1)}%`, 2, 15);
+}
+
+async function pollAutoLearn() {
+  try {
+    const d = await fetch('/api/auto-improve/status').then(r => r.json());
+    renderAutoLearn(d);
+  } catch (e) {}
+}
+
+// 자율학습 탭 활성화 시 폴링 시작
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.p === 'autolearn') {
+      pollAutoLearn();
+      if (!window._alPollTimer) {
+        window._alPollTimer = setInterval(pollAutoLearn, 3000);
+      }
+    } else {
+      if (window._alPollTimer) { clearInterval(window._alPollTimer); window._alPollTimer = null; }
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e3]:
+    - heading "모두의 아이디어" [level=1] [ref=e4]:
+      - img "모두의 아이디어" [ref=e6] [cursor=pointer]
+    - generic [ref=e7]:
+      - list [ref=e8]:
+        - listitem [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]: 모두의 아이디어
+        - listitem [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: 국민참여
+        - listitem [ref=e13] [cursor=pointer]:
+          - generic [ref=e14]: 고객소통
+      - generic [ref=e15]:
+        - generic [ref=e16] [cursor=pointer]: 로그인
+        - generic [ref=e17] [cursor=pointer]: 회원가입
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - heading "모두의 아이디어" [level=1] [ref=e21]:
+        - img "모두의 아이디어" [ref=e22]
+      - paragraph [ref=e23]: 에 오신 것을 환영합니다!
+    - generic [ref=e24]:
+      - 'textbox "개인: 설정한 ID" [ref=e26]'
+      - textbox "Password" [ref=e28]
+      - generic [ref=e29]:
+        - generic:
+          - checkbox
+        - link "아이디 · 비밀번호 찾기" [ref=e30] [cursor=pointer]:
+          - /url: "#"
+      - button "로그인" [ref=e31] [cursor=pointer]
+      - generic [ref=e32]: SNS 로그인
+      - generic [ref=e33]:
+        - button "네이버" [ref=e34] [cursor=pointer]:
+          - img "네이버" [ref=e35]
+        - button "카카오" [ref=e36] [cursor=pointer]:
+          - img "카카오" [ref=e37]
+        - button "구글" [ref=e38] [cursor=pointer]:
+          - img "구글" [ref=e39]
+      - button "회원가입" [ref=e40] [cursor=pointer]
+  - contentinfo [ref=e41]:
+    - generic [ref=e42]:
+      - navigation [ref=e43]:
+        - link "개인정보처리방침" [ref=e44] [cursor=pointer]:
+          - /url: https://www.kipa.org/kipa/service/kw_0703_01.jsp
+        - link "개인정보 침해신고" [ref=e45] [cursor=pointer]:
+          - /url: https://privacy.kisa.or.kr/main.do
+        - link "이용약관" [ref=e46] [cursor=pointer]:
+          - /url: /idearo/moduidea/terms.jsp
+      - combobox [ref=e47] [cursor=pointer]:
+        - option "관련사이트" [selected]
+        - option "지식재산처"
+        - option "지식재산침해 원스톰 신고상담센터"
+        - option "한국발명진흥회"
+        - option "국가지식재산거래플랫폼"
+        - option "특허로"
+        - option "키프리스"
+        - option "아이디어로"
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - paragraph [ref=e51]: 35208 대전광역시 서구 청사로 189 (둔산동) 정부대전청사 4동
+        - paragraph [ref=e52]: Copyright ⓒ MOIP All Rights Reserved
+      - generic [ref=e53]:
+        - paragraph [ref=e55]: 06133 서울특별시 강남구 테헤란로 131(역삼동, 발명진흥회)
+        - paragraph [ref=e56]: "대표전화: 1811-6095(월~금 09:00~18:00, 공휴일 제외) | Fax : 02-3459-2999"

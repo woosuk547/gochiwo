@@ -1,0 +1,51 @@
+// 고쳐줘 프로젝트 Prisma 모델 (레거시 백업)
+// Repause 메인 스키마에서 분리됨
+
+model CustomerRequest {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  email        String?
+  address      String?
+  imageUrl     String?
+  latitude     Float?
+  longitude    Float?
+  status       String   @default("PENDING") // PENDING, MATCHED, COMPLETED
+  contractorId String?
+  createdAt    DateTime @default(now())
+  reviews      Review[]
+}
+
+model Contractor {
+  id              String   @id @default(cuid())
+  name            String
+  phone           String
+  serviceArea     String
+  address         String?
+  latitude        Float
+  longitude       Float
+  rating          Float    @default(4.5)
+  reviewCount     Int      @default(0)
+  completedJobs   Int      @default(0)
+  trustScore      Float    @default(85.0)
+  responseTime    Int      @default(30)
+  profileImage    String?
+  description     String?
+  specialties     String?
+  verified        Boolean  @default(false)
+  verifiedAt      DateTime?
+  createdAt       DateTime @default(now())
+  reviews         Review[]
+}
+
+model Review {
+  id          String          @id @default(cuid())
+  contractorId String
+  requestId    String
+  customerName String          @default("익명")
+  rating       Int
+  comment      String
+  createdAt    DateTime        @default(now())
+  contractor   Contractor      @relation(fields: [contractorId], references: [id])
+  request      CustomerRequest @relation(fields: [requestId], references: [id])
+}

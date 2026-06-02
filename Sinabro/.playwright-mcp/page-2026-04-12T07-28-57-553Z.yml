@@ -1,0 +1,16 @@
+- generic [active] [ref=e1]:
+  - link "모두의 아이디어로" [ref=e3] [cursor=pointer]:
+    - /url: /idearo/moduidea/index.do
+    - img "모두의 아이디어로" [ref=e4]
+  - generic [ref=e6]:
+    - img [ref=e8]
+    - heading "페이지를 찾을 수 없습니다" [level=1] [ref=e10]
+    - paragraph [ref=e11]:
+      - text: 요청하신 페이지가 제거되었거나,
+      - text: 이름이 변경되었거나,
+      - text: 일시적으로 사용이 중단되었습니다.
+    - generic [ref=e12]:
+      - link "이전" [ref=e13] [cursor=pointer]:
+        - /url: javascript:history.back(-1);
+      - link "홈으로" [ref=e14] [cursor=pointer]:
+        - /url: /idearo/moduidea/index.do

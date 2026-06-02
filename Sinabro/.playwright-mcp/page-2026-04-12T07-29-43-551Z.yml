@@ -1,0 +1,250 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e3]:
+    - heading "모두의 아이디어" [level=1] [ref=e4]:
+      - img "모두의 아이디어" [ref=e6] [cursor=pointer]
+    - generic [ref=e7]:
+      - list [ref=e8]:
+        - listitem [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]: 모두의 아이디어
+        - listitem [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: 국민참여
+        - listitem [ref=e13] [cursor=pointer]:
+          - generic [ref=e14]: 고객소통
+      - generic [ref=e15]:
+        - generic [ref=e16] [cursor=pointer]: 로그인
+        - generic [ref=e17] [cursor=pointer]: 회원가입
+  - generic [ref=e19]:
+    - heading "모두의 아이디어 지정공모" [level=2] [ref=e20]:
+      - generic [ref=e21]: 모두의 아이디어
+      - text: 지정공모
+    - paragraph [ref=e22]: 정부와 기업이 제시하는 과제에 여러분의 아이디어로 도전하세요!
+  - generic [ref=e23]:
+    - paragraph [ref=e24]: 정부와 기업이 제시하는 과제를 확인하고 아이디어를 제안하여 문제해결에 도전해 보세요!
+    - list [ref=e25]:
+      - listitem [ref=e26]:
+        - generic [ref=e28]: "1"
+        - generic [ref=e29]:
+          - generic [ref=e30]: Step 1
+          - generic [ref=e31]: 아이디어 제안
+      - listitem [ref=e32]:
+        - generic [ref=e34]: "2"
+        - generic [ref=e35]:
+          - generic [ref=e36]: Step 2
+          - generic [ref=e37]: 아이디어 1차 심사 및 선정
+      - listitem [ref=e38]:
+        - generic [ref=e40]: "3"
+        - generic [ref=e41]:
+          - generic [ref=e42]: Step 3
+          - generic [ref=e43]: 아이디어 고도화
+      - listitem [ref=e44]:
+        - generic [ref=e46]: "4"
+        - generic [ref=e47]:
+          - generic [ref=e48]: Step 4
+          - generic [ref=e49]: 아이디어 2차 심사 및 시상
+      - listitem [ref=e50]:
+        - generic [ref=e52]: "5"
+        - generic [ref=e53]:
+          - generic [ref=e54]: Step 5
+          - generic [ref=e55]: 아이디어 거래 또는 정책반영
+    - paragraph [ref=e56]:
+      - text: "* 상세 내용은 모두의 아이디어"
+      - link "공고문" [ref=e57] [cursor=pointer]:
+        - /url: javascript:void(0);
+      - text: 을 참고하여 주시기 바랍니다.
+    - generic [ref=e58]:
+      - heading "📋 공고내용" [level=3] [ref=e59]
+      - generic [ref=e60]:
+        - heading "🎯 응모 및 심사" [level=4] [ref=e61]:
+          - generic [ref=e62]: 🎯
+          - text: 응모 및 심사
+        - table [ref=e63]:
+          - rowgroup [ref=e64]:
+            - row "응모자격 대한민국 국민 누구나" [ref=e65]:
+              - rowheader "응모자격" [ref=e66]
+              - cell "대한민국 국민 누구나" [ref=e67]
+            - row "심사기준 문제해결 가능성, 실현 가능성, 독창성, 활용성을 기준으로 심사" [ref=e68]:
+              - rowheader "심사기준" [ref=e69]
+              - cell "문제해결 가능성, 실현 가능성, 독창성, 활용성을 기준으로 심사" [ref=e70]
+            - row "심사방법 (1차) 서류심사 후 50건 선정 (2차) 발표심사 후 최종 30건 선정" [ref=e71]:
+              - rowheader "심사방법" [ref=e72]
+              - cell "(1차) 서류심사 후 50건 선정 (2차) 발표심사 후 최종 30건 선정" [ref=e73]:
+                - text: (1차) 서류심사 후
+                - strong [ref=e74]: 50건
+                - text: 선정
+                - text: (2차) 발표심사 후 최종
+                - strong [ref=e75]: 30건
+                - text: 선정
+            - row "아이디어 고도화 서류심사 선정작을 대상으로 전문가 컨설팅, 기술검증, 시작품 제작, 법률자문, 특허출원 등 선택지원" [ref=e76]:
+              - rowheader "아이디어 고도화" [ref=e77]
+              - cell "서류심사 선정작을 대상으로 전문가 컨설팅, 기술검증, 시작품 제작, 법률자문, 특허출원 등 선택지원" [ref=e78]
+      - generic [ref=e79]:
+        - heading "🎁 포상 안내" [level=4] [ref=e80]:
+          - generic [ref=e81]: 🎁
+          - text: 포상 안내
+        - table [ref=e82]:
+          - rowgroup [ref=e83]:
+            - row "참가자 포상 전체 접수 아이디어 중 상위 1만건의 아이디어에 대해 3만원의 지역화폐 또는 문화상품권 지급" [ref=e84]:
+              - rowheader "참가자 포상" [ref=e85]
+              - cell "전체 접수 아이디어 중 상위 1만건의 아이디어에 대해 3만원의 지역화폐 또는 문화상품권 지급" [ref=e86]:
+                - text: 전체 접수 아이디어 중 상위 1만건의 아이디어에 대해
+                - strong [ref=e87]: 3만원
+                - text: 의 지역화폐 또는 문화상품권 지급
+            - row "우수작 포상 10개 과제별 금상·은상·동상 각 1건씩 총 30건의 아이디어 선정" [ref=e88]:
+              - rowheader "우수작 포상" [ref=e89]
+              - cell "10개 과제별 금상·은상·동상 각 1건씩 총 30건의 아이디어 선정" [ref=e90]:
+                - text: 10개 과제별 금상·은상·동상 각 1건씩
+                - strong [ref=e91]: 총 30건
+                - text: 의 아이디어 선정
+            - row "우수작 포상규모 금상 1,000만원 X 10건 은상 500만원 X 10건 동상 300만원 X 10건" [ref=e92]:
+              - rowheader "우수작 포상규모" [ref=e93]
+              - cell "금상 1,000만원 X 10건 은상 500만원 X 10건 동상 300만원 X 10건" [ref=e94]:
+                - generic [ref=e95]:
+                  - generic [ref=e96]: 금상 1,000만원
+                  - generic [ref=e97]: X 10건
+                - generic [ref=e98]:
+                  - generic [ref=e99]: 은상 500만원
+                  - generic [ref=e100]: X 10건
+                - generic [ref=e101]:
+                  - generic [ref=e102]: 동상 300만원
+                  - generic [ref=e103]: X 10건
+      - generic [ref=e104]:
+        - heading "👑 왕중왕전" [level=4] [ref=e105]:
+          - generic [ref=e106]: 👑
+          - text: 왕중왕전
+        - table [ref=e107]:
+          - rowgroup [ref=e108]:
+            - row "참여대상 지정공모 및 자유공모에서 금상을 수상한 총 20건의 아이디어" [ref=e109]:
+              - rowheader "참여대상" [ref=e110]
+              - cell "지정공모 및 자유공모에서 금상을 수상한 총 20건의 아이디어" [ref=e111]:
+                - text: 지정공모 및 자유공모에서 금상을 수상한
+                - strong [ref=e112]: 총 20건
+                - text: 의 아이디어
+            - row "심사기준 해결 문제의 시급성, 사회적 파급력, 실현 가능성을 기준으로 심사" [ref=e113]:
+              - rowheader "심사기준" [ref=e114]
+              - cell "해결 문제의 시급성, 사회적 파급력, 실현 가능성을 기준으로 심사" [ref=e115]
+            - row "심사방법 발표심사" [ref=e116]:
+              - rowheader "심사방법" [ref=e117]
+              - cell "발표심사" [ref=e118]
+            - row "포상규모 총 20건의 아이디어 중 1~3위를 재선정 1위 1억원 2위 3,000만원 3위 2,000만원 ※ 왕중왕전 포상금은 금상 포상금 1천만원을 포함한 금액" [ref=e119]:
+              - rowheader "포상규모" [ref=e120]
+              - cell "총 20건의 아이디어 중 1~3위를 재선정 1위 1억원 2위 3,000만원 3위 2,000만원 ※ 왕중왕전 포상금은 금상 포상금 1천만원을 포함한 금액" [ref=e121]:
+                - text: 총 20건의 아이디어 중 1~3위를 재선정
+                - generic [ref=e122]: 1위 1억원
+                - generic [ref=e123]: 2위 3,000만원
+                - generic [ref=e124]: 3위 2,000만원
+                - paragraph [ref=e125]: ※ 왕중왕전 포상금은 금상 포상금 1천만원을 포함한 금액
+      - generic [ref=e126]:
+        - heading "🚀 후속지원" [level=4] [ref=e127]:
+          - generic [ref=e128]: 🚀
+          - text: 후속지원
+        - generic [ref=e129]:
+          - generic [ref=e130]:
+            - generic [ref=e131]: 정책 아이디어
+            - generic [ref=e132]: 관련 부처 정책 또는 법령 반영 등
+          - generic [ref=e133]:
+            - generic [ref=e134]: 기술 아이디어
+            - generic [ref=e135]: 사업화 연구개발 및 창업지원 사업연계, 지식재산권 거래중개 등
+    - generic [ref=e136]:
+      - paragraph [ref=e137]: 과제 상세내용을 확인하세요!
+      - generic [ref=e138]:
+        - generic [ref=e139]:
+          - heading "📄 공고문" [level=3] [ref=e140]
+          - button "바로보기" [ref=e141] [cursor=pointer]
+        - iframe [ref=e144]:
+          - generic [ref=f1e2]:
+            - generic [ref=f1e4]:
+              - list [ref=f1e6]:
+                - listitem [ref=f1e7]:
+                  - checkbox "전체 선택" [ref=f1e8] [cursor=pointer]
+                  - emphasis
+                  - generic: 전체 선택
+                - listitem [ref=f1e9] [cursor=pointer]: 파일 이름
+                - listitem [ref=f1e10] [cursor=pointer]: 파일 크기
+                - listitem [ref=f1e11]
+              - generic [ref=f1e13]:
+                - list
+              - list [ref=f1e15]:
+                - listitem
+                - listitem [ref=f1e16]: 0 개, 0 byte
+            - generic [ref=f1e17]:
+              - list:
+                - listitem [ref=f1e18]:
+                  - button "열기" [ref=f1e19] [cursor=pointer]
+                  - button "다운로드" [ref=f1e20] [cursor=pointer]
+                  - button "전체 다운로드" [ref=f1e21] [cursor=pointer]
+      - generic [ref=e145]:
+        - generic [ref=e146] [cursor=pointer]:
+          - img "고용노동부" [ref=e148]
+          - generic [ref=e149]:
+            - generic [ref=e150]: 고용노동부
+            - generic [ref=e151]: 소규모 사업장 노동안전 생활화 아이디어
+        - generic [ref=e152] [cursor=pointer]:
+          - img "주성엔지니어링(주)" [ref=e154]
+          - generic [ref=e155]:
+            - generic [ref=e156]: 주성엔지니어링(주)
+            - generic [ref=e157]: 피지컬 AI가 에너지 부족으로 멈추는 것을 막는 아이디어
+        - generic [ref=e158] [cursor=pointer]:
+          - img "성평등가족부" [ref=e160]
+          - generic [ref=e161]:
+            - generic [ref=e162]: 성평등가족부
+            - generic [ref=e163]: 아이돌봄 서비스 이용 불편 해소 아이디어
+        - generic [ref=e164] [cursor=pointer]:
+          - img "행정안전부" [ref=e166]
+          - generic [ref=e167]:
+            - generic [ref=e168]: 행정안전부
+            - generic [ref=e169]: AI로 더 편리한 공공서비스 만들기 아이디어
+        - generic [ref=e170] [cursor=pointer]:
+          - img "산업통상부" [ref=e172]
+          - generic [ref=e173]:
+            - generic [ref=e174]: 산업통상부
+            - generic [ref=e175]: 기업 제조 공정에서의 AI 활용 아이디어
+        - generic [ref=e176] [cursor=pointer]:
+          - img "㈜싸이노스" [ref=e178]
+          - generic [ref=e179]:
+            - generic [ref=e180]: ㈜싸이노스
+            - generic [ref=e181]: 반도체 장비 부품 세정 후 건조 아이디어
+        - generic [ref=e182] [cursor=pointer]:
+          - img "중소벤처기업부" [ref=e184]
+          - generic [ref=e185]:
+            - generic [ref=e186]: 중소벤처기업부
+            - generic [ref=e187]: 소상공인 창업교육 표준화 모델 개발 아이디어
+        - generic [ref=e188] [cursor=pointer]:
+          - img "LG에너지솔루션" [ref=e190]
+          - generic [ref=e191]:
+            - generic [ref=e192]: LG에너지솔루션
+            - generic [ref=e193]: 배터리 교환 스테이션을 활용한 일상의 전동화 아이디어
+        - generic [ref=e194] [cursor=pointer]:
+          - img "과학기술정보통신부" [ref=e196]
+          - generic [ref=e197]:
+            - generic [ref=e198]: 과학기술정보통신부
+            - generic [ref=e199]: AI 에이전트로 일상 바꾸기 아이디어
+        - generic [ref=e200] [cursor=pointer]:
+          - img "농림축산식품부" [ref=e202]
+          - generic [ref=e203]:
+            - generic [ref=e204]: 농림축산식품부
+            - generic [ref=e205]: K-푸드 수출 확산을 위한 K-이니셔티브 연계 홍보 아이디어
+  - contentinfo [ref=e206]:
+    - generic [ref=e207]:
+      - navigation [ref=e208]:
+        - link "개인정보처리방침" [ref=e209] [cursor=pointer]:
+          - /url: https://www.kipa.org/kipa/service/kw_0703_01.jsp
+        - link "개인정보 침해신고" [ref=e210] [cursor=pointer]:
+          - /url: https://privacy.kisa.or.kr/main.do
+        - link "이용약관" [ref=e211] [cursor=pointer]:
+          - /url: /idearo/moduidea/terms.jsp
+      - combobox [ref=e212] [cursor=pointer]:
+        - option "관련사이트" [selected]
+        - option "지식재산처"
+        - option "지식재산침해 원스톰 신고상담센터"
+        - option "한국발명진흥회"
+        - option "국가지식재산거래플랫폼"
+        - option "특허로"
+        - option "키프리스"
+        - option "아이디어로"
+    - generic [ref=e213]:
+      - generic [ref=e214]:
+        - paragraph [ref=e216]: 35208 대전광역시 서구 청사로 189 (둔산동) 정부대전청사 4동
+        - paragraph [ref=e217]: Copyright ⓒ MOIP All Rights Reserved
+      - generic [ref=e218]:
+        - paragraph [ref=e220]: 06133 서울특별시 강남구 테헤란로 131(역삼동, 발명진흥회)
+        - paragraph [ref=e221]: "대표전화: 1811-6095(월~금 09:00~18:00, 공휴일 제외) | Fax : 02-3459-2999"

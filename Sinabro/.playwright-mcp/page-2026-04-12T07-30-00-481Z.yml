@@ -1,0 +1,53 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e3]:
+    - heading "모두의 아이디어" [level=1] [ref=e4]:
+      - img "모두의 아이디어" [ref=e6] [cursor=pointer]
+    - generic [ref=e7]:
+      - list [ref=e8]:
+        - listitem [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]: 모두의 아이디어
+        - listitem [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: 국민참여
+        - listitem [ref=e13] [cursor=pointer]:
+          - generic [ref=e14]: 고객소통
+      - generic [ref=e15]:
+        - generic [ref=e16] [cursor=pointer]: 로그인
+        - generic [ref=e17] [cursor=pointer]: 회원가입
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - img "기관 로고" [ref=e20]
+      - generic [ref=e21]: AI 에이전트로 일상 바꾸기 아이디어
+      - generic [ref=e22]:
+        - button "과제설명서 바로보기" [ref=e23] [cursor=pointer]
+        - link "과제설명서 다운로드" [ref=e24] [cursor=pointer]:
+          - /url: /idearo/assets/dist/files/challenges/govt002.pdf
+    - img "과제 상세 이미지" [ref=e26]
+    - generic [ref=e27]:
+      - button "아이디어 제안하기" [ref=e28] [cursor=pointer]
+      - link "목록으로" [ref=e29] [cursor=pointer]:
+        - /url: /idearo/moduidea/newIdrContestDesignated.do?styleType=2#challenges
+  - contentinfo [ref=e30]:
+    - generic [ref=e31]:
+      - navigation [ref=e32]:
+        - link "개인정보처리방침" [ref=e33] [cursor=pointer]:
+          - /url: https://www.kipa.org/kipa/service/kw_0703_01.jsp
+        - link "개인정보 침해신고" [ref=e34] [cursor=pointer]:
+          - /url: https://privacy.kisa.or.kr/main.do
+        - link "이용약관" [ref=e35] [cursor=pointer]:
+          - /url: /idearo/moduidea/terms.jsp
+      - combobox [ref=e36] [cursor=pointer]:
+        - option "관련사이트" [selected]
+        - option "지식재산처"
+        - option "지식재산침해 원스톰 신고상담센터"
+        - option "한국발명진흥회"
+        - option "국가지식재산거래플랫폼"
+        - option "특허로"
+        - option "키프리스"
+        - option "아이디어로"
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - paragraph [ref=e40]: 35208 대전광역시 서구 청사로 189 (둔산동) 정부대전청사 4동
+        - paragraph [ref=e41]: Copyright ⓒ MOIP All Rights Reserved
+      - generic [ref=e42]:
+        - paragraph [ref=e44]: 06133 서울특별시 강남구 테헤란로 131(역삼동, 발명진흥회)
+        - paragraph [ref=e45]: "대표전화: 1811-6095(월~금 09:00~18:00, 공휴일 제외) | Fax : 02-3459-2999"

@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>웹사이트 제작 착수금 견적서</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: #1d1d1f;
+        background: #fff;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+          "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+        letter-spacing: 0;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 13mm 16mm;
+      }
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 7mm;
+        border-bottom: 1px solid #d2d2d7;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 26px;
+        line-height: 1.1;
+        font-weight: 800;
+      }
+
+      .subtitle {
+        margin-top: 6px;
+        color: #6e6e73;
+        font-size: 14px;
+      }
+
+      .meta {
+        text-align: right;
+        color: #6e6e73;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      .meta strong {
+        display: block;
+        color: #1d1d1f;
+        font-size: 15px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 6mm;
+      }
+
+      .card {
+        border-radius: 12px;
+        background: #f5f5f7;
+        padding: 12px 15px;
+      }
+
+      .label {
+        margin-bottom: 10px;
+        color: #06c;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 3px;
+      }
+
+      .name {
+        margin: 0 0 9px;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .muted {
+        margin: 5px 0;
+        color: #6e6e73;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr 1.1fr;
+        margin-top: 5mm;
+        border-radius: 12px;
+        background: #f5f5f7;
+        overflow: hidden;
+      }
+
+      .summary > div {
+        padding: 10px 13px;
+        border-right: 1px solid #d2d2d7;
+      }
+
+      .summary > div:last-child {
+        border-right: 0;
+      }
+
+      small {
+        display: block;
+        margin-bottom: 6px;
+        color: #86868b;
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .price {
+        color: #06c;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .section-title {
+        margin: 5mm 0 3mm;
+        color: #86868b;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border-radius: 8px;
+        font-size: 12px;
+      }
+
+      th {
+        padding: 9px 11px;
+        color: #fff;
+        background: #1d1d1f;
+        text-align: left;
+      }
+
+      th.amount,
+      td.amount {
+        text-align: right;
+      }
+
+      td {
+        padding: 9px 11px;
+        border-bottom: 1px solid #e8e8ed;
+        line-height: 1.45;
+        vertical-align: top;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .desc span {
+        display: block;
+        margin-top: 3px;
+        color: #86868b;
+        font-size: 10px;
+      }
+
+      .amount {
+        white-space: nowrap;
+        font-weight: 800;
+      }
+
+      .total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 3mm;
+        padding: 12px 16px;
+        border-radius: 8px;
+        background: #f5f5f7;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .total strong:last-child {
+        font-size: 20px;
+      }
+
+      .notice-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 5mm;
+      }
+
+      ul {
+        margin: 0;
+        padding: 2px 0 0 18px;
+      }
+
+      li {
+        margin: 5px 0;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      li::marker {
+        color: #06c;
+      }
+
+      .signature-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 5mm;
+      }
+
+      .signature {
+        min-height: 98px;
+      }
+
+      .signature .label {
+        color: #86868b;
+      }
+
+      .signature-date {
+        color: #6e6e73;
+        font-size: 12px;
+      }
+
+      .sign-image {
+        display: block;
+        width: 78px;
+        height: auto;
+        margin-top: 6px;
+      }
+
+      .sign-placeholder {
+        margin-top: 17px;
+        color: #b0b0b5;
+        font-size: 12px;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5mm;
+        padding-top: 12px;
+        border-top: 1px solid #e8e8ed;
+        color: #86868b;
+        font-size: 10px;
+      }
+
+      .footer strong {
+        color: #06c;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <header class="top">
+        <div>
+          <h1>착수금 견적서</h1>
+          <div class="subtitle">Web Development Deposit Proposal</div>
+        </div>
+        <div class="meta">
+          No. 2026-004
+          <strong>2026년 5월 12일</strong>
+          유효기간 발행일로부터 14일
+        </div>
+      </header>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="label">TO · 수신</div>
+          <p class="name">(주)크리오스</p>
+          <p class="muted">이메일: creaos@naver.com</p>
+          <p class="muted">연락처: 02-514-5536</p>
+          <p class="muted">주소: 서울특별시 강남구 강남대로 160길 26, 2층</p>
+        </div>
+        <div class="card">
+          <div class="label">FROM · 발신</div>
+          <p class="name">이우석</p>
+          <p class="muted">8년차 풀스택 개발자</p>
+          <p class="muted">연락처: 010-5059-8558</p>
+          <p class="muted">이메일: woosuk547@naver.com</p>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div>
+          <small>프로젝트</small>
+          <strong>독채 숙박 예약 웹사이트</strong>
+        </div>
+        <div>
+          <small>계약 금액</small>
+          <strong>6,500,000원</strong>
+        </div>
+        <div>
+          <small>세금</small>
+          <strong>VAT 별도</strong>
+        </div>
+        <div>
+          <small>착수금</small>
+          <span class="price">50%</span>
+        </div>
+      </div>
+
+      <div class="section-title">착수금 청구 내역</div>
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>세부 내용</th>
+            <th class="amount">금액</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>착수금 공급가액</strong></td>
+            <td class="desc">
+              웹사이트 제작 계약금 50%
+              <span>총 공급가액 6,500,000원 중 50%</span>
+            </td>
+            <td class="amount">3,250,000원</td>
+          </tr>
+          <tr>
+            <td><strong>부가가치세</strong></td>
+            <td class="desc">
+              VAT 10%
+              <span>착수금 공급가액 기준</span>
+            </td>
+            <td class="amount">325,000원</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="total">
+        <strong>착수금 합계</strong>
+        <strong>3,575,000원</strong>
+      </div>
+
+      <div class="notice-grid">
+        <div class="card">
+          <div class="label">PAYMENT · 입금 정보</div>
+          <ul>
+            <li>은행: 하나은행</li>
+            <li>계좌번호: <strong>17291030938107</strong></li>
+            <li>예금주: <strong>이우석</strong></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="label">TAX · 세금계산서</div>
+          <ul>
+            <li>착수금 입금 확인 후 세금계산서 발행 예정</li>
+            <li>공급가액 3,250,000원 / VAT 325,000원</li>
+            <li>잔금 50%는 납품 완료 후 별도 청구</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-title">확인 서명</div>
+      <div class="signature-grid">
+        <div class="card signature">
+          <div class="label">개발자 확인 · DEVELOPER</div>
+          <p class="name">이우석</p>
+          <p class="signature-date">2026년 5월 12일</p>
+          <img class="sign-image" src="__SIGNATURE__" alt="이우석 서명" />
+        </div>
+        <div class="card signature">
+          <div class="label">클라이언트 확인 · CLIENT</div>
+          <p class="name">(주)크리오스</p>
+          <p class="signature-date">____년 ____월 ____일</p>
+          <p class="sign-placeholder">(서명 / 인)</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>본 견적서는 착수금 청구 목적의 문서입니다</span>
+        <strong>woosuk547@naver.com · 010-5059-8558</strong>
+      </footer>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "status": "done",
+  "progress": 100,
+  "message": "완료. 3회 반복 파이프라인 — 최고 해독률 97.3% (기준 22.6% 대비 +74.7%p)",
+  "finished_at": 1743729600.0,
+  "results": {
+    "site_voter": {
+      "decipherment_rate": 97.3,
+      "breakdown": {
+        "confirmed": 141,
+        "partial": 8,
+        "clue": 1,
+        "unknown": 0,
+        "total": 150
+      },
+      "n_sites": 5,
+      "common_signs": 45,
+      "exclusive_signs": 62
+    },
+    "constrained": {
+      "decipherment_rate": 94.7,
+      "breakdown": {
+        "confirmed": 136,
+        "partial": 9,
+        "clue": 5,
+        "unknown": 0,
+        "total": 150
+      }
+    }
+  }
+}

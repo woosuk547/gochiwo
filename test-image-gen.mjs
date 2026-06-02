@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import fs from 'fs';
 
-const GEMINI_API_KEY = 'process.env.GEMINI_API_KEY || ''';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
 async function generateImage() {
   try {

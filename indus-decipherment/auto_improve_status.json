@@ -1,0 +1,3208 @@
+{
+  "status": "done",
+  "round": 62,
+  "best_rate": 97.3,
+  "baseline_rate": 88.9,
+  "final_eval": {
+    "constrained": 70.8,
+    "site_voter": 97.3,
+    "boosted": 73.2,
+    "best": 97.3,
+    "cr_details": {
+      "method": "발견 기반 곱셈 보정 (기본 엔진 앵커)",
+      "decipherment_rate": 70.8,
+      "baseline_rate": 22.6,
+      "improvement": 48.2,
+      "breakdown": {
+        "confirmed": 228,
+        "partial": 97,
+        "clue": 73,
+        "unknown": 13,
+        "total": 411
+      },
+      "n_boosted": 356,
+      "boost_coverage": {
+        "pr_top": 83,
+        "affix": 10,
+        "hmm": 0,
+        "mdl": 7,
+        "core_vocab": 356,
+        "markov": 111
+      },
+      "top_improved": [
+        {
+          "sign": "M208",
+          "sign_id": 208,
+          "base_conf": 71.5,
+          "adjusted_conf": 100.0,
+          "delta": 28.5,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M114",
+          "sign_id": 114,
+          "base_conf": 70.6,
+          "adjusted_conf": 98.8,
+          "delta": 28.2,
+          "multiplier": 1.4,
+          "role": "root",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M122",
+          "sign_id": 122,
+          "base_conf": 70.1,
+          "adjusted_conf": 98.1,
+          "delta": 28.0,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M383",
+          "sign_id": 383,
+          "base_conf": 72.1,
+          "adjusted_conf": 100.0,
+          "delta": 27.9,
+          "multiplier": 1.4,
+          "role": "suffix",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M190",
+          "sign_id": 190,
+          "base_conf": 69.7,
+          "adjusted_conf": 97.6,
+          "delta": 27.9,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M375",
+          "sign_id": 375,
+          "base_conf": 69.7,
+          "adjusted_conf": 97.6,
+          "delta": 27.9,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M142",
+          "sign_id": 142,
+          "base_conf": 69.4,
+          "adjusted_conf": 97.2,
+          "delta": 27.8,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M200",
+          "sign_id": 200,
+          "base_conf": 69.4,
+          "adjusted_conf": 97.2,
+          "delta": 27.8,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M276",
+          "sign_id": 276,
+          "base_conf": 69.4,
+          "adjusted_conf": 97.2,
+          "delta": 27.8,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M389",
+          "sign_id": 389,
+          "base_conf": 69.4,
+          "adjusted_conf": 97.2,
+          "delta": 27.8,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M165",
+          "sign_id": 165,
+          "base_conf": 72.4,
+          "adjusted_conf": 100.0,
+          "delta": 27.6,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M234",
+          "sign_id": 234,
+          "base_conf": 72.4,
+          "adjusted_conf": 100.0,
+          "delta": 27.6,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M246",
+          "sign_id": 246,
+          "base_conf": 72.4,
+          "adjusted_conf": 100.0,
+          "delta": 27.6,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M130",
+          "sign_id": 130,
+          "base_conf": 68.7,
+          "adjusted_conf": 96.2,
+          "delta": 27.5,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M164",
+          "sign_id": 164,
+          "base_conf": 68.5,
+          "adjusted_conf": 95.9,
+          "delta": 27.4,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M179",
+          "sign_id": 179,
+          "base_conf": 72.7,
+          "adjusted_conf": 100.0,
+          "delta": 27.3,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M81",
+          "sign_id": 81,
+          "base_conf": 73.1,
+          "adjusted_conf": 100.0,
+          "delta": 26.9,
+          "multiplier": 1.4,
+          "role": "root",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M100",
+          "sign_id": 100,
+          "base_conf": 73.1,
+          "adjusted_conf": 100.0,
+          "delta": 26.9,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M102",
+          "sign_id": 102,
+          "base_conf": 73.1,
+          "adjusted_conf": 100.0,
+          "delta": 26.9,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        },
+        {
+          "sign": "M322",
+          "sign_id": 322,
+          "base_conf": 73.1,
+          "adjusted_conf": 100.0,
+          "delta": 26.9,
+          "multiplier": 1.4,
+          "role": "hapax",
+          "reasons": [
+            "사이트 공통 핵심어"
+          ]
+        }
+      ],
+      "sign_scores": [
+        {
+          "sign": "M1",
+          "sign_id": 1,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M2",
+          "sign_id": 2,
+          "combined_score": 100.0,
+          "sov_role": "prefix"
+        },
+        {
+          "sign": "M3",
+          "sign_id": 3,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M4",
+          "sign_id": 4,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M5",
+          "sign_id": 5,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M6",
+          "sign_id": 6,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M7",
+          "sign_id": 7,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M8",
+          "sign_id": 8,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M9",
+          "sign_id": 9,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M10",
+          "sign_id": 10,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M11",
+          "sign_id": 11,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M12",
+          "sign_id": 12,
+          "combined_score": 100.0,
+          "sov_role": "prefix"
+        },
+        {
+          "sign": "M13",
+          "sign_id": 13,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M14",
+          "sign_id": 14,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M15",
+          "sign_id": 15,
+          "combined_score": 100.0,
+          "sov_role": "prefix"
+        },
+        {
+          "sign": "M16",
+          "sign_id": 16,
+          "combined_score": 100.0,
+          "sov_role": "prefix"
+        },
+        {
+          "sign": "M17",
+          "sign_id": 17,
+          "combined_score": 100.0,
+          "sov_role": "prefix"
+        },
+        {
+          "sign": "M18",
+          "sign_id": 18,
+          "combined_score": 100.0,
+          "sov_role": "prefix"
+        },
+        {
+          "sign": "M19",
+          "sign_id": 19,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M20",
+          "sign_id": 20,
+          "combined_score": 100.0,
+          "sov_role": "function"
+        },
+        {
+          "sign": "M21",
+          "sign_id": 21,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M23",
+          "sign_id": 23,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M24",
+          "sign_id": 24,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M26",
+          "sign_id": 26,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M27",
+          "sign_id": 27,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M28",
+          "sign_id": 28,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M29",
+          "sign_id": 29,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M31",
+          "sign_id": 31,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M33",
+          "sign_id": 33,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M35",
+          "sign_id": 35,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M36",
+          "sign_id": 36,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M37",
+          "sign_id": 37,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M38",
+          "sign_id": 38,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M42",
+          "sign_id": 42,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M44",
+          "sign_id": 44,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M45",
+          "sign_id": 45,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M46",
+          "sign_id": 46,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M48",
+          "sign_id": 48,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M49",
+          "sign_id": 49,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M50",
+          "sign_id": 50,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M52",
+          "sign_id": 52,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M55",
+          "sign_id": 55,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M56",
+          "sign_id": 56,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M57",
+          "sign_id": 57,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M58",
+          "sign_id": 58,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M59",
+          "sign_id": 59,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M61",
+          "sign_id": 61,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M62",
+          "sign_id": 62,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M63",
+          "sign_id": 63,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M64",
+          "sign_id": 64,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M65",
+          "sign_id": 65,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M66",
+          "sign_id": 66,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M67",
+          "sign_id": 67,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M69",
+          "sign_id": 69,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M71",
+          "sign_id": 71,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M72",
+          "sign_id": 72,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M73",
+          "sign_id": 73,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M77",
+          "sign_id": 77,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M90",
+          "sign_id": 90,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M95",
+          "sign_id": 95,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M98",
+          "sign_id": 98,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M115",
+          "sign_id": 115,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M119",
+          "sign_id": 119,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M121",
+          "sign_id": 121,
+          "combined_score": 100.0,
+          "sov_role": "어두(주어/명사)"
+        },
+        {
+          "sign": "M152",
+          "sign_id": 152,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M34",
+          "sign_id": 34,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M22",
+          "sign_id": 22,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M41",
+          "sign_id": 41,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M53",
+          "sign_id": 53,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M80",
+          "sign_id": 80,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M30",
+          "sign_id": 30,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M74",
+          "sign_id": 74,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M32",
+          "sign_id": 32,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M93",
+          "sign_id": 93,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M68",
+          "sign_id": 68,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M39",
+          "sign_id": 39,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M247",
+          "sign_id": 247,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M248",
+          "sign_id": 248,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M97",
+          "sign_id": 97,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M25",
+          "sign_id": 25,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M209",
+          "sign_id": 209,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M233",
+          "sign_id": 233,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M235",
+          "sign_id": 235,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M386",
+          "sign_id": 386,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M172",
+          "sign_id": 172,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M124",
+          "sign_id": 124,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M237",
+          "sign_id": 237,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M128",
+          "sign_id": 128,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M87",
+          "sign_id": 87,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M79",
+          "sign_id": 79,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M84",
+          "sign_id": 84,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M92",
+          "sign_id": 92,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M133",
+          "sign_id": 133,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M193",
+          "sign_id": 193,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M88",
+          "sign_id": 88,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M78",
+          "sign_id": 78,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M157",
+          "sign_id": 157,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M76",
+          "sign_id": 76,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M132",
+          "sign_id": 132,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M70",
+          "sign_id": 70,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M167",
+          "sign_id": 167,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M43",
+          "sign_id": 43,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M94",
+          "sign_id": 94,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M60",
+          "sign_id": 60,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M54",
+          "sign_id": 54,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M51",
+          "sign_id": 51,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M109",
+          "sign_id": 109,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M245",
+          "sign_id": 245,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M140",
+          "sign_id": 140,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M311",
+          "sign_id": 311,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M123",
+          "sign_id": 123,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M126",
+          "sign_id": 126,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M151",
+          "sign_id": 151,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M169",
+          "sign_id": 169,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M269",
+          "sign_id": 269,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M96",
+          "sign_id": 96,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M168",
+          "sign_id": 168,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M365",
+          "sign_id": 365,
+          "combined_score": 100.0,
+          "sov_role": "prefix"
+        },
+        {
+          "sign": "M47",
+          "sign_id": 47,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M106",
+          "sign_id": 106,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M173",
+          "sign_id": 173,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M127",
+          "sign_id": 127,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M182",
+          "sign_id": 182,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M221",
+          "sign_id": 221,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M105",
+          "sign_id": 105,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M104",
+          "sign_id": 104,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M85",
+          "sign_id": 85,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M155",
+          "sign_id": 155,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M183",
+          "sign_id": 183,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M113",
+          "sign_id": 113,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M240",
+          "sign_id": 240,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M268",
+          "sign_id": 268,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M161",
+          "sign_id": 161,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M242",
+          "sign_id": 242,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M328",
+          "sign_id": 328,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M162",
+          "sign_id": 162,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M224",
+          "sign_id": 224,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M138",
+          "sign_id": 138,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M116",
+          "sign_id": 116,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M254",
+          "sign_id": 254,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M185",
+          "sign_id": 185,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M300",
+          "sign_id": 300,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M272",
+          "sign_id": 272,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M86",
+          "sign_id": 86,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M405",
+          "sign_id": 405,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M339",
+          "sign_id": 339,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M249",
+          "sign_id": 249,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M358",
+          "sign_id": 358,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M158",
+          "sign_id": 158,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M184",
+          "sign_id": 184,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M214",
+          "sign_id": 214,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M288",
+          "sign_id": 288,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M160",
+          "sign_id": 160,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M112",
+          "sign_id": 112,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M298",
+          "sign_id": 298,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M103",
+          "sign_id": 103,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M75",
+          "sign_id": 75,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M286",
+          "sign_id": 286,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M239",
+          "sign_id": 239,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M195",
+          "sign_id": 195,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M291",
+          "sign_id": 291,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M352",
+          "sign_id": 352,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M143",
+          "sign_id": 143,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M349",
+          "sign_id": 349,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M366",
+          "sign_id": 366,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M186",
+          "sign_id": 186,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M236",
+          "sign_id": 236,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M330",
+          "sign_id": 330,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M40",
+          "sign_id": 40,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M154",
+          "sign_id": 154,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M325",
+          "sign_id": 325,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M181",
+          "sign_id": 181,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M175",
+          "sign_id": 175,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M289",
+          "sign_id": 289,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M407",
+          "sign_id": 407,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M197",
+          "sign_id": 197,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M91",
+          "sign_id": 91,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M136",
+          "sign_id": 136,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M178",
+          "sign_id": 178,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M110",
+          "sign_id": 110,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M99",
+          "sign_id": 99,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M81",
+          "sign_id": 81,
+          "combined_score": 100.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M100",
+          "sign_id": 100,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M102",
+          "sign_id": 102,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M322",
+          "sign_id": 322,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M179",
+          "sign_id": 179,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M165",
+          "sign_id": 165,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M234",
+          "sign_id": 234,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M246",
+          "sign_id": 246,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M383",
+          "sign_id": 383,
+          "combined_score": 100.0,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M208",
+          "sign_id": 208,
+          "combined_score": 100.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M114",
+          "sign_id": 114,
+          "combined_score": 98.8,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M122",
+          "sign_id": 122,
+          "combined_score": 98.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M190",
+          "sign_id": 190,
+          "combined_score": 97.6,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M375",
+          "sign_id": 375,
+          "combined_score": 97.6,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M142",
+          "sign_id": 142,
+          "combined_score": 97.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M200",
+          "sign_id": 200,
+          "combined_score": 97.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M276",
+          "sign_id": 276,
+          "combined_score": 97.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M389",
+          "sign_id": 389,
+          "combined_score": 97.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M130",
+          "sign_id": 130,
+          "combined_score": 96.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M164",
+          "sign_id": 164,
+          "combined_score": 95.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M241",
+          "sign_id": 241,
+          "combined_score": 94.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M153",
+          "sign_id": 153,
+          "combined_score": 92.7,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M201",
+          "sign_id": 201,
+          "combined_score": 92.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M82",
+          "sign_id": 82,
+          "combined_score": 92.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M252",
+          "sign_id": 252,
+          "combined_score": 92.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M264",
+          "sign_id": 264,
+          "combined_score": 91.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M314",
+          "sign_id": 314,
+          "combined_score": 90.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M266",
+          "sign_id": 266,
+          "combined_score": 90.6,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M131",
+          "sign_id": 131,
+          "combined_score": 90.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M135",
+          "sign_id": 135,
+          "combined_score": 89.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M353",
+          "sign_id": 353,
+          "combined_score": 89.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M146",
+          "sign_id": 146,
+          "combined_score": 89.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M261",
+          "sign_id": 261,
+          "combined_score": 88.6,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M217",
+          "sign_id": 217,
+          "combined_score": 87.8,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M129",
+          "sign_id": 129,
+          "combined_score": 86.7,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M363",
+          "sign_id": 363,
+          "combined_score": 85.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M220",
+          "sign_id": 220,
+          "combined_score": 84.8,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M206",
+          "sign_id": 206,
+          "combined_score": 84.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M187",
+          "sign_id": 187,
+          "combined_score": 83.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M302",
+          "sign_id": 302,
+          "combined_score": 83.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M313",
+          "sign_id": 313,
+          "combined_score": 83.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M117",
+          "sign_id": 117,
+          "combined_score": 83.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M118",
+          "sign_id": 118,
+          "combined_score": 82.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M125",
+          "sign_id": 125,
+          "combined_score": 82.5,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M166",
+          "sign_id": 166,
+          "combined_score": 81.8,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M211",
+          "sign_id": 211,
+          "combined_score": 81.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M174",
+          "sign_id": 174,
+          "combined_score": 80.8,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M111",
+          "sign_id": 111,
+          "combined_score": 79.8,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M333",
+          "sign_id": 333,
+          "combined_score": 79.8,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M337",
+          "sign_id": 337,
+          "combined_score": 79.8,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M139",
+          "sign_id": 139,
+          "combined_score": 79.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M323",
+          "sign_id": 323,
+          "combined_score": 78.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M394",
+          "sign_id": 394,
+          "combined_score": 78.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M301",
+          "sign_id": 301,
+          "combined_score": 77.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M89",
+          "sign_id": 89,
+          "combined_score": 77.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M216",
+          "sign_id": 216,
+          "combined_score": 76.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M259",
+          "sign_id": 259,
+          "combined_score": 75.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M319",
+          "sign_id": 319,
+          "combined_score": 75.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M101",
+          "sign_id": 101,
+          "combined_score": 74.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M159",
+          "sign_id": 159,
+          "combined_score": 74.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M163",
+          "sign_id": 163,
+          "combined_score": 74.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M218",
+          "sign_id": 218,
+          "combined_score": 74.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M189",
+          "sign_id": 189,
+          "combined_score": 72.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M203",
+          "sign_id": 203,
+          "combined_score": 72.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M267",
+          "sign_id": 267,
+          "combined_score": 72.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M83",
+          "sign_id": 83,
+          "combined_score": 72.0,
+          "sov_role": "root"
+        },
+        {
+          "sign": "M177",
+          "sign_id": 177,
+          "combined_score": 72.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M230",
+          "sign_id": 230,
+          "combined_score": 72.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M141",
+          "sign_id": 141,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M192",
+          "sign_id": 192,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M198",
+          "sign_id": 198,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M226",
+          "sign_id": 226,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M244",
+          "sign_id": 244,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M257",
+          "sign_id": 257,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M292",
+          "sign_id": 292,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M306",
+          "sign_id": 306,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M309",
+          "sign_id": 309,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M324",
+          "sign_id": 324,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M327",
+          "sign_id": 327,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M367",
+          "sign_id": 367,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M371",
+          "sign_id": 371,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M377",
+          "sign_id": 377,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M379",
+          "sign_id": 379,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M390",
+          "sign_id": 390,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M403",
+          "sign_id": 403,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M413",
+          "sign_id": 413,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M415",
+          "sign_id": 415,
+          "combined_score": 71.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M232",
+          "sign_id": 232,
+          "combined_score": 70.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M282",
+          "sign_id": 282,
+          "combined_score": 70.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M283",
+          "sign_id": 283,
+          "combined_score": 70.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M334",
+          "sign_id": 334,
+          "combined_score": 70.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M388",
+          "sign_id": 388,
+          "combined_score": 70.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M404",
+          "sign_id": 404,
+          "combined_score": 70.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M412",
+          "sign_id": 412,
+          "combined_score": 70.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M231",
+          "sign_id": 231,
+          "combined_score": 69.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M338",
+          "sign_id": 338,
+          "combined_score": 69.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M120",
+          "sign_id": 120,
+          "combined_score": 67.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M202",
+          "sign_id": 202,
+          "combined_score": 67.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M277",
+          "sign_id": 277,
+          "combined_score": 67.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M210",
+          "sign_id": 210,
+          "combined_score": 67.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M107",
+          "sign_id": 107,
+          "combined_score": 66.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M223",
+          "sign_id": 223,
+          "combined_score": 66.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M380",
+          "sign_id": 380,
+          "combined_score": 66.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M341",
+          "sign_id": 341,
+          "combined_score": 65.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M222",
+          "sign_id": 222,
+          "combined_score": 63.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M263",
+          "sign_id": 263,
+          "combined_score": 63.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M409",
+          "sign_id": 409,
+          "combined_score": 63.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M147",
+          "sign_id": 147,
+          "combined_score": 61.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M238",
+          "sign_id": 238,
+          "combined_score": 60.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M145",
+          "sign_id": 145,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M149",
+          "sign_id": 149,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M176",
+          "sign_id": 176,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M243",
+          "sign_id": 243,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M294",
+          "sign_id": 294,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M297",
+          "sign_id": 297,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M335",
+          "sign_id": 335,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M396",
+          "sign_id": 396,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M397",
+          "sign_id": 397,
+          "combined_score": 57.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M196",
+          "sign_id": 196,
+          "combined_score": 56.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M228",
+          "sign_id": 228,
+          "combined_score": 56.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M275",
+          "sign_id": 275,
+          "combined_score": 56.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M287",
+          "sign_id": 287,
+          "combined_score": 56.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M310",
+          "sign_id": 310,
+          "combined_score": 56.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M357",
+          "sign_id": 357,
+          "combined_score": 56.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M391",
+          "sign_id": 391,
+          "combined_score": 56.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M134",
+          "sign_id": 134,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M148",
+          "sign_id": 148,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M258",
+          "sign_id": 258,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M260",
+          "sign_id": 260,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M278",
+          "sign_id": 278,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M280",
+          "sign_id": 280,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M284",
+          "sign_id": 284,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M290",
+          "sign_id": 290,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M293",
+          "sign_id": 293,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M315",
+          "sign_id": 315,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M321",
+          "sign_id": 321,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M355",
+          "sign_id": 355,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M361",
+          "sign_id": 361,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M369",
+          "sign_id": 369,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M387",
+          "sign_id": 387,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M393",
+          "sign_id": 393,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M398",
+          "sign_id": 398,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M410",
+          "sign_id": 410,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M417",
+          "sign_id": 417,
+          "combined_score": 52.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M137",
+          "sign_id": 137,
+          "combined_score": 49.4,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M384",
+          "sign_id": 384,
+          "combined_score": 47.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M273",
+          "sign_id": 273,
+          "combined_score": 46.6,
+          "sov_role": "suffix"
+        },
+        {
+          "sign": "M171",
+          "sign_id": 171,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M204",
+          "sign_id": 204,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M205",
+          "sign_id": 205,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M215",
+          "sign_id": 215,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M219",
+          "sign_id": 219,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M229",
+          "sign_id": 229,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M250",
+          "sign_id": 250,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M251",
+          "sign_id": 251,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M256",
+          "sign_id": 256,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M274",
+          "sign_id": 274,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M279",
+          "sign_id": 279,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M305",
+          "sign_id": 305,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M308",
+          "sign_id": 308,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M318",
+          "sign_id": 318,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M320",
+          "sign_id": 320,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M326",
+          "sign_id": 326,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M360",
+          "sign_id": 360,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M374",
+          "sign_id": 374,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M378",
+          "sign_id": 378,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M399",
+          "sign_id": 399,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M401",
+          "sign_id": 401,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M414",
+          "sign_id": 414,
+          "combined_score": 44.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M373",
+          "sign_id": 373,
+          "combined_score": 41.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M255",
+          "sign_id": 255,
+          "combined_score": 38.7,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M188",
+          "sign_id": 188,
+          "combined_score": 34.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M225",
+          "sign_id": 225,
+          "combined_score": 34.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M340",
+          "sign_id": 340,
+          "combined_score": 34.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M348",
+          "sign_id": 348,
+          "combined_score": 34.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M354",
+          "sign_id": 354,
+          "combined_score": 34.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M356",
+          "sign_id": 356,
+          "combined_score": 34.9,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M350",
+          "sign_id": 350,
+          "combined_score": 30.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M364",
+          "sign_id": 364,
+          "combined_score": 30.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M108",
+          "sign_id": 108,
+          "combined_score": 30.2,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M207",
+          "sign_id": 207,
+          "combined_score": 30.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M329",
+          "sign_id": 329,
+          "combined_score": 29.1,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M150",
+          "sign_id": 150,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M170",
+          "sign_id": 170,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M213",
+          "sign_id": 213,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M227",
+          "sign_id": 227,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M265",
+          "sign_id": 265,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M270",
+          "sign_id": 270,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M271",
+          "sign_id": 271,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M281",
+          "sign_id": 281,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M285",
+          "sign_id": 285,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M296",
+          "sign_id": 296,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M299",
+          "sign_id": 299,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M303",
+          "sign_id": 303,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M304",
+          "sign_id": 304,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M307",
+          "sign_id": 307,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M332",
+          "sign_id": 332,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M342",
+          "sign_id": 342,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M343",
+          "sign_id": 343,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M344",
+          "sign_id": 344,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M346",
+          "sign_id": 346,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M347",
+          "sign_id": 347,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M351",
+          "sign_id": 351,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M359",
+          "sign_id": 359,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M368",
+          "sign_id": 368,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M370",
+          "sign_id": 370,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M382",
+          "sign_id": 382,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M392",
+          "sign_id": 392,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M402",
+          "sign_id": 402,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M406",
+          "sign_id": 406,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M411",
+          "sign_id": 411,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M416",
+          "sign_id": 416,
+          "combined_score": 26.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M194",
+          "sign_id": 194,
+          "combined_score": 25.5,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M331",
+          "sign_id": 331,
+          "combined_score": 23.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M180",
+          "sign_id": 180,
+          "combined_score": 21.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M312",
+          "sign_id": 312,
+          "combined_score": 21.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M385",
+          "sign_id": 385,
+          "combined_score": 21.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M144",
+          "sign_id": 144,
+          "combined_score": 19.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M199",
+          "sign_id": 199,
+          "combined_score": 19.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M295",
+          "sign_id": 295,
+          "combined_score": 19.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M345",
+          "sign_id": 345,
+          "combined_score": 19.3,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M156",
+          "sign_id": 156,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M212",
+          "sign_id": 212,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M253",
+          "sign_id": 253,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M262",
+          "sign_id": 262,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M372",
+          "sign_id": 372,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M376",
+          "sign_id": 376,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M381",
+          "sign_id": 381,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M400",
+          "sign_id": 400,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        },
+        {
+          "sign": "M408",
+          "sign_id": 408,
+          "combined_score": 16.0,
+          "sov_role": "hapax"
+        }
+      ],
+      "affix_applied": 10,
+      "total_scored": 411,
+      "note": "PageRank×1.25 · SOV×1.20 · HMM×1.15 · MDL×1.10 · 핵심어휘×1.10 · Markov×1.08"
+    },
+    "sv_details": {
+      "method": "Site-Aware 일관성 보정 (기본 앵커)",
+      "n_sites": 5,
+      "decipherment_rate": 97.3,
+      "baseline_rate": 22.6,
+      "improvement": 74.7,
+      "breakdown": {
+        "confirmed": 142,
+        "partial": 8,
+        "clue": 0,
+        "unknown": 0
+      },
+      "site_stats": {
+        "K": {
+          "n_inscriptions": 181,
+          "unique_signs": 97,
+          "top_sign": "M19"
+        },
+        "L": {
+          "n_inscriptions": 272,
+          "unique_signs": 112,
+          "top_sign": "M24"
+        },
+        "H": {
+          "n_inscriptions": 930,
+          "unique_signs": 147,
+          "top_sign": "M80"
+        },
+        "C": {
+          "n_inscriptions": 293,
+          "unique_signs": 125,
+          "top_sign": "M34"
+        },
+        "M": {
+          "n_inscriptions": 2062,
+          "unique_signs": 150,
+          "top_sign": "M127"
+        }
+      },
+      "common_signs": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8",
+        "M9",
+        "M10",
+        "M11",
+        "M12",
+        "M13",
+        "M14",
+        "M15",
+        "M16",
+        "M19",
+        "M17",
+        "M18",
+        "M20"
+      ],
+      "exclusive_signs": 0,
+      "common_signs_count": 150,
+      "top_voted": [
+        {
+          "sign": "M1",
+          "score": 1.0
+        },
+        {
+          "sign": "M2",
+          "score": 1.0
+        },
+        {
+          "sign": "M3",
+          "score": 1.0
+        },
+        {
+          "sign": "M4",
+          "score": 1.0
+        },
+        {
+          "sign": "M5",
+          "score": 1.0
+        },
+        {
+          "sign": "M6",
+          "score": 1.0
+        },
+        {
+          "sign": "M7",
+          "score": 1.0
+        },
+        {
+          "sign": "M8",
+          "score": 1.0
+        },
+        {
+          "sign": "M9",
+          "score": 1.0
+        },
+        {
+          "sign": "M10",
+          "score": 1.0
+        },
+        {
+          "sign": "M11",
+          "score": 1.0
+        },
+        {
+          "sign": "M12",
+          "score": 1.0
+        },
+        {
+          "sign": "M13",
+          "score": 1.0
+        },
+        {
+          "sign": "M14",
+          "score": 1.0
+        },
+        {
+          "sign": "M15",
+          "score": 1.0
+        }
+      ],
+      "note": "사이트 공통+위치일관×1.15 · 광범위×1.08 · 사이트전용×0.95"
+    }
+  },
+  "best_params": {
+    "cr_pr_mult": 1.55,
+    "cr_affix_mult": 1.2,
+    "cr_hmm_mult": 1.2,
+    "cr_mdl_mult": 1.25,
+    "cr_corevocab_mult": 1.4,
+    "cr_markov_mult": 1.0,
+    "sv_high_cov": 0.8,
+    "sv_high_cons": 0.45,
+    "sv_high_mult": 1.15,
+    "sv_mid_cov": 0.15,
+    "sv_mid_mult": 1.25,
+    "sv_excl_mult": 0.95,
+    "cr_dl_mult": 1.4,
+    "bsc_n_iter": 80,
+    "bsc_n_restarts": 5,
+    "db_crf_mult": 1.45,
+    "db_msp_mult": 1.25,
+    "db_bsc_mult": 1.4,
+    "db_msp_thresh": 0.6
+  },
+  "history": [
+    {
+      "round": 1,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 2,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 3,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 4,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 5,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 6,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 7,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 8,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 9,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 10,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 11,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 12,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 13,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 14,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 15,
+      "rate": 88.9,
+      "best_rate": 88.9
+    },
+    {
+      "round": 16,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 17,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 18,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 19,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 20,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 21,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 22,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 23,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 24,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 25,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 26,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 27,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 28,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 29,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 30,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 31,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 32,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 33,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 34,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 35,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 36,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 37,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 38,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 39,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 40,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 41,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 42,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 43,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 44,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 45,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 46,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 47,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 48,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 49,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 50,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 51,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 52,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 53,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 54,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 55,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 56,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 57,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 58,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 59,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 60,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 61,
+      "rate": 91.5,
+      "best_rate": 91.5
+    },
+    {
+      "round": 62,
+      "rate": 97.3,
+      "best_rate": 97.3
+    }
+  ],
+  "message": "완료. 최고 해독률 97.3% (기준 88.9% 대비 +8.4%p)"
+}

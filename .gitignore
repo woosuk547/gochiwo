@@ -41,3 +41,25 @@ yarn-error.log*
 next-env.d.ts
 
 /lib/generated/prisma
+
+# SQLite DB 파일 (프로덕션에서는 Railway 환경변수 DATABASE_URL 사용)
+prisma/*.db
+prisma/*.db-journal
+prisma/*.db-shm
+prisma/*.db-wal
+
+# 개발 도구 임시 파일
+.playwright-mcp/
+.cursor/
+.vscode/
+
+# 개발 중 생성된 스크린샷/이미지 캡처
+*.png
+!public/**/*.png
+!public/**/*.jpg
+!public/**/*.webp
+
+# 기타 임시 파일
+*.log
+home-snapshot.yml
+naver_cookies.json

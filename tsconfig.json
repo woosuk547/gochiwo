@@ -32,6 +32,7 @@
   ],
   "exclude": [
     "node_modules",
+    "_legacy-gochiwo",
     "verify-contractors.ts",
     "collect-kakao-contractors.ts",
     "collect-naver-contractors.ts",

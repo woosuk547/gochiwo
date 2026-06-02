@@ -1,0 +1,134 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]: Sinabro · AI Trading Agent
+    - generic [ref=e4]:
+      - generic [ref=e5]: Kraken Challenge
+      - generic [ref=e6]: ERC-8004 Challenge
+      - generic [ref=e7]: lablab.ai Hackathon 2026
+    - heading "Sinabro AI Trading Agent" [level=1] [ref=e8]:
+      - text: Sinabro
+      - text: AI Trading Agent
+    - generic [ref=e9]: Autonomous BTC Trading with On-Chain Identity & Q-Learning
+    - paragraph [ref=e11]: Kraken CLI + ERC-8004 · Ethereum Sepolia Testnet · 7-Indicator Voting System
+    - generic [ref=e12]: 1 / 6
+  - generic [ref=e13]:
+    - generic [ref=e14]: Sinabro · AI Trading Agent
+    - heading "The Problem We Solve" [level=2] [ref=e15]
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - heading "Traditional Trading Bots" [level=3] [ref=e18]
+        - list [ref=e19]:
+          - listitem [ref=e20]: → No verifiable trade history
+          - listitem [ref=e21]: → Black-box decision making
+          - listitem [ref=e22]: → No on-chain accountability
+          - listitem [ref=e23]: → Static, non-adaptive strategies
+      - generic [ref=e24]:
+        - heading "Sinabro's Solution" [level=3] [ref=e25]
+        - list [ref=e26]:
+          - listitem [ref=e27]: → ERC-8004 on-chain agent identity
+          - listitem [ref=e28]: → EIP-712 signed trade intents
+          - listitem [ref=e29]: → Q-Learning adaptive strategy
+          - listitem [ref=e30]: → Transparent 7-indicator voting
+    - generic [ref=e31]: 2 / 6
+  - generic [ref=e32]:
+    - generic [ref=e33]: Sinabro · AI Trading Agent
+    - heading "Architecture" [level=2] [ref=e34]
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - heading "Signal Layer" [level=3] [ref=e37]
+        - list [ref=e38]:
+          - listitem [ref=e39]: → RSI (14)
+          - listitem [ref=e40]: → StochRSI
+          - listitem [ref=e41]: → MACD
+          - listitem [ref=e42]: → EMA 200 trend filter
+          - listitem [ref=e43]: → Bollinger Bands
+          - listitem [ref=e44]: → Fear & Greed Index
+          - listitem [ref=e45]: → Volume analysis
+      - generic [ref=e46]:
+        - heading "Decision Layer" [level=3] [ref=e47]
+        - list [ref=e48]:
+          - listitem [ref=e49]: → Weighted voting system
+          - listitem [ref=e50]: → Q-Learning (ε-greedy)
+          - listitem [ref=e51]: → ATR position sizing
+          - listitem [ref=e52]: → DCA + Pyramid entries
+          - listitem [ref=e53]: → Dynamic stop-loss
+      - generic [ref=e54]:
+        - heading "Trust Layer" [level=3] [ref=e55]
+        - list [ref=e56]:
+          - listitem [ref=e57]: → ERC-8004 AgentRegistry
+          - listitem [ref=e58]: → TradeValidator contract
+          - listitem [ref=e59]: → EIP-712 signatures
+          - listitem [ref=e60]: → RiskRouter enforcement
+          - listitem [ref=e61]: → Kraken CLI execution
+    - generic [ref=e62]: 3 / 6
+  - generic [ref=e63]:
+    - generic [ref=e64]: Sinabro · AI Trading Agent
+    - heading "On-Chain Deployment" [level=2] [ref=e65]
+    - paragraph [ref=e66]: Live on Ethereum Sepolia Testnet · Chain ID 11155111
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - generic [ref=e69]: AgentRegistry
+        - generic [ref=e70]: "0xb9eDd500C41eecB7dbe63C4CEB492AFeFd0a04a6"
+      - generic [ref=e71]:
+        - generic [ref=e72]: TradeValidator
+        - generic [ref=e73]: "0xb416DEb12aeDF9Dc224f35D00acc7BE5d227dB4C"
+      - generic [ref=e74]:
+        - generic [ref=e75]: RiskRouter
+        - generic [ref=e76]: "0x18bD2F7a295b26a0ff96B894648c9C5C5534d30b"
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - heading "Agent Identity" [level=3] [ref=e79]
+        - paragraph [ref=e80]:
+          - text: "ERC-721 NFT minted · Agent ID: #1"
+          - text: "Wallet: 0x2124...39fB3"
+      - generic [ref=e81]:
+        - heading "Trade Signing" [level=3] [ref=e82]
+        - paragraph [ref=e83]:
+          - text: Every trade intent signed via EIP-712
+          - text: Verifiable on-chain audit trail
+    - generic [ref=e84]: 4 / 6
+  - generic [ref=e85]:
+    - generic [ref=e86]: Sinabro · AI Trading Agent
+    - heading "Live Performance" [level=2] [ref=e87]
+    - generic [ref=e88]:
+      - generic [ref=e89]:
+        - generic [ref=e90]: +3.67%
+        - generic [ref=e91]: Total PnL
+      - generic [ref=e92]:
+        - generic [ref=e93]: "19"
+        - generic [ref=e94]: Total Trades
+      - generic [ref=e95]:
+        - generic [ref=e96]: $10,367
+        - generic [ref=e97]: Portfolio Value
+    - generic [ref=e98]:
+      - heading "Current Position" [level=3] [ref=e99]
+      - generic [ref=e100]:
+        - generic [ref=e101]: "BTC Holdings: 0.052786 BTC"
+        - generic [ref=e102]: "Avg Entry: $68,015"
+        - generic [ref=e103]: "Current: $71,730"
+        - generic [ref=e104]: "Unrealized: +5.5%"
+    - generic [ref=e107]: 5 / 6
+  - generic [ref=e108]:
+    - generic [ref=e109]: Sinabro · AI Trading Agent
+    - heading "Why Sinabro Wins" [level=2] [ref=e110]
+    - generic [ref=e111]:
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - heading "Full-Stack AI Trading" [level=3] [ref=e114]
+          - paragraph [ref=e115]: From raw market signals → Q-Learning decisions → EIP-712 signed execution via Kraken CLI
+        - generic [ref=e116]:
+          - heading "Trustless by Design" [level=3] [ref=e117]
+          - paragraph [ref=e118]: Every trade is verifiable on-chain. Agent identity, reputation, and validation built on ERC-8004
+      - generic [ref=e119]:
+        - heading "Tech Stack" [level=3] [ref=e120]
+        - generic [ref=e121]:
+          - generic [ref=e122]: Kraken CLI
+          - generic [ref=e123]: ERC-8004
+          - generic [ref=e124]: Node.js
+          - generic [ref=e125]: Solidity 0.8.26
+          - generic [ref=e126]: Q-Learning
+          - generic [ref=e127]: EIP-712
+          - generic [ref=e128]: Ethereum Sepolia
+          - generic [ref=e129]: ethers.js
+        - paragraph [ref=e131]: "GitHub: github.com/Sinabro-wooseok/ai-trading-agent"
+    - generic [ref=e132]: 6 / 6
