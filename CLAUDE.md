@@ -20,7 +20,7 @@
 - Next.js 16.1.6 (App Router, Turbopack), TypeScript
 - Tailwind v4, shadcn/ui
 - Prisma 6.19.2, SQLite (`prisma/dev.db`)
-- 폰트: Pretendard 단일 (CDN, 세리프 폰트 사용 금지)
+- 폰트: Pretendard 기본, Noto Serif KR 포인트 (CDN 명조체 사용 허용)
 - 네이버 지도 (반드시 `ncpKeyId` 사용, clientId 금지)
 - 네이버 메일 (nodemailer + imapflow)
 - Node.js 20.20.0
@@ -34,7 +34,7 @@
 - **버튼**: `rounded-none border` square 스타일 (에디토리얼), 배경 반전 hover
 - **애니메이션**: TextReveal(클립패스 마스크), FadeIn, Parallax(useScroll)
 - **UX 라이팅**: 해요체, 짧은 문장, 한 문장 한 메시지
-- **금지**: 세리프, rounded-[28px+], 웜 뉴트럴, text-[10px], tracking-[0.3em+], 영어 eyebrow(헤더 nav 제외)
+- **금지**: 과도한 세리프 남용(헤드라인 포인트만 허용), rounded-[28px+], 웜 뉴트럴, text-[10px], tracking-[0.3em+], 영어 eyebrow(헤더 nav 제외)
 
 ## 프로젝트 요약
 - `app/stays/`, `app/stays/[slug]/`, `app/space/`, `app/reservation/`, `app/brand/`, `app/partnership/`, `app/guide/`, `app/my-reservation/`
@@ -81,6 +81,7 @@
 - [2026-05-30] 접근성 표준 준수(WCAG 1.4.4) -> `viewport`의 `maximumScale=1`은 저시력자 핀치 줌을 막아 접근성 위반이므로 반드시 제거해야 함. `onClick`이 들어간 모든 날짜 셀과 탭은 스크린리더와 키보드 초점 이동을 위해 `<button>` 태그와 `aria-pressed`, `aria-label` 속성으로 의미론적 구조를 보강해야 함.
 - [2026-06-02] Railway 프로덕션 배포 핵심 사항 -> (1) Next.js 16 Turbopack은 Railway 컨테이너에서 패닉 오류 발생 → `next build`가 아닌 `next@15.3.8`(Dockerfile 내 `npm ci`)를 사용해 webpack 빌드 강제. (2) Dockerfile 빌드 단계에서 `DATABASE_URL=file:/app/prisma/dev.db` (절대경로)로 `prisma db push`를 실행 후 db 파일을 런타임 단계로 복사해야 함. (3) Railway env var `DATABASE_URL` 도 절대경로`file:/app/prisma/dev.db`로 설정해야 상대경로 문제 방지. (4) `next.config.ts`에 `output: 'standalone'`과 `eslint.ignoreDuringBuilds: true` 필수. (5) Railway 무료 트라이얼 만료 시 env var 변경 API 차단됨 → 대시보드 직접 변경. (6) `useSearchParams()` 사용 컴포넌트는 반드시 Suspense 경계로 감싸야 빌드 통과.
 - [2026-06-02] Railway Dockerfile 배포 관리자 계정 설정 -> 관리자 로그인에는 `ADMIN_ID`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` 3개가 모두 필요. `ADMIN_SECRET` 단독으로는 동작하지 않음. Railway 변수 변경 후 재배포 자동 트리거됨.
+- [2026-06-03] 하이엔드 럭셔리 스테이 브랜드화 및 대관 문의 오토메이션 -> (1) 조식 관련 키워드를 전면 제거하고 '포치 아래 명상' 등 고요함/비움 미학을 강조함. (2) 최대 인원을 6인으로 확장하고 2/4/6인 짝수 단위 예약으로 제한함. (3) 제휴 기업(네오위즈, 이스트소프트) 우대 혜택을 평일 30%, 주말 20%, 성수기 20%로 날짜별 정밀 세분화하여 SQLite 및 메일러에 연동함. (4) 예약 페이지 내 실시간 조회(Lookup) 탭을 완전히 통합 구현함. (5) 미디어 대관 전용 스키마(RentalInquiry)를 탑재하고 DB 영속화 및 기품 있는 관리자 메일 오토메이션 전송을 연계함. (6) Noto Serif KR 명조체 포인트를 도입하여 하이엔드 타이포그래피 미학을 완성함.
 
 ## 2026-05-24 작업 일지
 

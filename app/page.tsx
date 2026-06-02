@@ -31,20 +31,20 @@ export default function HomePage() {
         <div className="relative flex flex-col items-center text-center px-5">
           <FadeIn delay={0.2} duration={0.7} distance={0}>
             <p className="text-[12px] font-medium tracking-[0.15em] text-white/50 mb-6">
-              강원 홍천 · 숲속 독채 스테이
+              온전한 안식과 고요가 흐르는 프라이빗 스테이
             </p>
           </FadeIn>
 
           <div className="overflow-hidden">
             <FadeIn delay={0.35} duration={1.1} distance={50}>
-              <h1 className="text-[clamp(3rem,8.5vw,7.5rem)] font-extralight leading-[1.05] tracking-[-0.025em] text-white">
+              <h1 className="text-[clamp(3rem,8.5vw,7.5rem)] font-extralight leading-[1.05] tracking-[-0.025em] text-white font-serif">
                 머무는 것만으로
               </h1>
             </FadeIn>
           </div>
           <div className="overflow-hidden">
             <FadeIn delay={0.5} duration={1.1} distance={50}>
-              <h1 className="text-[clamp(3rem,8.5vw,7.5rem)] font-extralight leading-[1.05] tracking-[-0.025em] text-white/60">
+              <h1 className="text-[clamp(3rem,8.5vw,7.5rem)] font-extralight leading-[1.05] tracking-[-0.025em] text-white/60 font-serif">
                 충분한 곳
               </h1>
             </FadeIn>
@@ -94,9 +94,9 @@ export default function HomePage() {
       <section className="px-5 py-20 md:py-28">
         <div className="mx-auto max-w-4xl">
           <TextReveal>
-            <p className="text-[clamp(1.4rem,2.8vw,2.2rem)] font-light leading-[1.75] tracking-[-0.025em] text-[#1a1a1a]">
-              숲이 들어오는 거실, 히노끼 향이 채우는 밤,<br />
-              아침 안개 속 데크 위의 조식 한 상.
+            <p className="text-[clamp(1.4rem,2.8vw,2.2rem)] font-light leading-[1.75] tracking-[-0.025em] text-[#1a1a1a] font-serif">
+              자연을 응시하는 거실, 히노끼 편백 향이 채우는 밤,<br />
+              포치 아래 잠시 감은 눈 끝에 가닿는 온전한 고요.
             </p>
           </TextReveal>
 
@@ -106,7 +106,7 @@ export default function HomePage() {
               {[
                 { title: 'A Private Sanctuary', desc: '단 한 팀을 위한 단독 정원', detail: '250평 대자연 정원 · 48평 정제된 실내' },
                 { title: 'Check-In & Out', desc: '입실 16:00 · 퇴실 11:00', detail: '여정 가이드 당일 오전 비대면 발송' },
-                { title: 'Slow Rest', desc: '2박 이상 느린 여정', detail: '박당 50,000원 특별 우대' },
+                { title: 'Slow Rest', desc: '2박 이상 느긋한 여정', detail: '연박 할인 특별가 제공' },
                 { title: 'Seasonal Pool', desc: '따뜻한 미온수 기본 세팅', detail: '추가 과금 없는 사계절 전용 풀' },
               ].map((item) => (
                 <div key={item.title} className="group border-b border-gray-100 pb-5 md:border-b-0 md:pb-0">

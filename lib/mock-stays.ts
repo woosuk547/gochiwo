@@ -33,7 +33,7 @@ export const mockStays: MockStay[] = [
     facts: [
       { label: '기준 인원', value: '2인 기준, 최대 4인' },
       { label: '체크인', value: '16:00 / 11:00' },
-      { label: '포함 서비스', value: '웰컴 스낵 · 조식 · 주차 2대' },
+      { label: '포함 서비스', value: '웰컴 스낵 · 온수 풀 · 주차 2대' },
     ],
     amenities: ['퀸 베드 2', '실내 온수 풀', '핀란드식 사우나', '블루투스 스피커', '주방 / 다이닝', '무료 주차'],
   },
@@ -54,7 +54,7 @@ export const mockStays: MockStay[] = [
     facts: [
       { label: '기준 인원', value: '2인 기준, 최대 3인' },
       { label: '체크인', value: '16:00 / 11:00' },
-      { label: '포함 서비스', value: '브런치 바스켓 · 주차 1대' },
+      { label: '포함 서비스', value: '와인 바스켓 · 주차 1대' },
     ],
     amenities: ['킹 베드 1', '오션뷰 욕조', '테라스 라운지', '캡슐 커피 머신', '빔프로젝터', '무료 주차'],
   },
@@ -75,7 +75,7 @@ export const mockStays: MockStay[] = [
     facts: [
       { label: '기준 인원', value: '4인 기준, 최대 6인' },
       { label: '체크인', value: '16:00 / 11:00' },
-      { label: '포함 서비스', value: '웰컴 티 · 조식 바스켓 · 주차 2대' },
+      { label: '포함 서비스', value: '웰컴 티 · 40ml 기프트 어메니티 · 주차 2대' },
     ],
     amenities: ['퀸 베드 2', '중정 풀', '야외 다이닝', '독립 욕실 2개', '풀 키친', '무료 주차'],
   },

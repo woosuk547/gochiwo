@@ -71,3 +71,20 @@ model BlockedDate {
   label     String?
   createdAt DateTime @default(now())
 }
+
+model RentalInquiry {
+  id           String   @id @default(cuid())
+  companyName  String
+  brandWebsite String?
+  purpose      String
+  rentalDate   String
+  duration     String
+  totalGuests  Int
+  useSpace     String
+  note         String?
+  contactName  String
+  contactEmail String
+  contactPhone String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

@@ -36,7 +36,7 @@ interface SubmittedSummary {
 }
 
 const arrivalOptions = ['18:00 이전', '18:00 - 20:00', '20:00 이후', '별도 조율']
-const guestOptions = ['1', '2', '3', '4']
+const guestOptions = ['2', '4', '6']
 const directPaymentMethods: PaymentMethod[] = ['CARD', 'BANK_TRANSFER']
 const partnershipPaymentMethods: PaymentMethod[] = ['CARD', 'BANK_TRANSFER', 'CORPORATE_BILLING']
 
@@ -269,6 +269,15 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       return
     }
 
+    // 제휴기업 임직원 이메일 도메인 검증
+    if (source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0]) {
+      const emailDomain = form.email.trim().toLowerCase().split('@')[1]
+      if (emailDomain !== 'neowiz.com' && emailDomain !== 'estsoft.com') {
+        setError('제휴 임직원 전용 요금은 회사 전용 이메일(@neowiz.com 또는 @estsoft.com)로만 신청하실 수 있습니다. 기업 메일 주소를 정확히 기재해 주세요.')
+        return
+      }
+    }
+
     const phoneDigits = form.phone.replace(/[^0-9]/g, '')
     if (!/^01[016789]\d{7,8}$/.test(phoneDigits)) {
       setError('올바른 전화번호를 입력해 주세요.')
@@ -374,6 +383,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         <label className="flex flex-col gap-2">
           <span className="text-[11px] font-semibold tracking-wider text-gray-400">이메일 주소 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
           <FormInput type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required />
+          {source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0] && (
+            <p className="text-[11px] text-gray-400 leading-relaxed">
+              * 평일 30%, 주말/공휴일 20%의 전용 우대 요금이 자동 적용됩니다. 예약 진행을 위해 회사 이메일 주소(@neowiz.com 또는 @estsoft.com)를 정확히 기재해 주세요. 해당 이메일로 전용 인증 코드를 전송해 드립니다.
+            </p>
+          )}
         </label>
         <label className="flex flex-col gap-2">
           <span className="text-[11px] font-semibold tracking-wider text-gray-400">연락처 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
@@ -384,18 +398,25 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           <FormSelect value={form.guests} onChange={(e) => updateField('guests', e.target.value)} required>
             {guestOptions.map((opt) => <option key={opt} value={opt}>{opt}명</option>)}
           </FormSelect>
+          {form.guests === '6' && (
+            <p className="text-[12px] text-gray-500 leading-relaxed font-medium">
+              * 6인 예약 시, 편안하게 머무실 수 있도록 2명 분의 토퍼 및 프리미엄 침구 세트가 추가로 정성스레 준비됩니다.
+            </p>
+          )}
         </label>
 
         {source === 'PARTNERSHIP' && (
           <>
             <label className="flex flex-col gap-2">
               <span className="text-[11px] font-semibold tracking-wider text-gray-400">회사명 · 제휴사명 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
-              <FormInput value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 크리오스 임직원 복지" required />
+              <FormInput value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 네오위즈 복지지원팀" required />
             </label>
             <label className="flex flex-col gap-2">
               <span className="text-[11px] font-semibold tracking-wider text-gray-400">제휴 우대 구분 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
               <FormSelect value={form.benefitLabel} onChange={(e) => updateField('benefitLabel', e.target.value)} required>
-                {partnerBenefitOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+                {partnerBenefitOptions
+                  .filter((opt) => opt !== '브랜드 촬영 · 답사')
+                  .map((opt) => <option key={opt} value={opt}>{opt}</option>)}
               </FormSelect>
             </label>
           </>

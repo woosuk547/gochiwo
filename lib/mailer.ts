@@ -405,3 +405,95 @@ export async function sendPaymentGuide(options: PaymentGuideOptions) {
     `),
   })
 }
+
+interface RentalInquiryNotificationOptions {
+  companyName: string
+  brandWebsite?: string
+  purpose: string
+  rentalDate: string
+  duration: string
+  totalGuests: number
+  useSpace: string
+  note?: string
+  contactName: string
+  contactEmail: string
+  contactPhone: string
+}
+
+export async function sendRentalInquiryNotification(options: RentalInquiryNotificationOptions) {
+  const websiteLine = options.brandWebsite
+    ? `<tr style="border-bottom: 1px solid #e5e5e5;"><td style="padding: 10px 0; color: #666666;">사이트 / URL</td><td style="padding: 10px 0; font-weight: 500; text-align: right;"><a href="${options.brandWebsite}" target="_blank" style="color: #1a1a1a; text-decoration: underline;">${options.brandWebsite}</a></td></tr>`
+    : ''
+
+  const noteLine = options.note
+    ? `<div style="background-color: #f8f8f8; padding: 20px 24px; margin-bottom: 24px; font-size: 13px; color: #666666; line-height: 1.7; border: 1px solid #e5e5e5; white-space: pre-wrap;">
+        <p style="margin: 0 0 6px; font-weight: 600; color: #1a1a1a;">촬영 콘셉트 및 요청사항</p>
+        <p style="margin: 0;">${options.note}</p>
+      </div>`
+    : ''
+
+  await sendMail({
+    to: "creaos@naver.com",
+    subject: `[Repause 대관문의] ${options.companyName} - 상업적 촬영 대관 신청서`,
+    senderName: "Repause",
+    html: repauseEmailBase(`
+      <h2 style="font-size: 20px; font-weight: 700; line-height: 1.4; margin: 0 0 12px; color: #1a1a1a;">새로운 미디어 대관 문의가 접수되었습니다</h2>
+      <p style="font-size: 14px; color: #666666; margin: 0 0 32px; line-height: 1.7;">
+        <strong>${options.companyName}</strong>에서 제출한 대관 문의 상세 내역입니다.<br />
+        내용을 면밀히 검토하신 후 신속히 연락해 주시기 바랍니다.
+      </p>
+
+      <!-- 신청 내역 테이블 -->
+      <div style="margin-bottom: 28px; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; background-color: #f8f8f8; padding: 24px 28px;">
+        <p style="font-size: 11px; letter-spacing: 0.1em; color: #999999; margin: 0 0 16px; font-weight: 600;">RENTAL DETAILS</p>
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; color: #1a1a1a;">
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 10px 0; color: #666666; width: 120px;">업체 / 브랜드명</td>
+            <td style="padding: 10px 0; font-weight: 600; text-align: right;"><strong>${options.companyName}</strong></td>
+          </tr>
+          ${websiteLine}
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 10px 0; color: #666666;">촬영 카테고리</td>
+            <td style="padding: 10px 0; text-align: right;">${options.purpose}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 10px 0; color: #666666;">희망 일시</td>
+            <td style="padding: 10px 0; font-weight: 500; text-align: right; color: #1a1a1a;"><strong>${options.rentalDate}</strong></td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 10px 0; color: #666666;">예상 소요 시간</td>
+            <td style="padding: 10px 0; text-align: right;">${options.duration || '미기재'}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 10px 0; color: #666666;">총 출입 인원</td>
+            <td style="padding: 10px 0; font-weight: 500; text-align: right;">${options.totalGuests}명</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 10px 0; color: #666666;">사용 희망 공간</td>
+            <td style="padding: 10px 0; text-align: right;">${options.useSpace}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 10px 0; color: #666666;">담당자 성함</td>
+            <td style="padding: 10px 0; text-align: right;">${options.contactName}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 10px 0; color: #666666;">담당자 이메일</td>
+            <td style="padding: 10px 0; text-align: right;"><a href="mailto:${options.contactEmail}" style="color: #1a1a1a;">${options.contactEmail}</a></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; color: #666666;">담당자 연락처</td>
+            <td style="padding: 10px 0; font-weight: 600; text-align: right;"><strong>${options.contactPhone}</strong></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 요청사항 블록 -->
+      ${noteLine}
+
+      <p style="font-size: 13px; line-height: 1.8; color: #666666; margin: 0;">
+        * 본 메일은 리포즈 대관 자동화 시스템에서 크리오스 전담 담당자에게 즉시 전달된 메일입니다.<br />
+        * 대관 계약서 작성 및 예약 보증금(30만원) 수납 프로세스를 조속히 전개해 주시기 바랍니다.
+      </p>
+    `),
+  })
+}

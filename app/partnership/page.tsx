@@ -7,8 +7,8 @@ import { getAvailabilitySnapshot } from '@/lib/reservation-service'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: '제휴 예약 — 리포즈',
-  description: '임직원 전용 요금, 촬영, VIP 일정을 위한 제휴 전용 예약. 12% 할인 · 법인 정산 지원.',
+  title: '제휴 및 대관 — 리포즈',
+  description: '임직원 전용 요금 혜택 및 미디어 상업 촬영 대관 가이드. 법인 정산 및 전문 디렉팅 협의.',
 }
 
 export default async function PartnershipPage() {
@@ -17,10 +17,10 @@ export default async function PartnershipPage() {
   return (
     <PageShell>
       <PageHero
-        title="파트너를 위한 예약"
-        description="임직원 12% 우대 혜택과 미디어 촬영 대관, 전담 법인 정산까지 기품 있게 맞춰 드려요."
+        title="파트너십 및 미디어 대관"
+        description="임직원을 위한 품격 있는 우대 혜택과 브랜드 가치를 극대화하는 미디어 촬영 대관 프로세스를 전담 제공합니다."
         image="/repause/editorial-living.jpg"
-        eyebrow="제휴 예약"
+        eyebrow="제휴 · 대관"
       />
 
       <section className="mx-auto max-w-6xl px-4 py-8 md:px-5 md:py-12 lg:py-16">
