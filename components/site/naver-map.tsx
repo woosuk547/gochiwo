@@ -18,6 +18,31 @@ interface NaverMapProps {
   address?: string
 }
 
+function OpenStreetMapFallback({
+  latitude,
+  longitude,
+  title,
+}: {
+  latitude: number
+  longitude: number
+  title: string
+}) {
+  const delta = 0.015
+  const bbox = [longitude - delta, latitude - delta, longitude + delta, latitude + delta].join(',')
+  const src = `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${latitude}%2C${longitude}`
+
+  return (
+    <iframe
+      title={`${title} 위치`}
+      src={src}
+      className="h-[380px] w-full border-0 md:h-[460px]"
+      style={{ filter: 'grayscale(10%) contrast(98%)' }}
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    />
+  )
+}
+
 export function NaverMap({
   ncpKeyId = '',
   latitude = 37.721200,
@@ -27,27 +52,35 @@ export function NaverMap({
   address = '강원 홍천군 서면 숲속길 21',
 }: NaverMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null)
+  const initializedRef = useRef(false)
   const [mapLoaded, setMapLoaded] = useState(false)
-  const [error, setError] = useState(false)
+  const [useFallback, setUseFallback] = useState(!ncpKeyId)
 
   useEffect(() => {
     if (!ncpKeyId) {
-      setError(true)
+      setUseFallback(true)
       return
     }
+
+    setUseFallback(false)
+    setMapLoaded(false)
+    initializedRef.current = false
 
     let mapInstance: any = null
     let markerInstance: any = null
 
     const initializeMap = () => {
-      if (typeof window === 'undefined' || !window.naver || !mapContainerRef.current) {
+      if (initializedRef.current || typeof window === 'undefined' || !mapContainerRef.current) {
+        return
+      }
+
+      if (!window.naver?.maps?.Map) {
         return
       }
 
       try {
         const center = new window.naver.maps.LatLng(latitude, longitude)
-        
-        // 지도 초기화
+
         mapInstance = new window.naver.maps.Map(mapContainerRef.current, {
           center,
           zoom,
@@ -64,7 +97,6 @@ export function NaverMap({
           },
         })
 
-        // 커스텀 프리미엄 마커 (조용하고 미니멀한 에디토리얼 스타일)
         const markerContent = `
           <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(26, 26, 26, 0.10); border-radius: 50%; border: 1px solid rgba(26, 26, 26, 0.18);">
             <div style="width: 14px; height: 14px; background: #1a1a1a; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.18);"></div>
@@ -84,73 +116,71 @@ export function NaverMap({
           },
         })
 
+        initializedRef.current = true
         setMapLoaded(true)
       } catch (err) {
         console.error('Failed to initialize Naver Map:', err)
-        setError(true)
+        setUseFallback(true)
       }
     }
 
-    // 윈도우 객체 및 naver 객체 준비 상태 확인
-    if (typeof window !== 'undefined' && window.naver && window.naver.maps) {
+    const interval = setInterval(() => {
       initializeMap()
-    } else {
-      // 1초 주기로 폴링하여 naver 객체가 로드되는지 감지 (Script 로드 대기)
-      const interval = setInterval(() => {
-        if (typeof window !== 'undefined' && window.naver && window.naver.maps) {
-          initializeMap()
-          clearInterval(interval)
-        }
-      }, 500)
-
-      // 최대 10초 대기 후 해제
-      const timeout = setTimeout(() => {
+      if (initializedRef.current) {
         clearInterval(interval)
-        if (!mapLoaded) {
-          setError(true)
-        }
-      }, 10000)
-
-      return () => {
-        clearInterval(interval)
-        clearTimeout(timeout)
       }
-    }
+    }, 400)
+
+    const timeout = setTimeout(() => {
+      clearInterval(interval)
+      if (!initializedRef.current) {
+        setUseFallback(true)
+      }
+    }, 5000)
 
     return () => {
+      clearInterval(interval)
+      clearTimeout(timeout)
       if (markerInstance) markerInstance.setMap(null)
-      // Naver Maps 객체 해제는 인스턴스 소멸 시 가비지 컬렉션 처리됨
+      if (mapInstance) mapInstance.destroy?.()
     }
-  }, [latitude, longitude, zoom, mapLoaded, ncpKeyId])
+  }, [latitude, longitude, zoom, ncpKeyId])
+
+  const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(address)}`
 
   return (
     <div className="relative overflow-hidden rounded-none border border-gray-200 bg-gray-50">
-      {/* 지도 컨테이너 */}
-      <div 
-        ref={mapContainerRef} 
-        className="h-[380px] w-full md:h-[460px]" 
-        style={{ filter: 'grayscale(10%) contrast(98%)' }}
-      />
-
-      {/* 에러 상태 뷰 */}
-      {error && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-white/95">
-          <p className="text-[16px] font-semibold text-[#1a1a1a]">{title}</p>
-          <p className="mt-2 text-[14px] text-gray-500">{address}</p>
-          <p className="mt-2 text-xs text-gray-400">
-            {ncpKeyId
-              ? '지도를 로드하는 중 일시적인 오류가 발생했습니다. 주소를 참고해 주시기 바랍니다.'
-              : '지도 API 키가 설정되지 않았습니다. 잠시 후 다시 시도해 주세요.'}
-          </p>
-        </div>
+      {useFallback ? (
+        <OpenStreetMapFallback latitude={latitude} longitude={longitude} title={title} />
+      ) : (
+        <>
+          <div
+            ref={mapContainerRef}
+            className="h-[380px] w-full md:h-[460px]"
+            style={{ filter: 'grayscale(10%) contrast(98%)' }}
+          />
+          {!mapLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-50/80">
+              <span className="text-[13px] text-gray-400 animate-pulse">지도 로딩 중</span>
+            </div>
+          )}
+        </>
       )}
 
-      {/* 로딩 표시 */}
-      {!mapLoaded && !error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-50/80">
-          <span className="text-[13px] text-gray-400 animate-pulse">지도 로딩 중</span>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 bg-white px-4 py-3 text-[13px]">
+        <div>
+          <p className="font-semibold text-[#1a1a1a]">{title}</p>
+          <p className="mt-0.5 text-gray-500">{address}</p>
         </div>
-      )}
+        <a
+          href={naverMapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-[44px] items-center border border-[#1a1a1a] px-4 py-2 text-[12px] font-semibold tracking-wide text-[#1a1a1a] transition-colors hover:bg-[#1a1a1a] hover:text-white"
+        >
+          네이버 지도에서 보기
+        </a>
+      </div>
     </div>
   )
 }
