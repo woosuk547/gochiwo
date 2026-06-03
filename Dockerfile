@@ -10,7 +10,11 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+ARG NEXT_PUBLIC_NAVER_MAP_CLIENT_ID
+ARG NEXT_PUBLIC_APP_URL
 ENV DATABASE_URL="file:/app/prisma/dev.db"
+ENV NEXT_PUBLIC_NAVER_MAP_CLIENT_ID=$NEXT_PUBLIC_NAVER_MAP_CLIENT_ID
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 RUN npx prisma generate
 RUN npx prisma db push --accept-data-loss
 RUN npm run build

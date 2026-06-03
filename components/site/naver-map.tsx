@@ -10,6 +10,7 @@ declare global {
 }
 
 interface NaverMapProps {
+  ncpKeyId?: string
   latitude?: number
   longitude?: number
   zoom?: number
@@ -18,6 +19,7 @@ interface NaverMapProps {
 }
 
 export function NaverMap({
+  ncpKeyId = '',
   latitude = 37.721200,
   longitude = 127.653400,
   zoom = 14,
@@ -29,6 +31,11 @@ export function NaverMap({
   const [error, setError] = useState(false)
 
   useEffect(() => {
+    if (!ncpKeyId) {
+      setError(true)
+      return
+    }
+
     let mapInstance: any = null
     let markerInstance: any = null
 
@@ -114,7 +121,7 @@ export function NaverMap({
       if (markerInstance) markerInstance.setMap(null)
       // Naver Maps 객체 해제는 인스턴스 소멸 시 가비지 컬렉션 처리됨
     }
-  }, [latitude, longitude, zoom, mapLoaded])
+  }, [latitude, longitude, zoom, mapLoaded, ncpKeyId])
 
   return (
     <div className="relative overflow-hidden rounded-none border border-gray-200 bg-gray-50">
@@ -130,7 +137,11 @@ export function NaverMap({
         <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-white/95">
           <p className="text-[16px] font-semibold text-[#1a1a1a]">{title}</p>
           <p className="mt-2 text-[14px] text-gray-500">{address}</p>
-          <p className="mt-2 text-xs text-[#9a8470]">지도를 로드하는 중 일시적인 오류가 발생했습니다. 주소를 참고해 주시기 바랍니다.</p>
+          <p className="mt-2 text-xs text-gray-400">
+            {ncpKeyId
+              ? '지도를 로드하는 중 일시적인 오류가 발생했습니다. 주소를 참고해 주시기 바랍니다.'
+              : '지도 API 키가 설정되지 않았습니다. 잠시 후 다시 시도해 주세요.'}
+          </p>
         </div>
       )}
 

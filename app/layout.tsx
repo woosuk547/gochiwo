@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import Script from 'next/script'
 import { KakaoChannelButton } from '@/components/site/kakao-channel-button'
 import { MobileCTABar } from '@/components/site/mobile-cta-bar'
 import './globals.css'
@@ -42,10 +41,6 @@ export default function RootLayout({
         {children}
         <MobileCTABar />
         <KakaoChannelButton />
-        <Script
-          src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}&submodules=geocoder`}
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   )

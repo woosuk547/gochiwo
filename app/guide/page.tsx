@@ -3,6 +3,8 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { PageShell } from '@/components/site/page-shell'
 import { NaverMap } from '@/components/site/naver-map'
+import { NaverMapsScript } from '@/components/site/naver-maps-script'
+import { getNaverMapNcpKeyId } from '@/lib/naver-map-config'
 import { FAQAccordion } from '@/components/site/faq-accordion'
 import { FadeIn } from '@/components/motion'
 import { AnimatedSection } from '@/components/motion/animated-sections'
@@ -13,9 +15,14 @@ export const metadata: Metadata = {
   description: '체크인, 결제, 취소 규정, 위치, FAQ를 확인하세요.',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default function GuidePage() {
+  const naverMapKey = getNaverMapNcpKeyId()
+
   return (
     <PageShell>
+      <NaverMapsScript ncpKeyId={naverMapKey} />
 
       {/* ── 이미지 히어로 ─────────────────────────────────────────────── */}
       <section className="relative -mt-16 flex min-h-[50vh] items-end overflow-hidden md:min-h-[60vh]">
@@ -139,7 +146,7 @@ export default function GuidePage() {
             </AnimatedSection>
             <AnimatedSection delay={0.2}>
               <div className="overflow-hidden rounded-none">
-                <NaverMap />
+                <NaverMap ncpKeyId={naverMapKey} />
               </div>
             </AnimatedSection>
           </div>
