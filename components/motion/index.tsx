@@ -267,3 +267,4 @@ export function Parallax({ children, speed = 0.3, className }: ParallaxProps) {
 
 export { motion, EASE_OUT_QUART, EASE_OUT_EXPO, useScroll, useTransform }
 export { ParallaxImage } from './parallax-image'
+export { ParallaxLayers } from './parallax-layers'

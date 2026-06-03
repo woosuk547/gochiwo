@@ -4,7 +4,7 @@ import { contactInfo, siteNavigation } from '@/lib/repause-content'
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-gray-100 bg-gray-50 px-4 pb-24 pt-10 md:px-5 md:pb-12 md:pt-12 lg:pb-12">
+    <footer className="border-t border-gray-100 bg-white px-4 pb-24 pt-10 md:px-5 md:pb-12 md:pt-12 lg:pb-12">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col gap-8 md:flex-row md:justify-between md:gap-10">
           <div>
@@ -18,7 +18,7 @@ export function SiteFooter() {
                 />
               </div>
             </Link>
-            <p className="mt-2 text-[14px] leading-relaxed text-gray-500 md:text-[15px]">
+            <p className="mt-2 font-serif text-[14px] leading-relaxed text-gray-500 md:text-[15px]">
               고요한 휴식과 우리만의 시간을 위한 프라이빗 독채 스테이
             </p>
           </div>

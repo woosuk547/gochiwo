@@ -51,6 +51,82 @@ export const signatureHighlights = [
   },
 ]
 
+/** 홈 전용 — 감성·여정 중심 (공간 상세 페이지와 역할 분리) */
+export const homeNarrative = {
+  pullQuote:
+    '자연을 응시하는 거실, 히노끼 편백 향이 채우는 밤,\n포치 아래 잠시 감은 눈 끝에 가닿는 온전한 고요.',
+  brandQuote: '고요가 흐르는 시간, 자연이 설계한 휴식.',
+  locationTeaser: '강원 홍천, 숲속 프라이빗 독채',
+  partnershipBadge: '네오위즈 · 이스트소프트 임직원 우대',
+}
+
+export const homeSignatureFacts = [
+  { title: '프라이빗 독채', desc: '단 한 팀을 위한 독립 공간', detail: '250평 정원 · 48평 실내' },
+  { title: '이용 인원', desc: '기준 2인 · 최대 6인', detail: '6인 예약 시 토퍼·침구 추가' },
+  { title: '느긋한 연박', desc: '2박 이상 머무는 여정', detail: '연박 할인 특별가' },
+  { title: '사계절 전용 풀', desc: '추운 계절 미온수 포함', detail: '봄·여름은 자연수 풀' },
+]
+
+export const homeDayJourney = [
+  {
+    time: '아침',
+    label: '데크',
+    title: '포치 아래 첫 숨',
+    copy: '새벽 공기와 함께 눈을 뜨면, 하루의 속도가 천천히 풀려요.',
+    image: '/repause/editorial-deck.jpg',
+  },
+  {
+    time: '낮',
+    label: '거실',
+    title: '전면창의 빛',
+    copy: '자연이 액자처럼 들어오는 거실에서 아무것도 하지 않아도 충분해요.',
+    image: '/repause/editorial-living.jpg',
+  },
+  {
+    time: '저녁',
+    label: '욕실',
+    title: '히노끼의 잔향',
+    copy: '편백 향이 스며드는 반신욕으로 하루의 여정이 안식으로 바뀌어요.',
+    image: '/repause/editorial-bath.jpg',
+  },
+  {
+    time: '밤',
+    label: '침실',
+    title: '깊은 고요',
+    copy: '온전한 정적이 깃드는 밤. 잠드는 것조차 아깝다는 말을 자주 듣는 방이에요.',
+    image: '/repause/editorial-bedroom.jpg',
+  },
+]
+
+/** 홈 공간 프리뷰 — 3컷, 짧은 카피 */
+export const homeSpacePreviews = [
+  {
+    label: '거실',
+    image: '/repause/editorial-living.jpg',
+    title: '거실과 전면창',
+    copy: '도착하는 순간, 일상의 속도가 고요히 늦춰집니다.',
+  },
+  {
+    label: '욕실',
+    image: '/repause/editorial-bath.jpg',
+    title: '히노끼 욕조',
+    copy: '은은한 편백 향과 함께 하루가 안식으로 바뀌어요.',
+  },
+  {
+    label: '데크',
+    image: '/repause/editorial-deck.jpg',
+    title: '프라이빗 데크',
+    copy: '포치 아래, 시간의 흐름조차 가만히 멈춰 서는 자리.',
+  },
+]
+
+export const homeParallaxLayers = [
+  { src: '/repause/parallax/forest-canopy.jpg', speed: 0.15, zIndex: 1 },
+  { src: '/repause/parallax/trees-layer.jpg', speed: 0.35, zIndex: 2 },
+  { src: '/repause/parallax/forest-path.jpg', speed: 0.55, zIndex: 3 },
+  { src: '/repause/parallax/villa-reveal.jpg', speed: 0.75, zIndex: 4 },
+]
+
 export const roomHighlights = [
   {
     label: '거실과 전면창',

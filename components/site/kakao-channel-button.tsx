@@ -26,7 +26,7 @@ export function KakaoChannelButton() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
             transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
-            className="rounded-none border border-gray-200 bg-white p-4 shadow-xl max-w-[240px]"
+            className="rounded-none border border-gray-200 bg-white p-4 shadow-lg max-w-[240px]"
           >
             <p className="text-[13px] font-semibold text-[#1a1a1a]">문의하기</p>
             <p className="mt-1.5 text-[13px] leading-relaxed text-gray-500">

@@ -44,7 +44,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
               src="/repause/logo-header.png"
               alt="Repause"
               fill
-              className={`object-contain scale-[2.2] translate-y-[-1px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`object-contain scale-[1.85] translate-y-[-1px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 solidHeader
                   ? 'mix-blend-multiply'
                   : 'brightness-0 invert mix-blend-screen'
@@ -76,7 +76,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
           })}
           <Link
             href="/reservation"
-            className={`ml-3 px-5 py-2 text-[13px] font-semibold tracking-wider uppercase transition-all duration-300 rounded-none border ${
+            className={`ml-3 px-5 py-2 text-[13px] font-semibold tracking-wide transition-all duration-300 rounded-none border ${
               solidHeader
                 ? 'border-[#1a1a1a] bg-[#1a1a1a] text-white hover:bg-transparent hover:text-[#1a1a1a]'
                 : 'border-white bg-white text-[#1a1a1a] hover:bg-transparent hover:text-white'
@@ -146,7 +146,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
                 ))}
                 <Link
                   href="/reservation"
-                  className="mt-4 flex items-center justify-center border border-[#1a1a1a] bg-[#1a1a1a] px-4 py-4 text-[14px] font-semibold tracking-wider uppercase text-white rounded-none transition-all duration-300 hover:bg-transparent hover:text-[#1a1a1a]"
+                  className="mt-4 flex items-center justify-center border border-[#1a1a1a] bg-[#1a1a1a] px-4 py-4 text-[14px] font-semibold tracking-wide text-white rounded-none transition-all duration-300 hover:bg-transparent hover:text-[#1a1a1a]"
                   onClick={() => setMenuOpen(false)}
                 >
                   예약하기
