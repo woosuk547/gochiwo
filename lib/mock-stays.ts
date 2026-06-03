@@ -23,7 +23,7 @@ export const mockStays: MockStay[] = [
     category: '포레스트 풀 하우스',
     guests: '2~4명',
     price: '390,000원~',
-    badge: '숲 속 독채',
+    badge: '프라이빗 독채',
     coverImage: '/repause/collection/sol-atelier-cover.jpg',
     interiorImage: '/repause/collection/sol-atelier-room.jpg',
     summary: '소나무 숲 한가운데 놓인 전면창 독채. 늦은 오후 빛과 실내 온수 풀이 오래 기억에 남는 스테이입니다.',

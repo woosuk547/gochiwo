@@ -17,6 +17,7 @@ interface DateRangePickerProps {
   onChange: (checkIn: string, checkOut: string) => void
   blockedDates: string[]
   reservedRanges: Array<{ checkIn: string; checkOut: string }>
+  minBookableDateKey?: string
 }
 
 export function DateRangePicker({
@@ -25,6 +26,7 @@ export function DateRangePicker({
   onChange,
   blockedDates,
   reservedRanges,
+  minBookableDateKey,
 }: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -36,6 +38,7 @@ export function DateRangePicker({
   const blockedKeys = useMemo(() => new Set(blockedDates), [blockedDates])
   const reservedKeys = useMemo(() => buildReservedDateKeys(reservedRanges), [reservedRanges])
   const todayKey = getTodayKey()
+  const earliestKey = minBookableDateKey ?? todayKey
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -153,7 +156,7 @@ export function DateRangePicker({
               if (!cell) return <div key={`empty-${index}`} className="aspect-square" />
 
               const dateKey = formatDateKey(cell)
-              const isPast = dateKey < todayKey
+              const isPast = dateKey < earliestKey
               const isBlocked = blockedKeys.has(dateKey)
               const isReserved = reservedKeys.has(dateKey)
               const isUnavailable = isPast || isBlocked || isReserved

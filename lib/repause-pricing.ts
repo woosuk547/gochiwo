@@ -30,7 +30,6 @@ export interface ReservationQuote {
 
 export const partnerBenefitOptions = [
   '제휴 임직원 전용 요금',
-  '브랜드 촬영 · 답사',
   'VIP 초청 · 기업 일정',
 ] as const
 

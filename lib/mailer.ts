@@ -274,7 +274,7 @@ export async function sendReservationConfirmed(options: ReservationConfirmedOpti
           </tr>
           <tr style="border-bottom: 1px solid #e5e5e5;">
             <td style="padding: 12px 0; color: #666666;">체류 인원</td>
-            <td style="padding: 12px 0; text-align: right;">${options.guests}명 (기준 2인, 최대 4인)</td>
+            <td style="padding: 12px 0; text-align: right;">${options.guests}명 (기준 2인, 최대 6인)</td>
           </tr>
           <tr style="border-bottom: 1px solid #e5e5e5;">
             <td style="padding: 12px 0; color: #666666;">총 결제액</td>

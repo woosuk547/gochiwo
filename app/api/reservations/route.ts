@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-auth'
 import {
   parseDateInput,
+  formatDateKey,
+  ALLOWED_GUEST_COUNTS,
+  isCheckInAllowedForSource,
   type PaymentMethod,
   type ReservationSource,
 } from '@/lib/booking'
@@ -72,8 +75,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '제휴 구분을 다시 선택해주세요.' }, { status: 400 })
     }
 
-    if (!Number.isInteger(guests) || guests < 1 || guests > 4) {
-      return NextResponse.json({ error: '인원은 1명부터 4명까지 입력할 수 있습니다.' }, { status: 400 })
+    if (!ALLOWED_GUEST_COUNTS.includes(guests as (typeof ALLOWED_GUEST_COUNTS)[number])) {
+      return NextResponse.json({ error: '인원은 2명, 4명, 6명 중에서 선택할 수 있습니다.' }, { status: 400 })
+    }
+
+    const checkInKey = formatDateKey(checkIn)
+    if (!isCheckInAllowedForSource(checkInKey, source)) {
+      return NextResponse.json({ error: '제휴 예약은 이용일 기준 3주 전(21일 전)부터 가능합니다.' }, { status: 400 })
     }
 
     if (checkOut <= checkIn) {

@@ -86,6 +86,26 @@ export function getTodayKey() {
   return shifted.toISOString().slice(0, 10)
 }
 
+export const PARTNERSHIP_MIN_ADVANCE_DAYS = 21
+export const ALLOWED_GUEST_COUNTS = [2, 4, 6] as const
+
+export function addDaysToDateKey(dateKey: string, days: number) {
+  const parsed = parseDateInput(dateKey)
+  if (!parsed) return dateKey
+  parsed.setUTCDate(parsed.getUTCDate() + days)
+  return formatDateKey(parsed)
+}
+
+export function getMinBookableDateKey(minAdvanceDays = 0) {
+  const today = getTodayKey()
+  return minAdvanceDays > 0 ? addDaysToDateKey(today, minAdvanceDays) : today
+}
+
+export function isCheckInAllowedForSource(checkInKey: string, source: ReservationSource) {
+  if (source !== 'PARTNERSHIP') return true
+  return checkInKey >= getMinBookableDateKey(PARTNERSHIP_MIN_ADVANCE_DAYS)
+}
+
 export function formatDateLabel(value: Date | string) {
   const date = typeof value === 'string' ? new Date(value) : value
   return new Intl.DateTimeFormat('ko-KR', {

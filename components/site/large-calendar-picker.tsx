@@ -18,6 +18,7 @@ interface LargeCalendarPickerProps {
   onChange: (checkIn: string, checkOut: string) => void
   blockedDates: string[]
   reservedRanges: Array<{ checkIn: string; checkOut: string }>
+  minBookableDateKey?: string
 }
 
 export function LargeCalendarPicker({
@@ -26,6 +27,7 @@ export function LargeCalendarPicker({
   onChange,
   blockedDates,
   reservedRanges,
+  minBookableDateKey,
 }: LargeCalendarPickerProps) {
   const today = new Date()
   const [currentYear, setCurrentYear] = useState(today.getFullYear())
@@ -35,6 +37,7 @@ export function LargeCalendarPicker({
   const blockedKeys = useMemo(() => new Set(blockedDates), [blockedDates])
   const reservedKeys = useMemo(() => buildReservedDateKeys(reservedRanges), [reservedRanges])
   const todayKey = getTodayKey()
+  const earliestKey = minBookableDateKey ?? todayKey
 
   const isPastLimit =
     currentYear < today.getFullYear() ||
@@ -74,7 +77,7 @@ export function LargeCalendarPicker({
   }
 
   const handleKeyDown = (e: React.KeyboardEvent, dateKey: string) => {
-    const isPast = dateKey < todayKey
+    const isPast = dateKey < earliestKey
     const isBlocked = blockedKeys.has(dateKey)
     const isReserved = reservedKeys.has(dateKey)
     const isUnavailable = isPast || isBlocked || isReserved
@@ -152,7 +155,7 @@ export function LargeCalendarPicker({
               }
 
               const dateKey = formatDateKey(cell)
-              const isPast = dateKey < todayKey
+              const isPast = dateKey < earliestKey
               const isBlocked = blockedKeys.has(dateKey)
               const isReserved = reservedKeys.has(dateKey)
               const isUnavailable = isPast || isBlocked || isReserved

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { LargeCalendarPicker } from '@/components/site/large-calendar-picker'
 import { ReservationForm } from '@/components/site/reservation-form'
 import { partnershipBenefits } from '@/lib/repause-content'
+import { getMinBookableDateKey, PARTNERSHIP_MIN_ADVANCE_DAYS } from '@/lib/booking'
 import { Button } from '@/components/ui/button'
 
 interface PartnershipContentProps {
@@ -182,6 +183,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                 onChange={handleCalendarChange}
                 blockedDates={blockedDates}
                 reservedRanges={reservedRanges}
+                minBookableDateKey={getMinBookableDateKey(PARTNERSHIP_MIN_ADVANCE_DAYS)}
               />
 
               {/* 파트너사 */}

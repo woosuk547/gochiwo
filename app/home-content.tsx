@@ -160,7 +160,7 @@ export function HomeContent() {
       {/* ── 3. Parallax Forest Journey ────────────────────────────────── */}
       <ParallaxLayers
         layers={homeParallaxLayers}
-        subtitle="숲속으로"
+        subtitle="고요한 여정으로"
         title="프라이빗 독채에 닿기까지"
       />
 

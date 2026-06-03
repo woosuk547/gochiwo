@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button'
 import {
   formatDateLabel,
   paymentMethodLabel,
+  getMinBookableDateKey,
+  isCheckInAllowedForSource,
+  PARTNERSHIP_MIN_ADVANCE_DAYS,
   type PaymentMethod,
   type ReservationSource,
 } from '@/lib/booking'
@@ -214,6 +217,9 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
     note: '',
   })
 
+  const minBookableDateKey =
+    source === 'PARTNERSHIP' ? getMinBookableDateKey(PARTNERSHIP_MIN_ADVANCE_DAYS) : undefined
+
   useEffect(() => {
     if (externalCheckIn !== undefined && externalCheckIn !== form.checkIn) {
       setForm((prev) => ({ ...prev, checkIn: externalCheckIn }))
@@ -260,6 +266,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
 
     if (!form.checkIn || !form.checkOut) {
       setError('체크인/아웃 날짜를 선택해 주세요.')
+      return
+    }
+
+    if (!isCheckInAllowedForSource(form.checkIn, source)) {
+      setError('제휴 예약은 이용일 기준 3주 전(21일 전)부터 가능합니다.')
       return
     }
 
@@ -414,9 +425,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
             <label className="flex flex-col gap-2">
               <span className="text-[11px] font-semibold tracking-wider text-gray-400">제휴 우대 구분 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
               <FormSelect value={form.benefitLabel} onChange={(e) => updateField('benefitLabel', e.target.value)} required>
-                {partnerBenefitOptions
-                  .filter((opt) => opt !== '브랜드 촬영 · 답사')
-                  .map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+                {partnerBenefitOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
               </FormSelect>
             </label>
           </>
@@ -432,6 +441,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
                 onChange={(start, end) => { updateField('checkIn', start); updateField('checkOut', end); onDateChange?.(start, end) }}
                 blockedDates={blockedDates}
                 reservedRanges={reservedRanges}
+                minBookableDateKey={minBookableDateKey}
               />
             ) : (
               <div className="grid grid-cols-2 gap-3">
@@ -617,7 +627,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
                           </div>
                           <div className="mt-3 text-[11px] text-gray-400 space-y-0.5 leading-relaxed">
                             <p>* 여름 성수기 : 7월 15일~8월 24일 적용</p>
-                            <p>* 겨울 연말 성수기 : 12월 20일~ 1월 15일</p>
+                            <p>* 겨울 연말 성수기 : 12월 1일~ 1월 15일</p>
                             <p className="mt-1 font-medium text-gray-500">참고: 당일 예약 후 당일 취소하더라도 이용일이 당일이거나 &lsquo;환불 불가 기간&rsquo;에 해당될 경우 환불이 불가합니다.</p>
                           </div>
                         </>
