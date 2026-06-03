@@ -50,7 +50,7 @@ export function HomeContent() {
             src="/repause/hero-exterior.jpg"
             alt="리포즈 포레스트 하우스"
             fill
-            className="object-cover"
+            className="pointer-events-none object-cover"
             priority
           />
         ) : (
@@ -59,17 +59,17 @@ export function HomeContent() {
             muted
             loop
             playsInline
-            className="absolute inset-0 h-full w-full object-cover"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
             poster="/repause/hero-exterior.jpg"
           >
             <source src="/repause/hero.mp4" type="video/mp4" />
           </video>
         )}
 
-        <div className="absolute inset-0 bg-black/35" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.45)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-black/35" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.45)_100%)]" />
 
-        <div className="relative flex flex-col items-center px-5 text-center">
+        <div className="relative flex flex-col items-center px-5 text-center pointer-events-auto">
           <FadeIn delay={0.2} duration={0.7} distance={0}>
             <p className="text-eyebrow mb-6 font-medium text-white/55">
               하이엔드 프라이빗 독채

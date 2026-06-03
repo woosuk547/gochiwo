@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { siteNavigation } from '@/lib/repause-content'
@@ -13,8 +13,21 @@ interface SiteHeaderProps {
 
 export function SiteHeader({ overlay = false }: SiteHeaderProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+
+  function handleLogoClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault()
+    setMenuOpen(false)
+
+    if (pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+
+    router.push('/')
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80)
@@ -38,8 +51,13 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
       }`}
     >
       <div className={`mx-auto flex h-16 max-w-6xl items-center justify-between px-5 transition-all duration-500 ${!solidHeader ? 'drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]' : ''}`}>
-        <Link href="/" className="flex items-center py-1">
-          <div className="relative h-12 w-28">
+        <Link
+          href="/"
+          aria-label="리포즈 홈으로"
+          onClick={handleLogoClick}
+          className="relative z-[60] flex min-h-[44px] min-w-[132px] items-center py-1"
+        >
+          <div className="relative h-12 w-32 overflow-visible">
             <Image
               src="/repause/logo-header.png"
               alt="Repause"
