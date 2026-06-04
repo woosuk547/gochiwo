@@ -1,16 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-
-declare global {
-  interface Window {
-    naver?: any
-  }
-}
+import { useState } from 'react'
 
 interface NaverMapProps {
-  ncpKeyId?: string
   latitude?: number
   longitude?: number
   zoom?: number
@@ -44,108 +36,14 @@ function OpenStreetMapFallback({
 }
 
 export function NaverMap({
-  ncpKeyId = '',
   latitude = 37.721200,
   longitude = 127.653400,
   zoom = 14,
   title = '리포즈 포레스트 하우스',
   address = '강원 홍천군 서면 숲속길 21',
 }: NaverMapProps) {
-  const mapContainerRef = useRef<HTMLDivElement>(null)
-  const initializedRef = useRef(false)
-  const [mapLoaded, setMapLoaded] = useState(false)
-  const [useFallback, setUseFallback] = useState(!ncpKeyId)
-
-  useEffect(() => {
-    if (!ncpKeyId) {
-      setUseFallback(true)
-      return
-    }
-
-    setUseFallback(false)
-    setMapLoaded(false)
-    initializedRef.current = false
-
-    let mapInstance: any = null
-    let markerInstance: any = null
-
-    const initializeMap = () => {
-      if (initializedRef.current || typeof window === 'undefined' || !mapContainerRef.current) {
-        return
-      }
-
-      if (!window.naver?.maps?.Map) {
-        return
-      }
-
-      try {
-        const center = new window.naver.maps.LatLng(latitude, longitude)
-
-        mapInstance = new window.naver.maps.Map(mapContainerRef.current, {
-          center,
-          zoom,
-          zoomControl: true,
-          zoomControlOptions: {
-            position: window.naver.maps.Position.RIGHT_CENTER,
-            style: window.naver.maps.ZoomControlStyle.SMALL,
-          },
-          mapTypeControl: false,
-          scaleControl: false,
-          logoControl: true,
-          logoControlOptions: {
-            position: window.naver.maps.Position.BOTTOM_LEFT,
-          },
-        })
-
-        const markerContent = `
-          <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(26, 26, 26, 0.10); border-radius: 50%; border: 1px solid rgba(26, 26, 26, 0.18);">
-            <div style="width: 14px; height: 14px; background: #1a1a1a; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.18);"></div>
-            <div style="position: absolute; bottom: -28px; white-space: nowrap; background: #1a1a1a; color: #ffffff; font-family: sans-serif; font-size: 11px; letter-spacing: 0.15em; padding: 4px 10px; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); font-weight: 600;">
-              REPAUSE
-            </div>
-          </div>
-        `
-
-        markerInstance = new window.naver.maps.Marker({
-          position: center,
-          map: mapInstance,
-          icon: {
-            content: markerContent,
-            size: new window.naver.maps.Size(44, 44),
-            anchor: new window.naver.maps.Point(22, 22),
-          },
-        })
-
-        initializedRef.current = true
-        setMapLoaded(true)
-      } catch (err) {
-        console.error('Failed to initialize Naver Map:', err)
-        setUseFallback(true)
-      }
-    }
-
-    const interval = setInterval(() => {
-      initializeMap()
-      if (initializedRef.current) {
-        clearInterval(interval)
-      }
-    }, 400)
-
-    const timeout = setTimeout(() => {
-      clearInterval(interval)
-      if (!initializedRef.current) {
-        setUseFallback(true)
-      }
-    }, 5000)
-
-    return () => {
-      clearInterval(interval)
-      clearTimeout(timeout)
-      if (markerInstance) markerInstance.setMap(null)
-      if (mapInstance) mapInstance.destroy?.()
-    }
-  }, [latitude, longitude, zoom, ncpKeyId])
-
+  const [useFallback, setUseFallback] = useState(false)
+  const staticMapSrc = `/api/map/static?lat=${latitude}&lng=${longitude}&w=800&h=460&level=${zoom}`
   const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(address)}`
 
   return (
@@ -153,18 +51,17 @@ export function NaverMap({
       {useFallback ? (
         <OpenStreetMapFallback latitude={latitude} longitude={longitude} title={title} />
       ) : (
-        <>
-          <div
-            ref={mapContainerRef}
-            className="h-[380px] w-full md:h-[460px]"
-            style={{ filter: 'grayscale(10%) contrast(98%)' }}
-          />
-          {!mapLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-50/80">
-              <span className="text-[13px] text-gray-400 animate-pulse">지도 로딩 중</span>
-            </div>
-          )}
-        </>
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={staticMapSrc}
+          alt={`${title} 위치 지도`}
+          width={800}
+          height={460}
+          className="h-[380px] w-full object-cover md:h-[460px]"
+          style={{ filter: 'grayscale(10%) contrast(98%)' }}
+          loading="lazy"
+          onError={() => setUseFallback(true)}
+        />
       )}
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 bg-white px-4 py-3 text-[13px]">
