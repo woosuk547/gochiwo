@@ -55,14 +55,14 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
           href="/"
           aria-label="리포즈 홈으로"
           onClick={handleLogoClick}
-          className="relative z-[60] flex min-h-[44px] min-w-[132px] items-center py-1"
+          className="relative z-[60] flex min-h-[44px] min-w-[88px] items-center py-1"
         >
-          <div className="relative h-12 w-32 overflow-visible">
+          <div className="relative h-11 w-[88px] overflow-visible">
             <Image
               src="/repause/logo-header.png"
-              alt="Repause"
+              alt="RE:PAUSE private stay"
               fill
-              className={`object-contain scale-[1.85] translate-y-[-1px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`object-contain object-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 solidHeader
                   ? 'mix-blend-multiply'
                   : 'brightness-0 invert mix-blend-screen'

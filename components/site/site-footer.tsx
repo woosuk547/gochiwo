@@ -9,12 +9,12 @@ export function SiteFooter() {
         <div className="flex flex-col gap-8 md:flex-row md:justify-between md:gap-10">
           <div>
             <Link href="/" className="inline-block">
-              <div className="relative h-16 w-36 mix-blend-multiply">
+              <div className="relative h-[72px] w-[100px] mix-blend-multiply">
                 <Image
                   src="/repause/logo.png"
-                  alt="Repause"
+                  alt="RE:PAUSE private stay"
                   fill
-                  className="object-contain scale-[2.2] translate-y-[-1px]"
+                  className="object-contain object-left"
                 />
               </div>
             </Link>
