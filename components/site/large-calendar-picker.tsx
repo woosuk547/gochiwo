@@ -33,6 +33,7 @@ export function LargeCalendarPicker({
   const [currentYear, setCurrentYear] = useState(today.getFullYear())
   const [currentMonth, setCurrentMonth] = useState(today.getMonth())
   const [focusedDateKey, setFocusedDateKey] = useState<string>('')
+  const [rangeNotice, setRangeNotice] = useState('')
 
   const blockedKeys = useMemo(() => new Set(blockedDates), [blockedDates])
   const reservedKeys = useMemo(() => buildReservedDateKeys(reservedRanges), [reservedRanges])
@@ -59,6 +60,15 @@ export function LargeCalendarPicker({
       .format(new Date(Date.UTC(currentYear, currentMonth, 1)))
 
   const handleDateClick = (dateKey: string) => {
+    // 체크아웃 선택 중 구간에 예약 마감일이 끼어 무음 리셋되는 경우를 사용자에게 알린다
+    let notice = ''
+    if (checkIn && !checkOut && dateKey > checkIn) {
+      const spanned = expandDateKeys(checkIn, dateKey)
+      if (spanned.some((d) => blockedKeys.has(d) || reservedKeys.has(d))) {
+        notice = '선택 구간에 예약이 마감된 날짜가 있어요. 체크인 날짜를 다시 설정했어요.'
+      }
+    }
+    setRangeNotice(notice)
     const next = selectDateRange(checkIn, checkOut, dateKey, blockedKeys, reservedKeys)
     onChange(next.checkIn, next.checkOut)
   }
@@ -168,7 +178,8 @@ export function LargeCalendarPicker({
 
               const dayNum = cell.getUTCDate()
               const monthName = new Intl.DateTimeFormat('ko-KR', { month: 'long', timeZone: 'UTC' }).format(cell)
-              const ariaLabel = `${monthName} ${dayNum}일${isSelected ? ' (선택됨)' : ''}${isUnavailable ? ' (예약 불가)' : ''}`
+              const unavailableReason = isPast ? ' (선택 불가)' : isBlocked || isReserved ? ' (예약 마감)' : ''
+              const ariaLabel = `${monthName} ${dayNum}일${isSelected ? ' (선택됨)' : ''}${unavailableReason}`
 
               return (
                 <motion.button
@@ -185,7 +196,9 @@ export function LargeCalendarPicker({
                   whileHover={{ scale: isUnavailable ? 1 : 1.05 }}
                   className={`flex aspect-square items-center justify-center text-[13px] relative transition-all select-none md:text-[14px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a1a1a] focus-visible:ring-offset-1 ${
                     isUnavailable
-                      ? 'text-gray-300 cursor-not-allowed line-through rounded-none'
+                      ? isPast
+                        ? 'text-gray-200 cursor-not-allowed rounded-none'
+                        : 'text-gray-300 cursor-not-allowed line-through bg-gray-50/80 rounded-none'
                       : isSelected
                         ? 'bg-[#1a1a1a] text-white font-bold rounded-full cursor-pointer'
                         : isInRange
@@ -203,9 +216,32 @@ export function LargeCalendarPicker({
         </AnimatePresence>
       </div>
 
+      {/* 범례 */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-gray-100 px-4 py-2.5 text-[12px] text-gray-500 md:px-5">
+        <span className="flex items-center gap-1.5">
+          <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#1a1a1a]" />
+          선택한 날짜
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span aria-hidden="true" className="flex h-4 w-4 items-center justify-center bg-gray-50 text-[10px] text-gray-300 line-through">1</span>
+          예약 마감
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span aria-hidden="true" className="flex h-4 w-4 items-center justify-center text-[10px] text-gray-200">1</span>
+          지난 날짜
+        </span>
+      </div>
+
+      {/* 충돌 안내 */}
+      {rangeNotice && (
+        <p role="status" className="border-t border-amber-100 bg-amber-50 px-4 py-2.5 text-[13px] text-amber-800 md:px-5">
+          {rangeNotice}
+        </p>
+      )}
+
       {/* 하단 정보 */}
       <div className="border-t border-gray-100 px-4 py-3 flex items-center justify-between text-[13px] md:px-5">
-        <div className="text-gray-500">
+        <div className="text-gray-500" aria-live="polite">
           {checkIn && checkOut ? (
             <span><strong className="text-[#1a1a1a]">{nights}박</strong> 선택됨</span>
           ) : checkIn ? (
@@ -217,7 +253,7 @@ export function LargeCalendarPicker({
         {(checkIn || checkOut) && (
           <button
             type="button"
-            onClick={() => onChange('', '')}
+            onClick={() => { setRangeNotice(''); onChange('', '') }}
             className="min-h-[36px] rounded-none px-3 py-1.5 text-[13px] font-medium text-gray-500 hover:bg-gray-100 transition-colors"
           >
             초기화

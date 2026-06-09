@@ -13,6 +13,7 @@ import {
   ParallaxLayers,
 } from '@/components/motion'
 import { noticeEntries } from '@/lib/repause-brand-content'
+import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
 import {
   reservationSteps,
   primaryStay,
@@ -22,11 +23,6 @@ import {
   homeSpacePreviews,
   homeParallaxLayers,
 } from '@/lib/repause-content'
-
-const editorialBtnPrimary =
-  'inline-flex min-h-[44px] items-center justify-center rounded-none border border-white bg-white px-7 py-3 text-[14px] font-medium tracking-wide text-[#1a1a1a] transition-all duration-300 hover:bg-transparent hover:text-white'
-const editorialBtnOutline =
-  'inline-flex min-h-[44px] items-center justify-center rounded-none border border-white/30 px-7 py-3 text-[14px] font-medium text-white/70 transition-all duration-300 hover:border-white hover:text-white'
 
 export function HomeContent() {
   const prefersReducedMotion = useReducedMotion()
@@ -52,6 +48,7 @@ export function HomeContent() {
             fill
             className="pointer-events-none object-cover"
             priority
+            sizes="100vw"
           />
         ) : (
           <video
@@ -59,6 +56,7 @@ export function HomeContent() {
             muted
             loop
             playsInline
+            aria-label="리포즈 포레스트 하우스 소개 영상"
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
             poster="/repause/hero-exterior.jpg"
           >
@@ -71,7 +69,7 @@ export function HomeContent() {
 
         <div className="relative flex flex-col items-center px-5 text-center pointer-events-auto">
           <FadeIn delay={0.2} duration={0.7} distance={0}>
-            <p className="text-eyebrow mb-6 font-medium text-white/55">
+            <p className="text-eyebrow mb-6 font-medium text-white/75">
               하이엔드 프라이빗 독채
             </p>
           </FadeIn>
@@ -102,7 +100,7 @@ export function HomeContent() {
               </Link>
               <Link
                 href="/space"
-                className="text-[13px] font-medium tracking-[0.1em] text-white/50 border-b border-transparent pb-0.5 transition-all duration-300 hover:border-white/40 hover:text-white/80"
+                className="text-[13px] font-medium tracking-[0.1em] text-white/70 border-b border-transparent pb-0.5 transition-all duration-300 hover:border-white/60 hover:text-white"
               >
                 공간 둘러보기
               </Link>
@@ -251,7 +249,7 @@ export function HomeContent() {
       </section>
 
       {/* ── 6. Trust: Quote · Location · Partnership ─────────────────── */}
-      <section className="border-t border-gray-100 bg-[#fafafa] px-5 py-16 md:py-20">
+      <section className="border-t border-gray-100 bg-[#f8f8f8] px-5 py-16 md:py-20">
         <div className="mx-auto max-w-4xl text-center">
           <TextReveal>
             <blockquote className="font-serif text-pullquote font-light leading-[1.7] tracking-[-0.02em] text-[#1a1a1a]">
@@ -276,7 +274,7 @@ export function HomeContent() {
       <section className="border-t border-gray-100 bg-[#1a1a1a] px-5 py-20 md:py-28">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
-            <p className="text-label text-white/40">예약 과정</p>
+            <p className="text-label text-white/60">예약 과정</p>
             <h2 className="mt-4 font-serif text-section font-extralight leading-tight tracking-[-0.025em] text-white">
               온전한 쉼을 예약하는 과정
             </h2>
@@ -292,7 +290,7 @@ export function HomeContent() {
                 >
                   <span className="font-serif text-[11px] tracking-[0.12em] text-white/30">0{step.step}</span>
                   <h3 className="mt-3 text-[17px] font-medium text-white">{step.title}</h3>
-                  <p className="mt-2 text-[15px] leading-[1.8] text-white/50">{step.copy}</p>
+                  <p className="mt-2 text-[15px] leading-[1.8] text-white/65">{step.copy}</p>
                 </div>
               </FadeIn>
             ))}
@@ -328,7 +326,7 @@ export function HomeContent() {
             </h2>
           </TextReveal>
           <FadeIn delay={0.3}>
-            <p className="mt-4 text-[15px] text-white/50">가용 일정을 확인하고 바로 예약해 보세요.</p>
+            <p className="mt-4 text-[15px] text-white/65">가용 일정을 확인하고 바로 예약해 보세요.</p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link href="/reservation" className={editorialBtnPrimary}>
                 예약하기

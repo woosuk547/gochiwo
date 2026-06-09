@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LargeCalendarPicker } from '@/components/site/large-calendar-picker'
 import { ReservationForm } from '@/components/site/reservation-form'
+import { FunnelSteps } from '@/components/site/funnel-steps'
 import { MyReservationContent } from '@/app/my-reservation/my-reservation-content'
 import {
   primaryStay,
@@ -23,10 +24,18 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
   const [activeTab, setActiveTab] = useState<'reserve' | 'lookup'>('reserve')
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
+  const formRef = useRef<HTMLDivElement>(null)
 
   function handleCalendarChange(newCheckIn: string, newCheckOut: string) {
     setCheckIn(newCheckIn)
     setCheckOut(newCheckOut)
+
+    // 모바일(1열 레이아웃)에서 날짜 선택이 완료되면 폼으로 시선을 이어준다
+    if (newCheckIn && newCheckOut && typeof window !== 'undefined' && window.innerWidth < 1280) {
+      requestAnimationFrame(() => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
   }
 
   function handleFormDateChange(newCheckIn: string, newCheckOut: string) {
@@ -78,13 +87,15 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
-            className="grid gap-6 xl:gap-8 xl:grid-cols-[1.05fr_0.95fr]"
+            className="space-y-6"
           >
+            <FunnelSteps current={1} />
+            <div className="grid gap-6 xl:gap-8 xl:grid-cols-[1.05fr_0.95fr]">
             <div className="space-y-5 md:space-y-6">
               {/* 숙소 요약 */}
               <div className="rounded-none border border-gray-200 bg-white p-4 md:p-5">
                 <div className="relative aspect-[16/9] overflow-hidden rounded-none">
-                  <Image src="/repause/room-outdoor.jpg" alt="리포즈 데크" fill className="object-cover" />
+                  <Image src="/repause/room-outdoor.jpg" alt="리포즈 데크" fill className="object-cover" sizes="(min-width: 1280px) 50vw, 100vw" />
                 </div>
                 <div className="mt-3 md:mt-4">
                   <h2 className="text-lg font-bold text-[#1a1a1a] md:text-xl">{primaryStay.name}</h2>
@@ -141,7 +152,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
             </div>
 
             {/* 예약 폼 */}
-            <div className="xl:sticky xl:top-24 xl:self-start">
+            <div ref={formRef} className="scroll-mt-20 xl:sticky xl:top-24 xl:self-start">
               <ReservationForm
                 source="DIRECT"
                 blockedDates={blockedDates}
@@ -151,6 +162,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
                 onDateChange={handleFormDateChange}
                 showDatePicker={false}
               />
+            </div>
             </div>
           </motion.div>
         ) : (

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useRef, useState, useTransition } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LargeCalendarPicker } from '@/components/site/large-calendar-picker'
 import { ReservationForm } from '@/components/site/reservation-form'
@@ -51,9 +51,18 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
     contactPhone: '',
   })
 
+  const formRef = useRef<HTMLDivElement>(null)
+
   function handleCalendarChange(newCheckIn: string, newCheckOut: string) {
     setCheckIn(newCheckIn)
     setCheckOut(newCheckOut)
+
+    // 모바일(1열 레이아웃)에서 날짜 선택이 완료되면 폼으로 시선을 이어준다
+    if (newCheckIn && newCheckOut && typeof window !== 'undefined' && window.innerWidth < 1280) {
+      requestAnimationFrame(() => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
   }
 
   function handleFormDateChange(newCheckIn: string, newCheckOut: string) {
@@ -211,7 +220,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
             </div>
 
             {/* 폼 */}
-            <div className="xl:sticky xl:top-24 xl:self-start">
+            <div ref={formRef} className="scroll-mt-20 xl:sticky xl:top-24 xl:self-start">
               <ReservationForm
                 source="PARTNERSHIP"
                 blockedDates={blockedDates}

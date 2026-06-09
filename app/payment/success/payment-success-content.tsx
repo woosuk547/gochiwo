@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { contactInfo } from '@/lib/repause-content'
+import { FunnelSteps } from '@/components/site/funnel-steps'
 
 export function PaymentSuccessContent() {
   const searchParams = useSearchParams()
@@ -68,6 +68,9 @@ export function PaymentSuccessContent() {
 
       {status === 'SUCCESS' && (
         <div className="space-y-6 py-8">
+          <div className="flex justify-center">
+            <FunnelSteps current={3} />
+          </div>
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-600">
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
@@ -98,13 +101,13 @@ export function PaymentSuccessContent() {
             </div>
           </div>
 
-          <div className="mx-auto max-w-sm space-y-4 pt-8">
+          <div className="mx-auto max-w-sm space-y-3 pt-8">
             <Button asChild size="lg" className="h-12 w-full rounded-none bg-[#1a1a1a] px-6 text-[15px] font-semibold text-white transition-all hover:bg-[#333]">
+              <Link href="/my-reservation">예약 내역 확인하기</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="h-12 w-full rounded-none border border-gray-200 bg-white px-6 text-[15px] font-medium text-gray-600 transition-all hover:bg-gray-50">
               <Link href="/">홈으로 돌아가기</Link>
             </Button>
-            <p className="text-[13px] text-gray-400">
-              예약 조회 및 취소는 {contactInfo.email}로 문의해 주세요.
-            </p>
           </div>
         </div>
       )}

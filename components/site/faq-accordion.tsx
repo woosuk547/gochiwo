@@ -24,15 +24,17 @@ export function FAQAccordion({ items }: FAQAccordionProps) {
       {items.map((faq, index) => {
         const isOpen = openIndex === index
         const panelId = `faq-panel-${index}`
+        const buttonId = `faq-button-${index}`
         return (
           <div key={faq.question} className="py-4">
             <button
+              id={buttonId}
               onClick={() => toggle(index)}
               className="flex w-full items-center justify-between text-left min-h-[44px]"
               aria-expanded={isOpen}
               aria-controls={panelId}
             >
-              <span className="text-[15px] font-medium text-[#1a1a1a]">
+              <span className="text-[15px] font-medium text-brand">
                 {faq.question}
               </span>
               <motion.svg
@@ -52,6 +54,7 @@ export function FAQAccordion({ items }: FAQAccordionProps) {
                 <motion.div
                   id={panelId}
                   role="region"
+                  aria-labelledby={buttonId}
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}

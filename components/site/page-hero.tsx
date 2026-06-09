@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { FadeIn, TextReveal } from '@/components/motion'
+import { FadeIn } from '@/components/motion'
 
 interface PageHeroProps {
   title: string
@@ -14,12 +14,12 @@ export function PageHero({ title, description, eyebrow, image }: PageHeroProps) 
   if (image) {
     return (
       <section className="relative -mt-16 flex min-h-[45vh] items-end overflow-hidden md:min-h-[55vh]">
-        <Image src={image} alt={title} fill className="object-cover" priority />
+        <Image src={image} alt={title} fill className="object-cover" priority sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 md:pb-16">
           {eyebrow && (
             <FadeIn delay={0.05}>
-              <p className="text-[11px] tracking-[0.2em] text-white/40 uppercase">{eyebrow}</p>
+              <p className="text-eyebrow text-white/70">{eyebrow}</p>
             </FadeIn>
           )}
           <div className="overflow-hidden mt-2">
@@ -44,12 +44,12 @@ export function PageHero({ title, description, eyebrow, image }: PageHeroProps) 
       <div className="mx-auto max-w-6xl">
         {eyebrow && (
           <FadeIn delay={0.05} distance={12}>
-            <p className="text-[11px] tracking-[0.15em] text-gray-400 uppercase">{eyebrow}</p>
+            <p className="text-eyebrow text-gray-500">{eyebrow}</p>
           </FadeIn>
         )}
         <div className="overflow-hidden mt-3">
           <FadeIn delay={0.1} duration={0.7} distance={40}>
-            <h1 className="text-[clamp(2.2rem,5vw,3.5rem)] font-extralight leading-tight tracking-[-0.04em] text-[#1a1a1a]">
+            <h1 className="text-[clamp(2.2rem,5vw,3.5rem)] font-extralight leading-tight tracking-[-0.04em] text-brand">
               {title}
             </h1>
           </FadeIn>

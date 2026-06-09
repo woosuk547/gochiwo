@@ -66,7 +66,7 @@ export function ParallaxImage({
   if (prefersReduced) {
     return (
       <div ref={containerRef} className={`relative overflow-hidden ${aspectRatioClassName} ${className}`}>
-        <Image src={src} alt={alt} fill className="object-cover" priority={priority} />
+        <Image src={src} alt={alt} fill className="object-cover" priority={priority} sizes="100vw" />
       </div>
     )
   }
@@ -100,6 +100,7 @@ export function ParallaxImage({
             fill
             className="object-cover"
             priority={priority}
+            sizes="100vw"
           />
         </motion.div>
       </motion.div>

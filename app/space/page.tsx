@@ -4,6 +4,7 @@ import { PageShell } from '@/components/site/page-shell'
 import { FadeIn, TextReveal, ParallaxImage } from '@/components/motion'
 import { AnimatedSection, AnimatedGrid, AnimatedGridItem } from '@/components/motion/animated-sections'
 import { amenityGroups } from '@/lib/repause-content'
+import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
 
 export const metadata: Metadata = {
   title: '공간 소개 — 리포즈',
@@ -59,7 +60,7 @@ export default function SpacePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.4)_100%)]" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
           <FadeIn delay={0.1}>
-            <p className="text-[11px] tracking-[0.12em] text-white/50">프라이빗 포레스트 하우스</p>
+            <p className="text-eyebrow text-white/70">프라이빗 포레스트 하우스</p>
           </FadeIn>
           <div className="overflow-hidden mt-3">
             <FadeIn delay={0.2} duration={0.9} distance={50}>
@@ -69,7 +70,7 @@ export default function SpacePage() {
             </FadeIn>
           </div>
           <FadeIn delay={0.45}>
-            <p className="mt-4 text-[14px] leading-relaxed text-white/55 md:text-[15px]">
+            <p className="mt-4 text-[14px] leading-relaxed text-white/75 md:text-[15px]">
               바쁜 일상의 걸음을 잠시 멈추고, 공간 속에 내포된 고유한 감각을 천천히 묵상해 보세요.
             </p>
           </FadeIn>
@@ -95,7 +96,7 @@ export default function SpacePage() {
                 { label: '다이닝 & 키친', value: 'BBQ 존과 프라이빗 다이닝' },
               ].map((item) => (
                 <div key={item.label} className="border-b border-gray-50 pb-4 md:border-b-0 md:pb-0">
-                  <p className="text-[11px] tracking-[0.1em] text-gray-400 uppercase">{item.label}</p>
+                  <p className="text-eyebrow text-gray-500">{item.label}</p>
                   <p className="mt-1.5 text-[14px] font-semibold text-[#1a1a1a] tracking-tight">{item.value}</p>
                 </div>
               ))}
@@ -106,7 +107,7 @@ export default function SpacePage() {
 
       {/* ── 공간별 교대 섹션 ──────────────────────────────────────────── */}
       {spaceDetails.map((space) => (
-        <section key={space.label} className="border-t border-gray-100" data-cursor="view">
+        <section key={space.label} className="border-t border-gray-100">
           <div className={`flex flex-col ${space.reverse ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
             {/* 이미지 */}
             <div className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:min-h-[520px] md:w-1/2">
@@ -121,8 +122,8 @@ export default function SpacePage() {
             {/* 텍스트 */}
             <div className="flex w-full flex-col justify-center px-8 py-12 md:w-1/2 md:px-14 md:py-16 lg:px-20">
               <FadeIn>
-                <p className="text-[11px] tracking-[0.2em] text-gray-300 uppercase">{space.label}</p>
-                <h2 className="mt-3 text-[clamp(1.6rem,3vw,2.4rem)] font-bold leading-tight tracking-[-0.025em] text-[#1a1a1a]">
+                <p className="text-eyebrow text-gray-500">{space.label}</p>
+                <h2 className="mt-3 font-serif text-section font-extralight leading-tight tracking-[-0.025em] text-[#1a1a1a]">
                   {space.title}
                 </h2>
                 <p className="mt-5 text-[15px] leading-[1.8] tracking-tight text-gray-500">{space.copy}</p>
@@ -136,8 +137,7 @@ export default function SpacePage() {
       <section className="bg-[#f8f8f8] px-5 py-20 md:py-28">
         <div className="mx-auto max-w-6xl">
           <AnimatedSection>
-            <p className="text-[11px] tracking-[0.12em] text-gray-400">시설 · 어메니티</p>
-            <h2 className="mt-3 text-[2rem] font-bold tracking-[-0.02em] text-[#1a1a1a] md:text-[2.4rem]">시설 · 어메니티</h2>
+            <h2 className="font-serif text-section font-extralight tracking-[-0.02em] text-[#1a1a1a]">시설 · 어메니티</h2>
           </AnimatedSection>
           <AnimatedGrid staggerDelay={0.08} className="mt-12 grid gap-px border border-gray-200 md:grid-cols-3">
             {amenityGroups.map((group) => (
@@ -160,7 +160,7 @@ export default function SpacePage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden aspect-[16/10] md:aspect-auto md:min-h-[480px]" data-cursor="book">
+      <section className="relative overflow-hidden aspect-[16/10] md:aspect-auto md:min-h-[480px]">
         <ParallaxImage
           src="/repause/editorial-kitchen.jpg"
           alt="리포즈 주방"
@@ -176,18 +176,12 @@ export default function SpacePage() {
             </h2>
           </TextReveal>
           <FadeIn delay={0.3}>
-            <p className="mt-4 text-[14px] text-white/50">가용 일정을 확인하고 바로 예약해 보세요.</p>
-            <div className="mt-8 flex justify-center gap-4">
-              <Link
-                href="/reservation"
-                className="rounded-none border border-white bg-white px-8 py-4 text-[14px] font-semibold tracking-wide text-[#1a1a1a] transition-all duration-300 hover:bg-transparent hover:text-white"
-              >
-                예약 가능 일정 보기
+            <p className="mt-4 text-[14px] text-white/65">가용 일정을 확인하고 바로 예약해 보세요.</p>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Link href="/reservation" className={editorialBtnPrimary}>
+                예약하기
               </Link>
-              <Link
-                href="/partnership"
-                className="rounded-none border border-white/30 px-8 py-4 text-[14px] font-medium text-white/70 transition-all duration-300 hover:border-white hover:text-white"
-              >
+              <Link href="/partnership" className={editorialBtnOutline}>
                 제휴 · 대관 문의
               </Link>
             </div>

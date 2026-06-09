@@ -13,6 +13,7 @@ import {
   brandClosingMessage,
 } from '@/lib/repause-brand-content'
 import { contactInfo } from '@/lib/repause-content'
+import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
 
 export const metadata: Metadata = {
   title: '브랜드 — 리포즈',
@@ -25,11 +26,11 @@ export default function BrandPage() {
 
       {/* ── 이미지 히어로 ─────────────────────────────────────────────── */}
       <section className="relative -mt-16 flex min-h-[55vh] items-end overflow-hidden md:min-h-[65vh]">
-        <Image src="/repause/villa-night.jpg" alt="리포즈 외관" fill className="object-cover" priority />
+        <Image src="/repause/villa-night.jpg" alt="리포즈 외관" fill className="object-cover" priority sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 md:pb-16">
           <FadeIn delay={0.1}>
-            <p className="text-[11px] tracking-[0.15em] text-white/50">브랜드</p>
+            <p className="text-eyebrow text-white/70">브랜드</p>
           </FadeIn>
           <div className="overflow-hidden mt-2">
             <FadeIn delay={0.2} duration={0.9} distance={50}>
@@ -39,7 +40,7 @@ export default function BrandPage() {
             </FadeIn>
           </div>
           <FadeIn delay={0.4}>
-            <p className="mt-4 text-[14px] leading-relaxed text-white/55 md:text-[15px]">
+            <p className="mt-4 text-[14px] leading-relaxed text-white/75 md:text-[15px]">
               세상의 알람을 끄고 자연의 숨소리에 주파수를 맞추는 순간, 비로소 쉼의 본질에 가까워집니다.
             </p>
           </FadeIn>
@@ -66,7 +67,7 @@ export default function BrandPage() {
       <section className="border-t border-gray-100 bg-[#f8f8f8] px-5 py-20 md:py-28">
         <div className="mx-auto max-w-4xl">
           <FadeIn>
-            <p className="text-[11px] tracking-[0.12em] text-gray-400">브랜드 철학</p>
+            <p className="text-eyebrow text-gray-500">브랜드 철학</p>
             <h2 className="mt-3 text-[1.8rem] font-light tracking-[-0.02em] text-[#1a1a1a] md:text-[2.2rem]">
               {brandPhilosophy.title}
             </h2>
@@ -83,7 +84,7 @@ export default function BrandPage() {
       <section className="border-t border-gray-100 px-5 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
-            <p className="text-[11px] tracking-[0.12em] text-gray-400">운영 원칙</p>
+            <p className="text-eyebrow text-gray-500">운영 원칙</p>
           </FadeIn>
           <AnimatedGrid staggerDelay={0.1} className="mt-10 grid gap-px border border-gray-100 md:grid-cols-3">
             {brandPrinciples.map((p, i) => (
@@ -103,7 +104,7 @@ export default function BrandPage() {
       <section className="border-t border-gray-100 px-5 py-16 md:py-24">
         <div className="mx-auto max-w-4xl">
           <FadeIn>
-            <p className="text-[11px] tracking-[0.12em] text-gray-400">이런 분들에게 리포즈를 추천합니다</p>
+            <p className="text-eyebrow text-gray-500">이런 분들에게 리포즈를 추천합니다</p>
           </FadeIn>
           <FadeIn delay={0.15}>
             <ul className="mt-8 space-y-4 border-t border-gray-100 pt-8">
@@ -128,16 +129,10 @@ export default function BrandPage() {
           </TextReveal>
           <FadeIn delay={0.4}>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
-              <Link
-                href="/reservation"
-                className="rounded-none border border-white bg-white px-7 py-3.5 text-[14px] font-semibold text-[#1a1a1a] transition-all duration-300 hover:bg-transparent hover:text-white"
-              >
-                예약 가능 일정 보기
+              <Link href="/reservation" className={editorialBtnPrimary}>
+                예약하기
               </Link>
-              <Link
-                href="/space"
-                className="rounded-none border border-white/20 px-7 py-3.5 text-[14px] font-medium text-white/70 transition-all duration-300 hover:border-white/50 hover:text-white"
-              >
+              <Link href="/space" className={editorialBtnOutline}>
                 공간 둘러보기
               </Link>
             </div>
@@ -150,7 +145,7 @@ export default function BrandPage() {
         <div className="mx-auto max-w-6xl">
           <div className="border-t border-white/10 pt-14">
             <AnimatedSection>
-              <p className="text-[11px] tracking-[0.12em] text-white/40">운영사</p>
+              <p className="text-eyebrow text-white/60">운영사</p>
               <h2 className="mt-3 text-[1.8rem] font-light text-white">크리오스</h2>
               <p className="mt-3 text-[14px] leading-relaxed text-white/50">
                 리포즈의 모든 공간 기획과 전담 운영을 깊이 있게 총괄하는 전문 법인입니다.

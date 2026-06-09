@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import { EASE_OUT_QUART } from '@/components/motion'
 
 export function KakaoChannelButton() {
   const pathname = usePathname()
@@ -25,10 +26,10 @@ export function KakaoChannelButton() {
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
+            transition={{ duration: 0.25, ease: EASE_OUT_QUART }}
             className="rounded-none border border-gray-200 bg-white p-4 shadow-lg max-w-[240px]"
           >
-            <p className="text-[13px] font-semibold text-[#1a1a1a]">문의하기</p>
+            <p className="text-[13px] font-semibold text-brand">문의하기</p>
             <p className="mt-1.5 text-[13px] leading-relaxed text-gray-500">
               궁금한 점을 카카오톡으로 편하게 물어보세요.
             </p>
@@ -52,8 +53,8 @@ export function KakaoChannelButton() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
         animate={{ rotate: isExpanded ? 90 : 0 }}
-        transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1a1a1a] text-white shadow-lg"
+        transition={{ duration: 0.25, ease: EASE_OUT_QUART }}
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-lg"
         aria-label="문의하기"
       >
         {isExpanded ? (

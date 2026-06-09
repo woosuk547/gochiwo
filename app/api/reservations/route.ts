@@ -13,6 +13,7 @@ import { prisma } from '@/lib/prisma'
 import {
   calculateReservationQuote,
   isPartnerBenefitLabel,
+  partnerBenefitOptions,
 } from '@/lib/repause-pricing'
 import {
   activeReservationStatuses,
@@ -73,6 +74,17 @@ export async function POST(request: NextRequest) {
 
     if (benefitLabel && !isPartnerBenefitLabel(benefitLabel)) {
       return NextResponse.json({ error: '제휴 구분을 다시 선택해주세요.' }, { status: 400 })
+    }
+
+    // 제휴 임직원 전용 요금은 제휴사 이메일 도메인으로만 신청 가능 (클라이언트 검증과 동일 규칙)
+    if (source === 'PARTNERSHIP' && benefitLabel === partnerBenefitOptions[0]) {
+      const emailDomain = email.split('@')[1]
+      if (emailDomain !== 'neowiz.com' && emailDomain !== 'estsoft.com') {
+        return NextResponse.json(
+          { error: '제휴 임직원 전용 요금은 회사 전용 이메일(@neowiz.com 또는 @estsoft.com)로만 신청할 수 있습니다.' },
+          { status: 400 }
+        )
+      }
     }
 
     if (!ALLOWED_GUEST_COUNTS.includes(guests as (typeof ALLOWED_GUEST_COUNTS)[number])) {

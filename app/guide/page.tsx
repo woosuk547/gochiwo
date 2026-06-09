@@ -7,6 +7,7 @@ import { FAQAccordion } from '@/components/site/faq-accordion'
 import { FadeIn } from '@/components/motion'
 import { AnimatedSection } from '@/components/motion/animated-sections'
 import { guideFaq, guideGroups, cancellationPolicy } from '@/lib/repause-content'
+import { editorialBtnDark, editorialBtnDarkOutline } from '@/lib/editorial'
 
 export const metadata: Metadata = {
   title: '이용 안내 — 리포즈',
@@ -21,11 +22,11 @@ export default function GuidePage() {
 
       {/* ── 이미지 히어로 ─────────────────────────────────────────────── */}
       <section className="relative -mt-16 flex min-h-[50vh] items-end overflow-hidden md:min-h-[60vh]">
-        <Image src="/repause/editorial-deck.jpg" alt="리포즈 데크" fill className="object-cover" priority />
+        <Image src="/repause/editorial-deck.jpg" alt="리포즈 데크" fill className="object-cover" priority sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 md:pb-16">
           <FadeIn delay={0.1}>
-            <p className="text-[11px] tracking-[0.15em] text-white/50">이용 안내</p>
+            <p className="text-eyebrow text-white/70">이용 안내</p>
           </FadeIn>
           <div className="overflow-hidden mt-2">
             <FadeIn delay={0.2} duration={0.8} distance={40}>
@@ -43,7 +44,7 @@ export default function GuidePage() {
           <div className="grid gap-12 md:grid-cols-3">
             {guideGroups.map((group) => (
               <AnimatedSection key={group.title}>
-                <p className="text-[11px] tracking-[0.1em] text-gray-400">{group.title}</p>
+                <p className="text-eyebrow text-gray-500">{group.title}</p>
                 <ul className="mt-5 space-y-3 border-t border-gray-100 pt-5">
                   {group.items.map((item) => (
                     <li key={item} className="flex items-start gap-3 text-[15px] leading-relaxed text-[#1a1a1a]">
@@ -62,8 +63,7 @@ export default function GuidePage() {
       <section className="border-t border-gray-100 bg-[#f8f8f8] px-5 py-16 md:py-24">
         <div className="mx-auto max-w-4xl">
           <FadeIn>
-            <p className="text-[11px] tracking-[0.12em] text-gray-400">취소 · 환불 규정</p>
-            <h2 className="mt-3 text-[1.8rem] font-light tracking-[-0.02em] text-[#1a1a1a] md:text-[2.2rem]">
+            <h2 className="font-serif text-section font-extralight tracking-[-0.02em] text-[#1a1a1a]">
               취소 · 환불 규정
             </h2>
             <div className="mt-3 space-y-1">
@@ -76,11 +76,12 @@ export default function GuidePage() {
           <FadeIn delay={0.15}>
             <div className="mt-8 overflow-x-auto rounded-none border border-gray-200">
               <table className="w-full text-[14px]">
+                <caption className="sr-only">취소 시점별 비수기·성수기 환불 규정</caption>
                 <thead>
                   <tr className="bg-[#1a1a1a] text-white">
-                    <th className="min-w-[90px] px-5 py-3.5 text-left font-normal tracking-wide">취소 시점</th>
-                    <th className="min-w-[80px] px-5 py-3.5 text-center font-normal">비수기</th>
-                    <th className="min-w-[80px] px-5 py-3.5 text-center font-normal">성수기</th>
+                    <th scope="col" className="min-w-[90px] px-5 py-3.5 text-left font-normal tracking-wide">취소 시점</th>
+                    <th scope="col" className="min-w-[80px] px-5 py-3.5 text-center font-normal">비수기</th>
+                    <th scope="col" className="min-w-[80px] px-5 py-3.5 text-center font-normal">성수기</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -97,7 +98,7 @@ export default function GuidePage() {
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <div className="mt-4 flex gap-5 text-[12px] text-gray-400">
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-[12px] text-gray-500">
               {cancellationPolicy.peakSeasons.map((season) => (
                 <span key={season}>* {season}</span>
               ))}
@@ -120,8 +121,7 @@ export default function GuidePage() {
           <div className="grid gap-10 lg:grid-cols-2">
             <AnimatedSection>
               <div>
-                <p className="text-[11px] tracking-[0.12em] text-gray-400">오시는 길</p>
-                <h2 className="mt-3 text-[1.8rem] font-light tracking-[-0.02em] text-[#1a1a1a]">오시는 길</h2>
+                <h2 className="font-serif text-section font-extralight tracking-[-0.02em] text-[#1a1a1a]">오시는 길</h2>
                 <p className="mt-4 text-[15px] leading-relaxed text-gray-600">
                   서울에서 차로 약 1시간 20분. 대자연 속 고요한 자리에 자리한 프라이빗 독채입니다.
                 </p>
@@ -152,8 +152,7 @@ export default function GuidePage() {
       <section className="border-t border-gray-100 bg-[#f8f8f8] px-5 py-16 md:py-24">
         <div className="mx-auto max-w-4xl">
           <FadeIn>
-            <p className="text-[11px] tracking-[0.12em] text-gray-400">자주 묻는 질문</p>
-            <h2 className="mt-3 text-[1.8rem] font-light tracking-[-0.02em] text-[#1a1a1a]">자주 묻는 질문</h2>
+            <h2 className="font-serif text-section font-extralight tracking-[-0.02em] text-[#1a1a1a]">자주 묻는 질문</h2>
             <div className="mt-8">
               <FAQAccordion items={guideFaq} />
             </div>
@@ -161,16 +160,10 @@ export default function GuidePage() {
 
           <FadeIn delay={0.2}>
             <div className="mt-12 flex flex-wrap gap-4 border-t border-gray-200 pt-10">
-              <Link
-                href="/reservation"
-                className="rounded-none border border-[#1a1a1a] bg-[#1a1a1a] px-7 py-3.5 text-[14px] font-medium text-white transition-all duration-300 hover:bg-transparent hover:text-[#1a1a1a]"
-              >
+              <Link href="/reservation" className={editorialBtnDark}>
                 예약하기
               </Link>
-              <Link
-                href="/partnership"
-                className="rounded-none border border-gray-300 px-7 py-3.5 text-[14px] font-medium text-gray-600 transition-all duration-300 hover:border-[#1a1a1a] hover:text-[#1a1a1a]"
-              >
+              <Link href="/partnership" className={editorialBtnDarkOutline}>
                 제휴 예약
               </Link>
             </div>

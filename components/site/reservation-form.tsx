@@ -98,26 +98,36 @@ function SelectArrow() {
   )
 }
 
-function FormInput({ value, onChange, type = "text", placeholder, required = false }: { value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; type?: string; placeholder?: string; required?: boolean }) {
+function FormInput({ value, onChange, type = "text", placeholder, required = false, id, error }: { value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; type?: string; placeholder?: string; required?: boolean; id?: string; error?: string }) {
   const [focused, setFocused] = useState(false)
   return (
-    <div className="relative w-full">
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        required={required}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        className="h-11 w-full rounded-none border-t-0 border-x-0 border-b border-gray-200 bg-transparent px-0 pb-1.5 text-[14px] text-[#1a1a1a] placeholder:text-gray-300 focus:border-[#1a1a1a] focus:outline-none transition-all duration-300"
-      />
-      <motion.div
-        className="absolute bottom-0 left-0 h-[1.5px] bg-[#1a1a1a]"
-        initial={{ width: '0%' }}
-        animate={{ width: focused ? '100%' : '0%' }}
-        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      />
+    <div className="w-full">
+      <div className="relative w-full">
+        <input
+          id={id}
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error && id ? `${id}-error` : undefined}
+          className={`h-11 w-full rounded-none border-t-0 border-x-0 border-b bg-transparent px-0 pb-1.5 text-[14px] text-[#1a1a1a] placeholder:text-gray-300 focus:border-[#1a1a1a] focus:outline-none transition-all duration-300 ${error ? 'border-red-400' : 'border-gray-200'}`}
+        />
+        <motion.div
+          className="absolute bottom-0 left-0 h-[1.5px] bg-[#1a1a1a]"
+          initial={{ width: '0%' }}
+          animate={{ width: focused ? '100%' : '0%' }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        />
+      </div>
+      {error && (
+        <p id={id ? `${id}-error` : undefined} className="mt-1.5 text-[12px] text-red-500">
+          {error}
+        </p>
+      )}
     </div>
   )
 }
@@ -174,6 +184,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
   const [isPending, startTransition] = useTransition()
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [submittedSummary, setSubmittedSummary] = useState<SubmittedSummary | null>(null)
 
   const [agreedItems, setAgreedItems] = useState<Record<string, boolean>>({
@@ -259,44 +270,46 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
     setSuccess(false)
     setError('')
 
+    // 필드별 유효성 검증
+    const errors: Record<string, string> = {}
+
     if (!form.guestName.trim()) {
-      setError('예약자 성함을 입력해 주세요.')
-      return
+      errors.guestName = '예약자 성함을 입력해 주세요.'
     }
 
     if (!form.checkIn || !form.checkOut) {
-      setError('체크인/아웃 날짜를 선택해 주세요.')
-      return
-    }
-
-    if (!isCheckInAllowedForSource(form.checkIn, source)) {
-      setError('제휴 예약은 이용일 기준 3주 전(21일 전)부터 가능합니다.')
-      return
+      errors.dates = '체크인/아웃 날짜를 선택해 주세요.'
+    } else if (!isCheckInAllowedForSource(form.checkIn, source)) {
+      errors.dates = '제휴 예약은 이용일 기준 3주 전(21일 전)부터 가능합니다.'
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailPattern.test(form.email.trim())) {
-      setError('올바른 이메일 주소를 입력해 주세요.')
-      return
-    }
-
-    // 제휴기업 임직원 이메일 도메인 검증
-    if (source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0]) {
+      errors.email = '올바른 이메일 주소를 입력해 주세요.'
+    } else if (source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0]) {
+      // 제휴기업 임직원 이메일 도메인 검증
       const emailDomain = form.email.trim().toLowerCase().split('@')[1]
       if (emailDomain !== 'neowiz.com' && emailDomain !== 'estsoft.com') {
-        setError('제휴 임직원 전용 요금은 회사 전용 이메일(@neowiz.com 또는 @estsoft.com)로만 신청하실 수 있습니다. 기업 메일 주소를 정확히 기재해 주세요.')
-        return
+        errors.email = '제휴 임직원 전용 요금은 회사 전용 이메일(@neowiz.com 또는 @estsoft.com)로만 신청하실 수 있습니다.'
       }
     }
 
     const phoneDigits = form.phone.replace(/[^0-9]/g, '')
     if (!/^01[016789]\d{7,8}$/.test(phoneDigits)) {
-      setError('올바른 전화번호를 입력해 주세요.')
-      return
+      errors.phone = '올바른 전화번호를 입력해 주세요.'
+    }
+
+    if (source === 'PARTNERSHIP' && !form.companyName.trim()) {
+      errors.companyName = '회사명 또는 제휴사명을 입력해 주세요.'
     }
 
     if (!allAgreed) {
-      setError('모든 필수 예약 약관에 동의해 주세요.')
+      errors.agreements = '모든 필수 예약 약관에 동의해 주세요.'
+    }
+
+    setFieldErrors(errors)
+    if (Object.keys(errors).length > 0) {
+      setError('입력 내용을 다시 확인해 주세요.')
       return
     }
 
@@ -375,8 +388,8 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
             <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">680,000원~/박</p>
           </div>
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
-            <p className="text-[10px] font-semibold tracking-wide text-gray-400">일정 검토</p>
-            <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">24시간 내 승인</p>
+            <p className="text-[10px] font-semibold tracking-wide text-gray-400">예약 확정</p>
+            <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">결제 즉시 확정</p>
           </div>
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
             <p className="text-[10px] font-semibold tracking-wide text-gray-400">신청 방식</p>
@@ -389,11 +402,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       <div className="mt-8 flex flex-col gap-6">
         <label className="flex flex-col gap-2">
           <span className="text-[11px] font-semibold tracking-wider text-gray-400">예약자 성함 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
-          <FormInput value={form.guestName} onChange={(e) => updateField('guestName', e.target.value)} required />
+          <FormInput id="rsv-guest-name" value={form.guestName} onChange={(e) => updateField('guestName', e.target.value)} required error={fieldErrors.guestName} />
         </label>
         <label className="flex flex-col gap-2">
           <span className="text-[11px] font-semibold tracking-wider text-gray-400">이메일 주소 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
-          <FormInput type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required />
+          <FormInput id="rsv-email" type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required error={fieldErrors.email} />
           {source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0] && (
             <p className="text-[11px] text-gray-400 leading-relaxed">
               * 평일 30%, 주말/공휴일 20%의 전용 우대 요금이 자동 적용됩니다. 예약 진행을 위해 회사 이메일 주소(@neowiz.com 또는 @estsoft.com)를 정확히 기재해 주세요. 해당 이메일로 전용 인증 코드를 전송해 드립니다.
@@ -402,7 +415,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         </label>
         <label className="flex flex-col gap-2">
           <span className="text-[11px] font-semibold tracking-wider text-gray-400">연락처 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
-          <FormInput value={form.phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="010-0000-0000" required />
+          <FormInput id="rsv-phone" value={form.phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="010-0000-0000" required error={fieldErrors.phone} />
         </label>
         <label className="flex flex-col gap-2">
           <span className="text-[11px] font-semibold tracking-wider text-gray-400">머무실 인원 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
@@ -420,7 +433,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           <>
             <label className="flex flex-col gap-2">
               <span className="text-[11px] font-semibold tracking-wider text-gray-400">회사명 · 제휴사명 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
-              <FormInput value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 네오위즈 복지지원팀" required />
+              <FormInput id="rsv-company" value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 네오위즈 복지지원팀" required error={fieldErrors.companyName} />
             </label>
             <label className="flex flex-col gap-2">
               <span className="text-[11px] font-semibold tracking-wider text-gray-400">제휴 우대 구분 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
@@ -460,6 +473,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
               </div>
             )}
           </div>
+          {fieldErrors.dates && <p className="mt-1.5 text-[12px] text-red-500">{fieldErrors.dates}</p>}
         </div>
 
         <label className="flex flex-col gap-2">
@@ -639,6 +653,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
             </div>
           ))}
         </div>
+        {fieldErrors.agreements && <p className="mt-2 text-[12px] text-red-500">{fieldErrors.agreements}</p>}
       </div>
 
       <div className="mt-4 rounded-none bg-gray-50 px-4 py-3 text-[13px] text-gray-500">
@@ -647,7 +662,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           : '여정 신청이 완료되면 바로 결제 페이지로 유연하게 인계되며, 대금 수납 처리가 마감되는 즉시 안식이 확정됩니다.'}
       </div>
 
-      {error && <p className="mt-3 text-[14px] text-red-500">{error}</p>}
+      {error && <p role="alert" className="mt-3 text-[14px] text-red-500">{error}</p>}
 
       <Button
         type="submit"

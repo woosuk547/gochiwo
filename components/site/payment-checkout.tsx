@@ -4,8 +4,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
-import { paymentMethodLabel, type PaymentMethod, type ReservationSummary } from '@/lib/booking'
+import { paymentMethodLabel, reservationStatusLabel, type ReservationSummary } from '@/lib/booking'
 import { contactInfo } from '@/lib/repause-content'
+import { calculateReservationQuote } from '@/lib/repause-pricing'
+import { FunnelSteps } from '@/components/site/funnel-steps'
 
 interface PaymentCheckoutProps {
   reservation: ReservationSummary
@@ -32,11 +34,19 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
 
   const amount = paymentType === 'DEPOSIT' ? reservation.depositAmount : reservation.finalAmount
 
-  const parseCheckIn = reservation.checkIn ? new Date(`${reservation.checkIn}T00:00:00.000Z`) : null
-  const parseCheckOut = reservation.checkOut ? new Date(`${reservation.checkOut}T00:00:00.000Z`) : null
-  const checkoutNights = parseCheckIn && parseCheckOut ? Math.round((parseCheckOut.getTime() - parseCheckIn.getTime()) / 86400000) : 0
-  const consecutiveDiscount = checkoutNights >= 2 ? checkoutNights * 50000 : 0
-  const partnerDiscount = Math.max(0, reservation.discountAmount - consecutiveDiscount)
+  // 할인 내역은 요금 정책 단일 진실 공급원(repause-pricing)으로 재계산하되,
+  // DB 저장 총 할인액과 일치할 때만 항목을 분리 표시한다.
+  const quote = calculateReservationQuote({
+    checkIn: reservation.checkIn,
+    checkOut: reservation.checkOut,
+    guests: reservation.guests,
+    source: reservation.source,
+    paymentMethod: reservation.paymentMethod,
+    benefitLabel: reservation.benefitLabel ?? undefined,
+  })
+  const breakdownMatches = quote !== null && quote.discountAmount === reservation.discountAmount
+  const consecutiveDiscount = breakdownMatches ? quote.consecutiveDiscount : 0
+  const partnerDiscount = breakdownMatches ? quote.partnerDiscount : 0
 
   const handlePayment = async () => {
     if (!clientKey) {
@@ -121,12 +131,16 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
 
       <div className="mx-auto max-w-3xl rounded-none border border-gray-200 bg-white p-4 md:p-6 lg:p-10">
         <div className="border-b border-gray-100 pb-5 md:pb-6">
-          <p className="text-[13px] font-medium text-gray-400">결제 진행</p>
+          <FunnelSteps current={2} className="mb-4" />
           <h1 className="mt-2 text-2xl font-bold leading-tight text-[#1a1a1a] md:mt-3 md:text-[clamp(2rem,3vw,2.5rem)] md:leading-[1.1]">
             예약 결제
           </h1>
           <p className="mt-2 text-[13px] leading-relaxed text-gray-500 md:mt-3 md:text-sm">
-            예약 승인이 완료되었어요. 내용을 확인하고 결제를 진행해 주세요.
+            {reservation.status === 'CONFIRMED'
+              ? '예약 승인이 완료되었어요. 내용을 확인하고 결제를 진행해 주세요.'
+              : reservation.status === 'PENDING'
+                ? '예약 신청이 접수되었어요. 결제가 완료되면 예약이 확정돼요.'
+                : '예약 내용을 확인해 주세요.'}
           </p>
         </div>
 
@@ -141,7 +155,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
               <div className="rounded-none bg-gray-50 p-4 md:p-5">
                 <span className="text-[12px] font-medium text-gray-400 block md:text-[13px]">예약 상태</span>
                 <span className="mt-1.5 text-[13px] font-semibold text-[#1a1a1a] block md:mt-2 md:text-sm">
-                  {reservation.status === 'PENDING' ? '승인 대기' : '승인 완료'}
+                  {reservation.status === 'PENDING' ? '결제 대기' : reservationStatusLabel[reservation.status]}
                 </span>
               </div>
               <div className="rounded-none bg-gray-50 p-4 md:p-5">
@@ -181,18 +195,20 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                   문의: {contactInfo.email}
                 </p>
               </div>
-            ) : reservation.status === 'PENDING' ? (
+            ) : reservation.status === 'DECLINED' || reservation.status === 'CANCELLED' ? (
               <div className="mt-5 rounded-none border border-gray-200 bg-gray-50 px-5 py-5 text-sm leading-8 text-gray-500 text-center">
-                <p className="font-semibold text-[#1a1a1a] text-lg">승인 대기 중이에요</p>
+                <p className="font-semibold text-[#1a1a1a] text-lg">
+                  {reservation.status === 'CANCELLED' ? '취소된 예약이에요' : '진행할 수 없는 예약이에요'}
+                </p>
                 <p className="mt-2">
-                  예약이 아직 승인되지 않았어요. 승인 완료 후 결제를 진행할 수 있어요.
+                  해당 예약은 결제를 진행할 수 없어요. 새 일정으로 다시 신청해 주세요.
                 </p>
                 <p className="mt-3 text-[13px] text-gray-400">
                   문의: {contactInfo.email}
                 </p>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-center">
                   <Button asChild size="lg" className="h-11 rounded-none bg-[#1a1a1a] px-6 text-[14px] font-semibold text-white hover:bg-[#333]">
-                    <Link href={`/my-reservation`}>예약 조회하기</Link>
+                    <Link href="/reservation">새로 예약하기</Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="h-11 rounded-none border-gray-200 px-6 text-[14px] font-medium text-gray-600 hover:bg-gray-50">
                     <Link href="/">홈으로 가기</Link>

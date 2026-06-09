@@ -1,7 +1,16 @@
 import type { Metadata, Viewport } from 'next'
+import { Noto_Serif_KR } from 'next/font/google'
 import { KakaoChannelButton } from '@/components/site/kakao-channel-button'
 import { MobileCTABar } from '@/components/site/mobile-cta-bar'
 import './globals.css'
+
+const notoSerifKR = Noto_Serif_KR({
+  subsets: ['latin'],
+  weight: ['200', '300', '400'],
+  variable: '--font-noto-serif',
+  display: 'swap',
+  preload: false,
+})
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -36,7 +45,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko" className={notoSerifKR.variable} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+      </head>
       <body className="antialiased" suppressHydrationWarning>
         {children}
         <MobileCTABar />

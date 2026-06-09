@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { EASE_OUT_EXPO } from '@/components/motion'
 import { siteNavigation } from '@/lib/repause-content'
 
 interface SiteHeaderProps {
@@ -31,7 +32,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80)
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
@@ -81,13 +82,13 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
                 href={item.href}
                 className={`relative px-4 py-2 text-[14px] font-medium tracking-tight transition-colors rounded-none ${
                   active
-                    ? solidHeader ? 'font-semibold text-[#1a1a1a]' : 'font-semibold text-white'
-                    : solidHeader ? 'text-gray-600 hover:text-[#1a1a1a]' : 'text-white/80 hover:text-white'
+                    ? solidHeader ? 'font-semibold text-brand' : 'font-semibold text-white'
+                    : solidHeader ? 'text-gray-600 hover:text-brand' : 'text-white/80 hover:text-white'
                 }`}
               >
                 {item.label}
                 {active && (
-                  <span className={`absolute bottom-0.5 left-4 right-4 h-px ${solidHeader ? 'bg-[#1a1a1a]' : 'bg-white'}`} />
+                  <span className={`absolute bottom-0.5 left-4 right-4 h-px ${solidHeader ? 'bg-brand' : 'bg-white'}`} />
                 )}
               </Link>
             )
@@ -96,8 +97,8 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
             href="/reservation"
             className={`ml-3 px-5 py-2 text-[13px] font-semibold tracking-wide transition-all duration-300 rounded-none border ${
               solidHeader
-                ? 'border-[#1a1a1a] bg-[#1a1a1a] text-white hover:bg-transparent hover:text-[#1a1a1a]'
-                : 'border-white bg-white text-[#1a1a1a] hover:bg-transparent hover:text-white'
+                ? 'border-brand bg-brand text-white hover:bg-transparent hover:text-brand'
+                : 'border-white bg-white text-brand hover:bg-transparent hover:text-white'
             }`}
           >
             예약하기
@@ -107,7 +108,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
         <button
           type="button"
           onClick={() => setMenuOpen((prev) => !prev)}
-          className="flex h-10 w-10 items-center justify-center rounded-none lg:hidden"
+          className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-none lg:hidden"
           aria-label={menuOpen ? '메뉴 닫기' : '메뉴 열기'}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
@@ -116,7 +117,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
             {[0, 1, 2].map((i) => (
               <span
                 key={i}
-                className={`block h-[1.5px] w-5 transition-all duration-300 ${solidHeader ? 'bg-[#1a1a1a]' : 'bg-white'} ${
+                className={`block h-[1.5px] w-5 transition-all duration-300 ${solidHeader ? 'bg-brand' : 'bg-white'} ${
                   menuOpen && i === 0 ? 'translate-y-[6.5px] rotate-45' : ''
                 } ${menuOpen && i === 1 ? 'opacity-0' : ''} ${
                   menuOpen && i === 2 ? '-translate-y-[6.5px] -rotate-45' : ''
@@ -144,7 +145,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
             className="fixed left-0 right-0 top-16 z-50 lg:hidden"
             id="mobile-menu"
           >
@@ -155,7 +156,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
                     key={item.href}
                     href={item.href}
                     className={`px-4 py-3.5 text-[15px] font-medium transition-colors rounded-none ${
-                      pathname === item.href ? 'bg-gray-50 font-semibold text-[#1a1a1a]' : 'text-gray-600 hover:bg-gray-50'
+                      pathname === item.href ? 'bg-gray-50 font-semibold text-brand' : 'text-gray-600 hover:bg-gray-50'
                     }`}
                     onClick={() => setMenuOpen(false)}
                   >
@@ -164,7 +165,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
                 ))}
                 <Link
                   href="/reservation"
-                  className="mt-4 flex items-center justify-center border border-[#1a1a1a] bg-[#1a1a1a] px-4 py-4 text-[14px] font-semibold tracking-wide text-white rounded-none transition-all duration-300 hover:bg-transparent hover:text-[#1a1a1a]"
+                  className="mt-4 flex items-center justify-center border border-brand bg-brand px-4 py-4 text-[14px] font-semibold tracking-wide text-white rounded-none transition-all duration-300 hover:bg-transparent hover:text-brand"
                   onClick={() => setMenuOpen(false)}
                 >
                   예약하기

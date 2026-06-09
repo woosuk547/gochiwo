@@ -31,7 +31,7 @@ export function ParallaxLayers({ layers, title, subtitle, className }: ParallaxL
     return (
       <section className={`relative overflow-hidden ${className ?? ''}`}>
         <div className="relative aspect-[16/10] md:aspect-[21/9]">
-          <Image src={lastLayer.src} alt={title} fill className="object-cover" />
+          <Image src={lastLayer.src} alt={title} fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
             <p className="text-label text-white/50">{subtitle}</p>

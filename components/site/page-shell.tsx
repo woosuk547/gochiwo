@@ -13,7 +13,7 @@ interface PageShellProps {
 
 export function PageShell({ children, overlayHeader = false, className }: PageShellProps) {
   return (
-    <div className={`min-h-screen bg-white text-[#1a1a1a] ${className ?? ''}`}>
+    <div className={`min-h-screen bg-white text-brand ${className ?? ''}`}>
       <SiteHeader overlay={overlayHeader} />
       <PageTransition>
         {children}

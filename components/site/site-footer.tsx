@@ -28,11 +28,11 @@ export function SiteFooter() {
               <p className="text-[13px] font-semibold text-gray-400">바로가기</p>
               <div className="mt-3 flex flex-col gap-2.5 md:gap-2">
                 {siteNavigation.map((item) => (
-                  <Link key={item.href} href={item.href} className="min-h-[32px] flex items-center text-[14px] text-gray-600 hover:text-[#1a1a1a]">
+                  <Link key={item.href} href={item.href} className="min-h-[44px] flex items-center text-[14px] text-gray-600 hover:text-brand md:min-h-[32px]">
                     {item.label}
                   </Link>
                 ))}
-                <Link href="/my-reservation" className="min-h-[32px] flex items-center text-[14px] text-gray-600 hover:text-[#1a1a1a]">
+                <Link href="/my-reservation" className="min-h-[44px] flex items-center text-[14px] text-gray-600 hover:text-brand md:min-h-[32px]">
                   예약 조회
                 </Link>
               </div>
@@ -64,8 +64,8 @@ export function SiteFooter() {
         <div className="mt-5 flex flex-col gap-3 border-t border-gray-200 pt-5 text-[12px] text-gray-400 md:mt-6 md:flex-row md:items-center md:justify-between md:pt-6 md:text-[13px]">
           <p>&copy; 2026 Repause. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link href="/terms" className="min-h-[32px] flex items-center hover:text-gray-600">이용약관</Link>
-            <Link href="/privacy" className="min-h-[32px] flex items-center hover:text-gray-600">개인정보처리방침</Link>
+            <Link href="/terms" className="min-h-[44px] flex items-center hover:text-gray-600 md:min-h-[32px]">이용약관</Link>
+            <Link href="/privacy" className="min-h-[44px] flex items-center hover:text-gray-600 md:min-h-[32px]">개인정보처리방침</Link>
           </div>
         </div>
       </div>
