@@ -3,10 +3,10 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { PageShell } from '@/components/site/page-shell'
 import { NaverMap } from '@/components/site/naver-map'
-import { FAQAccordion } from '@/components/site/faq-accordion'
+import { FAQSections } from '@/components/site/faq-accordion'
 import { FadeIn } from '@/components/motion'
 import { AnimatedSection } from '@/components/motion/animated-sections'
-import { guideFaq, guideGroups, cancellationPolicy } from '@/lib/repause-content'
+import { guideFaqSections, guideGroups, cancellationPolicy } from '@/lib/repause-content'
 import { editorialBtnDark, editorialBtnDarkOutline } from '@/lib/editorial'
 
 export const metadata: Metadata = {
@@ -154,7 +154,7 @@ export default function GuidePage() {
           <FadeIn>
             <h2 className="font-serif text-section font-extralight tracking-[-0.02em] text-[#1a1a1a]">자주 묻는 질문</h2>
             <div className="mt-8">
-              <FAQAccordion items={guideFaq} />
+              <FAQSections sections={guideFaqSections} />
             </div>
           </FadeIn>
 
