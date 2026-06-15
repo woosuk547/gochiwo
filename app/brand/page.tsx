@@ -152,17 +152,29 @@ export default function BrandPage() {
               </p>
             </AnimatedSection>
 
-            <AnimatedGrid staggerDelay={0.06} className="mt-10 grid gap-px border border-white/10 md:grid-cols-4">
+            <AnimatedGrid staggerDelay={0.06} className="mt-10 grid gap-px border border-white/10 md:grid-cols-2 lg:grid-cols-5">
               {[
                 { label: '법인명', value: contactInfo.company },
                 { label: '도메인', value: contactInfo.site },
                 { label: '이메일', value: contactInfo.email },
                 { label: '전화', value: contactInfo.phone },
+                { label: '인스타그램', value: '@repause_poolvilla', href: contactInfo.instagram },
               ].map((item) => (
                 <AnimatedGridItem key={item.label}>
                   <div className="bg-white/5 px-7 py-8 transition-colors hover:bg-white/10">
                     <p className="text-[11px] tracking-[0.1em] text-white/40">{item.label}</p>
-                    <p className="mt-2 text-[14px] font-medium text-white/70">{item.value}</p>
+                    {'href' in item && item.href ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-block text-[14px] font-medium text-white/70 underline-offset-4 hover:text-white hover:underline"
+                      >
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="mt-2 text-[14px] font-medium text-white/70">{item.value}</p>
+                    )}
                   </div>
                 </AnimatedGridItem>
               ))}

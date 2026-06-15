@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "deploy:production": "bash scripts/deploy-production.sh"
   },
   "dependencies": {
     "@google/genai": "^1.44.0",

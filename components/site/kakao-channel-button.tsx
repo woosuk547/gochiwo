@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EASE_OUT_QUART } from '@/components/motion'
+import { contactInfo } from '@/lib/repause-content'
 
 export function KakaoChannelButton() {
   const pathname = usePathname()
@@ -33,17 +34,27 @@ export function KakaoChannelButton() {
             <p className="mt-1.5 text-[13px] leading-relaxed text-gray-500">
               궁금한 점을 카카오톡으로 편하게 물어보세요.
             </p>
-            <Link
-              href={kakaoChannelUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-none bg-[#FEE500] px-4 py-2.5 text-[13px] font-semibold text-[#3C1E1E] transition-all duration-200 hover:opacity-90 active:scale-[0.97]"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <path d="M9 1C4.58 1 1 3.79 1 7.21c0 2.17 1.45 4.08 3.63 5.17l-.93 3.42c-.08.3.26.54.52.37l4.1-2.72c.22.02.44.03.68.03 4.42 0 8-2.79 8-6.27C17 3.79 13.42 1 9 1z" fill="#3C1E1E"/>
-              </svg>
-              카카오톡 상담
-            </Link>
+            <div className="mt-3 flex flex-col gap-2">
+              <Link
+                href={kakaoChannelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-2 rounded-none bg-[#FEE500] px-4 py-2.5 text-[13px] font-semibold text-[#3C1E1E] transition-all duration-200 hover:opacity-90 active:scale-[0.97]"
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M9 1C4.58 1 1 3.79 1 7.21c0 2.17 1.45 4.08 3.63 5.17l-.93 3.42c-.08.3.26.54.52.37l4.1-2.72c.22.02.44.03.68.03 4.42 0 8-2.79 8-6.27C17 3.79 13.42 1 9 1z" fill="#3C1E1E"/>
+                </svg>
+                카카오톡 상담
+              </Link>
+              <Link
+                href={contactInfo.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-2 rounded-none border border-gray-200 px-4 py-2.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand hover:text-white active:scale-[0.97]"
+              >
+                인스타그램 보기
+              </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

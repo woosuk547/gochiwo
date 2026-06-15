@@ -1,0 +1,33 @@
+name: Deploy to Railway Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+env:
+  RAILWAY_PROJECT_ID: c3ce71f7-fe3d-4c63-b714-4e56a2892dc7
+  RAILWAY_ENVIRONMENT: production
+  RAILWAY_SERVICE: repause
+
+jobs:
+  deploy:
+    name: Railway production deploy
+    runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        run: |
+          railway up --ci \
+            --project "$RAILWAY_PROJECT_ID" \
+            --environment "$RAILWAY_ENVIRONMENT" \
+            --service "$RAILWAY_SERVICE"

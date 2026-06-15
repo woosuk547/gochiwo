@@ -42,6 +42,14 @@ export function SiteFooter() {
               <div className="mt-3 flex flex-col gap-2.5 text-[14px] text-gray-600 md:gap-2">
                 <p>{contactInfo.phone}</p>
                 <p>{contactInfo.email}</p>
+                <a
+                  href={contactInfo.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="min-h-[44px] flex items-center hover:text-brand md:min-h-[32px]"
+                >
+                  @repause_poolvilla
+                </a>
               </div>
             </div>
           </div>

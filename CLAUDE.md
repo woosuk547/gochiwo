@@ -3,17 +3,19 @@
 > **활성**: Repause (크리오스 외주) | **비활성**: 고쳐줘 → `_legacy-gochiwo/`로 분리 완료
 
 ## 배포 & 인프라
-- **프로덕션**: https://repause.up.railway.app
+- **프로덕션**: https://repause-production.up.railway.app
 - **도메인**: 반값도메인 (ID: `sm5126`, PW: `!zmfldhtm5151`)
 - **Github**: https://github.com/woosuk547/gochiwo
-- **플랫폼**: Railway (무료 플랜, main 브랜치 push 시 자동배포)
-- **ID**: Proj `77958108-ba74-41be-8786-a64664c6ad5c` | Svc `e9f3c8dd-28f5-4cad-a5bb-93c9f4c3b2fc` | Env `b6a7a333-ffc1-467e-8040-f6f3ae7ed99f`
+- **플랫폼**: Railway (production) | `main` push → GitHub Actions → `railway up`
+- **폴백 배포**: `npm run deploy:production` (로컬 Railway CLI)
+- **ID**: Proj `c3ce71f7-fe3d-4c63-b714-4e56a2892dc7` | Svc `bb904a68-278d-4596-87e2-02ec4e0b034e` | Env `9f784b86-ec85-45d2-ab43-3b0344b55922`
+- **GitHub Secret**: `RAILWAY_TOKEN` (Railway production Project Token, 1회 등록)
 
 ## AI 작업 수칙
 - 한국어 사용
 - 수정 전 파일 읽기 필수
 - 변경 사항 간결히 설명
-- **프로덕션 자동 배포**: 모든 수정 작업이 완료되거나 주요 마일스톤 도달 시, 반드시 `git add . && git commit` 후 `git push origin main`을 실행하여 Railway 프로덕션 환경에 실시간 자동 배포를 완료해야 함.
+- **프로덕션 자동 배포**: 작업 완료 시 `git add . && git commit && git push origin main`으로 GitHub Actions 배포 트리거. Actions 미동작 시 `npm run deploy:production` 실행 후 `railway deployment list`로 SUCCESS 확인.
 - 이미지: Gemini Imagen 4 (`generate-repause-editorial-images.mjs`) 전용. 외부 다운 금지.
 - **팁 자동 기록**: 새롭게 알게 된 버그, 해결책, 팁 발견 시 즉시 이 파일 하단 `## 배운 점 & 팁`에 최소 요약 형식(`- [YYYY-MM-DD] 이슈 -> 팁`)으로 추가할 것. 미사어구 절대 금지.
 
@@ -85,6 +87,7 @@
 - [2026-06-10] 결제 페이지 할인 역산 버그 -> 연박 할인을 50,000원/박으로 하드코딩 역산해 실제 정책(20,000원/박)과 불일치했음. 할인 breakdown은 `calculateReservationQuote` 재계산 후 DB 총할인액과 일치할 때만 항목 분리 표시하도록 단일화해야 함.
 - [2026-06-10] 예약 퍼널 정합화 -> 예약 생성 직후 결제 페이지로 보내면서 PENDING 상태가 결제 UI를 차단해 퍼널이 중간에 끊겼음. 결제 차단은 DECLINED/CANCELLED만으로 한정하고 히어로/상태 카피를 `reservation.status` 분기 처리. 제휴 이메일 도메인 검증은 서버(API)에도 동일 규칙 필수.
 - [2026-06-10] FAQ 체크인 전·후 구조 -> `guideFaqSections`(section→group→items) + `FAQSections` 컴포넌트. CTA는 `cta: { href, label }`로 예약/대관/카카오 연결.
+- [2026-06-12] Railway GitHub 자동배포 단절 -> 6/4 이후 push만으로 배포 안 됨. `.github/workflows/deploy-production.yml` + `RAILWAY_TOKEN` secret + `npm run deploy:production` 폴백. 실제 URL은 `repause-production.up.railway.app`.
 - [2026-06-03] 하이엔드 럭셔리 스테이 브랜드화 및 대관 문의 오토메이션 -> (1) 조식 관련 키워드를 전면 제거하고 '포치 아래 명상' 등 고요함/비움 미학을 강조함. (2) 최대 인원을 6인으로 확장하고 2/4/6인 짝수 단위 예약으로 제한함. (3) 제휴 기업(네오위즈, 이스트소프트) 우대 혜택을 평일 30%, 주말 20%, 성수기 20%로 날짜별 정밀 세분화하여 SQLite 및 메일러에 연동함. (4) 예약 페이지 내 실시간 조회(Lookup) 탭을 완전히 통합 구현함. (5) 미디어 대관 전용 스키마(RentalInquiry)를 탑재하고 DB 영속화 및 기품 있는 관리자 메일 오토메이션 전송을 연계함. (6) Noto Serif KR 명조체 포인트를 도입하여 하이엔드 타이포그래피 미학을 완성함.
 
 ## 2026-05-24 작업 일지

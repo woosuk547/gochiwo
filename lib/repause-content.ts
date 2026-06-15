@@ -339,7 +339,7 @@ export const guideFaqSections: GuideFaqSection[] = [
           {
             question: '머무르는 동안 불편 사항이 생기면 어떻게 연락하나요?',
             answer:
-              '고객님의 온전한 휴식을 방해하지 않도록 비대면 서비스를 지향하고 있습니다. 다만, 머무시는 동안 도움이 필요하시거나 문의 사항이 있으실 경우 아래 채널 중 하나로 연락해 주시면 신속하고 정중하게 안내해 드리겠습니다.\n\n· 고객센터(오전 10시~18시 운영): 02-514-5536\n· 카카오톡: @REPAUSE 채널',
+              '고객님의 온전한 휴식을 방해하지 않도록 비대면 서비스를 지향하고 있습니다. 다만, 머무시는 동안 도움이 필요하시거나 문의 사항이 있으실 경우 아래 채널 중 하나로 연락해 주시면 신속하고 정중하게 안내해 드리겠습니다.\n\n· 고객센터(오전 10시~18시 운영): 02-514-5536\n· 카카오톡: @REPAUSE 채널\n· 인스타그램: @repause_poolvilla',
             cta: { href: 'https://pf.kakao.com/_repause', label: '카카오톡 문의하기' },
           },
         ],
@@ -413,6 +413,7 @@ export const contactInfo = {
   address: '서울 강남구 강남대로160길 26, 2층',
   phone: '02-514-5536',
   site: 'repause.co.kr',
+  instagram: 'https://www.instagram.com/repause_poolvilla/',
   email: 'creaos@naver.com',
   notice: '정식 오픈 일정에 따라 일부 상세 법인 라이선스 정보가 정교하게 표기될 예정입니다.',
 }
