@@ -13,6 +13,7 @@ import {
   brandClosingMessage,
 } from '@/lib/repause-brand-content'
 import { contactInfo } from '@/lib/repause-content'
+import { InstagramIcon } from '@/components/site/instagram-icon'
 import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
 
 export const metadata: Metadata = {
@@ -168,8 +169,9 @@ export default function BrandPage() {
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 inline-block text-[14px] font-medium text-white/70 underline-offset-4 hover:text-white hover:underline"
+                        className="mt-2 inline-flex items-center gap-2 text-[14px] font-medium text-white/70 underline-offset-4 hover:text-white hover:underline"
                       >
+                        <InstagramIcon size={15} className="text-white/60" />
                         {item.value}
                       </a>
                     ) : (

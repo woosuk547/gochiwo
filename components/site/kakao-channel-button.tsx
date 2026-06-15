@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EASE_OUT_QUART } from '@/components/motion'
 import { contactInfo } from '@/lib/repause-content'
+import { InstagramIcon } from '@/components/site/instagram-icon'
 
 export function KakaoChannelButton() {
   const pathname = usePathname()
@@ -52,6 +53,7 @@ export function KakaoChannelButton() {
                 rel="noopener noreferrer"
                 className="flex w-full items-center justify-center gap-2 rounded-none border border-gray-200 px-4 py-2.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand hover:text-white active:scale-[0.97]"
               >
+                <InstagramIcon size={16} />
                 인스타그램 보기
               </Link>
             </div>

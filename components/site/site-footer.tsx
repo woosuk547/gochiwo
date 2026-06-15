@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { contactInfo, siteNavigation } from '@/lib/repause-content'
+import { InstagramIcon } from '@/components/site/instagram-icon'
 
 export function SiteFooter() {
   return (
@@ -46,8 +47,9 @@ export function SiteFooter() {
                   href={contactInfo.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="min-h-[44px] flex items-center hover:text-brand md:min-h-[32px]"
+                  className="min-h-[44px] flex items-center gap-2 hover:text-brand md:min-h-[32px]"
                 >
+                  <InstagramIcon size={16} className="shrink-0" />
                   @repause_poolvilla
                 </a>
               </div>

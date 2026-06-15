@@ -15,7 +15,7 @@
 - 한국어 사용
 - 수정 전 파일 읽기 필수
 - 변경 사항 간결히 설명
-- **프로덕션 자동 배포**: 작업 완료 시 `git add . && git commit && git push origin main`으로 GitHub Actions 배포 트리거. Actions 미동작 시 `npm run deploy:production` 실행 후 `railway deployment list`로 SUCCESS 확인.
+- **프로덕션 자동 배포**: 작업 완료 시 사용자 확인 없이 `git add . && git commit && git push origin main` 실행. Actions 미동작 시 `npm run deploy:production` 후 `railway deployment list`로 SUCCESS 확인. "배포할까요?" 등 질문 금지.
 - 이미지: Gemini Imagen 4 (`generate-repause-editorial-images.mjs`) 전용. 외부 다운 금지.
 - **팁 자동 기록**: 새롭게 알게 된 버그, 해결책, 팁 발견 시 즉시 이 파일 하단 `## 배운 점 & 팁`에 최소 요약 형식(`- [YYYY-MM-DD] 이슈 -> 팁`)으로 추가할 것. 미사어구 절대 금지.
 
