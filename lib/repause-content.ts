@@ -406,11 +406,11 @@ export const cancellationPolicy = {
 
 export const contactInfo = {
   brand: '리포즈',
-  company: '(주)크리오스',
-  ceo: '', // 사업자등록증 대표자명 — 담당자 확인 후 기입
-  businessNumber: '', // 사업자등록번호 — 담당자 확인 후 기입
+  company: '주식회사 크리오스',
+  ceo: '이상민',
+  businessNumber: '422-87-00064',
   mailOrderNumber: '제 2026-서울강남-03705호',
-  address: '서울특별시 강남구 강남대로160길 26, 2층',
+  address: '서울특별시 강남구 강남대로160길 26, 2층(신사동)',
   phone: '02-514-5536',
   site: 'repause.co.kr',
   instagram: 'https://www.instagram.com/repause_poolvilla/',
