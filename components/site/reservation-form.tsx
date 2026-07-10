@@ -384,15 +384,15 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         </p>
         <div className="mt-4 grid grid-cols-3 gap-2">
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
-            <p className="text-[10px] font-semibold tracking-wide text-gray-400">기본 요금</p>
+            <p className="text-[12px] font-semibold tracking-wide text-gray-400">기본 요금</p>
             <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">680,000원~/박</p>
           </div>
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
-            <p className="text-[10px] font-semibold tracking-wide text-gray-400">예약 확정</p>
+            <p className="text-[12px] font-semibold tracking-wide text-gray-400">예약 확정</p>
             <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">결제 즉시 확정</p>
           </div>
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
-            <p className="text-[10px] font-semibold tracking-wide text-gray-400">신청 방식</p>
+            <p className="text-[12px] font-semibold tracking-wide text-gray-400">신청 방식</p>
             <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">개별 일정 조율</p>
           </div>
         </div>
@@ -401,11 +401,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       {/* 폼 필드 */}
       <div className="mt-8 flex flex-col gap-6">
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">예약자 성함 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-400">예약자 성함 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-guest-name" value={form.guestName} onChange={(e) => updateField('guestName', e.target.value)} required error={fieldErrors.guestName} />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">이메일 주소 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-400">이메일 주소 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-email" type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required error={fieldErrors.email} />
           {source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0] && (
             <p className="text-[11px] text-gray-400 leading-relaxed">
@@ -414,11 +414,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           )}
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">연락처 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-400">연락처 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-phone" value={form.phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="010-0000-0000" required error={fieldErrors.phone} />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">머무실 인원 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-400">머무실 인원 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormSelect value={form.guests} onChange={(e) => updateField('guests', e.target.value)} required>
             {guestOptions.map((opt) => <option key={opt} value={opt}>{opt}명</option>)}
           </FormSelect>
@@ -432,11 +432,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         {source === 'PARTNERSHIP' && (
           <>
             <label className="flex flex-col gap-2">
-              <span className="text-[11px] font-semibold tracking-wider text-gray-400">회사명 · 제휴사명 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
+              <span className="text-[11px] font-semibold tracking-wider text-gray-400">회사명 · 제휴사명 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
               <FormInput id="rsv-company" value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 네오위즈 복지지원팀" required error={fieldErrors.companyName} />
             </label>
             <label className="flex flex-col gap-2">
-              <span className="text-[11px] font-semibold tracking-wider text-gray-400">제휴 우대 구분 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
+              <span className="text-[11px] font-semibold tracking-wider text-gray-400">제휴 우대 구분 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
               <FormSelect value={form.benefitLabel} onChange={(e) => updateField('benefitLabel', e.target.value)} required>
                 {partnerBenefitOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
               </FormSelect>
@@ -445,7 +445,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         )}
 
         <div>
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">체크인 · 체크아웃 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-400">체크인 · 체크아웃 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <div className="mt-2">
             {showDatePicker ? (
               <DateRangePicker
@@ -483,7 +483,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           </FormSelect>
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">결제 수단 <span className="text-gray-300 font-light text-[10px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-400">결제 수단 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormSelect value={form.paymentMethod} onChange={(e) => updateField('paymentMethod', e.target.value as PaymentMethod)} required>
             {paymentMethods.map((m) => <option key={m} value={m}>{paymentMethodLabel[m]}</option>)}
           </FormSelect>
@@ -508,7 +508,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       )}
 
       <label className="mt-5 flex flex-col gap-2">
-        <span className="text-[11px] font-semibold tracking-wider text-gray-400">요청 사항 <span className="text-gray-300 font-light text-[10px] ml-0.5">(선택)</span></span>
+        <span className="text-[11px] font-semibold tracking-wider text-gray-400">요청 사항 <span className="text-gray-300 font-light text-[12px] ml-0.5">(선택)</span></span>
         <FormTextarea value={form.note} onChange={(e) => updateField('note', e.target.value)} placeholder="기념일, 인원 구성, 촬영 목적 등" />
       </label>
 

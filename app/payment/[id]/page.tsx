@@ -29,6 +29,7 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
       <PageHero
         title="결제"
         description="예약 정보를 확인하고 결제를 진행하세요."
+        image="/repause/editorial-living.jpg"
       />
 
       <section className="mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-16 lg:px-10 lg:py-20">

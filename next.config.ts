@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/stays',
+        destination: '/space',
+        permanent: false,
+      },
+      {
+        source: '/stays/:slug*',
+        destination: '/space',
+        permanent: false,
+      },
+      {
         source: '/:path*',
         has: [{ type: 'host', value: 'repause.com' }],
         destination: 'https://repause.co.kr/:path*',

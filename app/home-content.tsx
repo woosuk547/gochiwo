@@ -69,8 +69,8 @@ export function HomeContent() {
 
         <div className="relative flex flex-col items-center px-5 text-center pointer-events-auto">
           <FadeIn delay={0.2} duration={0.7} distance={0}>
-            <p className="text-eyebrow mb-6 font-medium text-white/75">
-              하이엔드 프라이빗 독채
+            <p className="mb-5 font-serif text-[clamp(1.35rem,3.5vw,1.85rem)] font-light tracking-[-0.02em] text-white">
+              리포즈
             </p>
           </FadeIn>
 
@@ -296,16 +296,6 @@ export function HomeContent() {
             ))}
           </div>
 
-          <FadeIn delay={0.4}>
-            <div className="mt-14 flex flex-wrap gap-4">
-              <Link href="/reservation" className={editorialBtnPrimary}>
-                예약하기
-              </Link>
-              <Link href="/partnership" className={editorialBtnOutline}>
-                제휴 · 대관 문의
-              </Link>
-            </div>
-          </FadeIn>
         </div>
       </section>
 

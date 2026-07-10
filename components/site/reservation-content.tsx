@@ -46,10 +46,13 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
   return (
     <div className="space-y-6">
       {/* 탭 버튼 영역 */}
-      <div className="flex border-b border-gray-100">
+      <div className="flex border-b border-gray-100" role="tablist" aria-label="예약 메뉴">
         <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'reserve'}
           onClick={() => setActiveTab('reserve')}
-          className={`pb-4 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
+          className={`min-h-[44px] pb-3 pt-1 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
             activeTab === 'reserve' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
           }`}
         >
@@ -63,8 +66,11 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
           )}
         </button>
         <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'lookup'}
           onClick={() => setActiveTab('lookup')}
-          className={`pb-4 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
+          className={`min-h-[44px] pb-3 pt-1 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
             activeTab === 'lookup' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
           }`}
         >
@@ -127,7 +133,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
 
               {/* 예약 안내 + 포함사항 — 심플 리스트 */}
               <details className="group rounded-none border border-gray-100">
-                <summary className="flex cursor-pointer items-center justify-between px-4 py-3 text-[13px] font-medium text-gray-500 hover:text-[#1a1a1a]">
+                <summary className="flex min-h-[44px] cursor-pointer items-center justify-between px-4 py-3 text-[13px] font-medium text-gray-500 hover:text-[#1a1a1a]">
                   예약 안내 · 포함 사항
                   <span className="text-gray-300 transition-transform group-open:rotate-180">▾</span>
                 </summary>

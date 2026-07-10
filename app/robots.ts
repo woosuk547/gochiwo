@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin', '/api', '/payment'],
+      disallow: ['/admin', '/api', '/payment', '/stays'],
     },
     sitemap: 'https://repause.co.kr/sitemap.xml',
   }

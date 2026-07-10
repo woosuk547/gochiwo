@@ -223,11 +223,11 @@ export function LargeCalendarPicker({
           선택한 날짜
         </span>
         <span className="flex items-center gap-1.5">
-          <span aria-hidden="true" className="flex h-4 w-4 items-center justify-center bg-gray-50 text-[10px] text-gray-300 line-through">1</span>
+          <span aria-hidden="true" className="flex h-4 w-4 items-center justify-center bg-gray-50 text-[11px] text-gray-300 line-through">1</span>
           예약 마감
         </span>
         <span className="flex items-center gap-1.5">
-          <span aria-hidden="true" className="flex h-4 w-4 items-center justify-center text-[10px] text-gray-200">1</span>
+          <span aria-hidden="true" className="flex h-4 w-4 items-center justify-center text-[11px] text-gray-200">1</span>
           지난 날짜
         </span>
       </div>
@@ -254,7 +254,7 @@ export function LargeCalendarPicker({
           <button
             type="button"
             onClick={() => { setRangeNotice(''); onChange('', '') }}
-            className="min-h-[36px] rounded-none px-3 py-1.5 text-[13px] font-medium text-gray-500 hover:bg-gray-100 transition-colors"
+            className="min-h-[44px] rounded-none px-3 py-2 text-[13px] font-medium text-gray-500 hover:bg-gray-100 transition-colors"
           >
             초기화
           </button>

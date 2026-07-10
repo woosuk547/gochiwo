@@ -25,16 +25,18 @@ export default function GuidePage() {
         <Image src="/repause/editorial-deck.jpg" alt="리포즈 데크" fill className="object-cover" priority sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 md:pb-16">
-          <FadeIn delay={0.1}>
-            <p className="text-eyebrow text-white/70">이용 안내</p>
-          </FadeIn>
-          <div className="overflow-hidden mt-2">
+          <div className="overflow-hidden">
             <FadeIn delay={0.2} duration={0.8} distance={40}>
               <h1 className="text-[clamp(2.2rem,5vw,4rem)] font-extralight leading-tight tracking-[-0.02em] text-white">
-                안식을 향하기 전,<br />미리 살펴두어야 할 이야기들
+                이용 안내
               </h1>
             </FadeIn>
           </div>
+          <FadeIn delay={0.35}>
+            <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-white/70">
+              체크인, 결제, 위치, FAQ를 미리 확인해 주세요.
+            </p>
+          </FadeIn>
         </div>
       </section>
 

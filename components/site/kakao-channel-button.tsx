@@ -1,24 +1,40 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EASE_OUT_QUART } from '@/components/motion'
 import { contactInfo } from '@/lib/repause-content'
 import { InstagramIcon } from '@/components/site/instagram-icon'
+import { MOBILE_CTA_EVENT } from '@/lib/mobile-cta-visibility'
 
 export function KakaoChannelButton() {
   const pathname = usePathname()
   const [isExpanded, setIsExpanded] = useState(false)
+  const [ctaVisible, setCtaVisible] = useState(false)
   const kakaoChannelUrl = 'https://pf.kakao.com/_repause'
 
   const hideOnPages = ['/reservation', '/partnership', '/payment', '/admin']
-  const hasMobileCTABar = !hideOnPages.some((p) => pathname.startsWith(p))
+  const pageAllowsCtaBar = !hideOnPages.some((p) => pathname.startsWith(p))
+  const liftForCta = pageAllowsCtaBar && ctaVisible
+
+  useEffect(() => {
+    const onCta = (event: Event) => {
+      const detail = (event as CustomEvent<{ visible: boolean }>).detail
+      setCtaVisible(Boolean(detail?.visible))
+    }
+    window.addEventListener(MOBILE_CTA_EVENT, onCta)
+    return () => window.removeEventListener(MOBILE_CTA_EVENT, onCta)
+  }, [])
+
+  useEffect(() => {
+    if (!pageAllowsCtaBar) setCtaVisible(false)
+  }, [pageAllowsCtaBar])
 
   return (
     <div className={`fixed right-5 z-40 flex flex-col items-end gap-3 transition-all duration-300 ${
-      hasMobileCTABar
+      liftForCta
         ? 'bottom-[calc(92px+env(safe-area-inset-bottom))] lg:bottom-6'
         : 'bottom-[calc(16px+env(safe-area-inset-bottom))] lg:bottom-6'
     }`}>

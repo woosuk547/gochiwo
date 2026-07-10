@@ -131,10 +131,13 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
   return (
     <div className="space-y-6">
       {/* 탭 버튼 영역 */}
-      <div className="flex border-b border-gray-100">
+      <div className="flex border-b border-gray-100" role="tablist" aria-label="제휴 메뉴">
         <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'partnership'}
           onClick={() => setActiveTab('partnership')}
-          className={`pb-4 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
+          className={`min-h-[44px] pb-3 pt-1 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
             activeTab === 'partnership' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
           }`}
         >
@@ -148,8 +151,11 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
           )}
         </button>
         <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'rental'}
           onClick={() => setActiveTab('rental')}
-          className={`pb-4 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
+          className={`min-h-[44px] pb-3 pt-1 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
             activeTab === 'rental' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
           }`}
         >
@@ -405,7 +411,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                           required
                           className="h-10 w-full rounded-none border-b border-gray-200 bg-transparent px-0 pb-1 text-[13px] focus:border-[#1a1a1a] focus:outline-none"
                         />
-                        <p className="text-[10px] text-gray-400 leading-tight">기본 5인 포함, 초과 시 인당 추가 요금</p>
+                        <p className="text-[12px] text-gray-400 leading-tight">기본 5인 포함, 초과 시 인당 추가 요금</p>
                       </label>
 
                       {/* 사용 희망 공간 */}
@@ -427,7 +433,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                       <div className="grid grid-cols-3 gap-3">
                         {/* 성함 */}
                         <label className="block space-y-1">
-                          <span className="text-[10px] font-bold text-gray-400">담당자 성함 <span className="text-red-500">*</span></span>
+                          <span className="text-[12px] font-bold text-gray-400">담당자 성함 <span className="text-red-500">*</span></span>
                           <input
                             type="text"
                             value={rentalForm.contactName}
@@ -439,7 +445,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
 
                         {/* 이메일 */}
                         <label className="block space-y-1 col-span-2">
-                          <span className="text-[10px] font-bold text-gray-400">연락 이메일 <span className="text-red-500">*</span></span>
+                          <span className="text-[12px] font-bold text-gray-400">연락 이메일 <span className="text-red-500">*</span></span>
                           <input
                             type="email"
                             value={rentalForm.contactEmail}
@@ -452,7 +458,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
 
                       {/* 연락처 */}
                       <label className="block space-y-1">
-                        <span className="text-[10px] font-bold text-gray-400">연락처 <span className="text-red-500">*</span></span>
+                        <span className="text-[12px] font-bold text-gray-400">연락처 <span className="text-red-500">*</span></span>
                         <input
                           type="text"
                           value={rentalForm.contactPhone}

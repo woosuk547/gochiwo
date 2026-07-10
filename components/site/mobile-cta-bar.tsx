@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EASE_OUT_EXPO } from '@/components/motion'
+import { dispatchMobileCtaVisible } from '@/lib/mobile-cta-visibility'
 
 export function MobileCTABar() {
   const pathname = usePathname()
@@ -14,11 +15,21 @@ export function MobileCTABar() {
   const shouldHide = hideOnPages.some((p) => pathname.startsWith(p))
 
   useEffect(() => {
-    if (shouldHide) return
-    const onScroll = () => setVisible(window.scrollY > 300)
+    if (shouldHide) {
+      dispatchMobileCtaVisible(false)
+      return
+    }
+    const onScroll = () => {
+      const next = window.scrollY > 300
+      setVisible(next)
+      dispatchMobileCtaVisible(next)
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      dispatchMobileCtaVisible(false)
+    }
   }, [shouldHide])
 
   return (

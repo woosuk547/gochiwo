@@ -17,10 +17,9 @@ export default async function PartnershipPage() {
   return (
     <PageShell>
       <PageHero
-        title="파트너십 및 미디어 대관"
-        description="임직원을 위한 품격 있는 우대 혜택과 브랜드 가치를 극대화하는 미디어 촬영 대관 프로세스를 전담 제공합니다."
+        title="제휴 · 대관"
+        description="임직원 우대와 미디어 촬영 대관을 안내해요."
         image="/repause/editorial-living.jpg"
-        eyebrow="제휴 · 대관"
       />
 
       <section className="mx-auto max-w-6xl px-4 py-8 md:px-5 md:py-12 lg:py-16">

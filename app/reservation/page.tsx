@@ -17,10 +17,9 @@ export default async function ReservationPage() {
   return (
     <PageShell>
       <PageHero
-        title="예약하기"
+        title="예약"
         description="날짜와 인원을 선택하시면 예상 요금을 바로 확인할 수 있어요."
         image="/repause/editorial-bedroom.jpg"
-        eyebrow="예약"
       />
 
       <section className="mx-auto max-w-6xl px-4 py-8 md:px-5 md:py-12 lg:py-16">
