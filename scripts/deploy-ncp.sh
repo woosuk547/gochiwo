@@ -29,6 +29,7 @@ set +a
 
 echo "==> docker build"
 docker build \
+  --platform linux/amd64 \
   --build-arg "NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-https://repause.co.kr}" \
   --build-arg "NEXT_PUBLIC_NAVER_MAP_CLIENT_ID=${NEXT_PUBLIC_NAVER_MAP_CLIENT_ID:-}" \
   --build-arg "NAVER_MAP_CLIENT_SECRET=${NAVER_MAP_CLIENT_SECRET:-}" \

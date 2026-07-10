@@ -1,0 +1,38 @@
+# deps / build artifacts (이미지 안에서 다시 설치·빌드)
+node_modules
+.next
+out
+dist
+coverage
+*.tsbuildinfo
+
+# git / IDE / local secrets
+.git
+.github
+.cursor
+.vscode
+.idea
+.env*
+!.env.example
+.railway-project-token
+deploy/ncp/*.pem
+deploy/ncp/.env.production
+deploy/ncp/server.env
+
+# docs / legacy / unused (프로덕션 이미지 불필요)
+_legacy-gochiwo
+_외주_크리오스
+docs
+*.md
+!CLAUDE.md
+quote_*.html
+Sinabro
+
+# media / caches that bloat context
+**/.DS_Store
+**/npm-debug.log*
+**/.turbo
+colima
+*.pem
+prisma/*.db-journal
+prisma/*.db-wal
