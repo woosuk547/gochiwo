@@ -57,19 +57,15 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <details className="mt-8 border-t border-gray-200 pt-5 md:mt-10 md:pt-6">
-          <summary className="min-h-[44px] flex items-center cursor-pointer text-[13px] text-gray-400 hover:text-gray-600">
-            사업자 정보
-          </summary>
-          <div className="mt-2 space-y-1 text-[12px] text-gray-400 md:mt-3 md:text-[13px]">
-            <p>{contactInfo.company} · 대표 {contactInfo.ceo.includes('공지') ? '(오픈 예정)' : contactInfo.ceo}</p>
-            {!contactInfo.businessNumber.includes('공지') && (
-              <p>사업자등록번호 {contactInfo.businessNumber}{!contactInfo.mailOrderNumber.includes('공지') ? ` · 통신판매업 ${contactInfo.mailOrderNumber}` : ''}</p>
-            )}
-            <p>{contactInfo.address}</p>
-            {contactInfo.notice && <p className="text-[11px] text-gray-300 md:text-[12px]">{contactInfo.notice}</p>}
-          </div>
-        </details>
+        {/* 카드사·통신판매 심사용: 사업자등록증과 일치하는 필수 정보 (항상 노출) */}
+        <div className="mt-8 border-t border-gray-200 pt-5 text-[12px] leading-relaxed text-gray-500 md:mt-10 md:pt-6 md:text-[13px]">
+          <p>상호명 {contactInfo.company}</p>
+          <p>대표자명 {contactInfo.ceo || '—'}</p>
+          <p>사업자등록번호 {contactInfo.businessNumber || '—'}</p>
+          <p>사업장 주소 {contactInfo.address}</p>
+          <p>전화번호 {contactInfo.phone}</p>
+          <p>통신판매업 신고번호 {contactInfo.mailOrderNumber}</p>
+        </div>
 
         <div className="mt-5 flex flex-col gap-3 border-t border-gray-200 pt-5 text-[12px] text-gray-400 md:mt-6 md:flex-row md:items-center md:justify-between md:pt-6 md:text-[13px]">
           <p>&copy; 2026 Repause. All rights reserved.</p>

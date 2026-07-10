@@ -407,13 +407,13 @@ export const cancellationPolicy = {
 export const contactInfo = {
   brand: '리포즈',
   company: '(주)크리오스',
-  ceo: '오픈 시 공지',
-  businessNumber: '오픈 시 공지',
-  mailOrderNumber: '오픈 시 공지',
-  address: '서울 강남구 강남대로160길 26, 2층',
+  ceo: '', // 사업자등록증 대표자명 — 담당자 확인 후 기입
+  businessNumber: '', // 사업자등록번호 — 담당자 확인 후 기입
+  mailOrderNumber: '제 2026-서울강남-03705호',
+  address: '서울특별시 강남구 강남대로160길 26, 2층',
   phone: '02-514-5536',
   site: 'repause.co.kr',
   instagram: 'https://www.instagram.com/repause_poolvilla/',
   email: 'creaos@naver.com',
-  notice: '정식 오픈 일정에 따라 일부 상세 법인 라이선스 정보가 정교하게 표기될 예정입니다.',
+  notice: '',
 }
