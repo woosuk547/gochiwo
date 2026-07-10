@@ -1,0 +1,39 @@
+---
+description: 작업 중 발견한 버그·해결책·팁 자동 기록 (CLAUDE.md 금지)
+alwaysApply: true
+---
+
+# 배운 점 & 팁
+
+형식: `- [YYYY-MM-DD] 이슈 -> 팁` (미사어구 금지)
+신규 팁은 이 파일 상단에 추가.
+
+- [2026-07-10] 카드사/토스 심사용 푸터 -> 사업자 정보는 `<details>` 접힘 금지. 상호·대표·사업자번호·주소·전화·통신판매업 신고번호를 항상 노출하고 사업자등록증과 완전 일치해야 함.
+- [2026-07-10] UIUX 개선 -> 푸터 사업자 dl 그리드+전화는 문의 컬럼만 링크. `/stays` mock은 `/space` 리다이렉트+noindex. 카카오 FAB는 sticky CTA visible 이벤트와 오프셋 동기화.
+- [2026-07-10] 기능 패치 -> SQLite는 `/data` 볼륨+entrypoint(시드만 최초 복사). PENDING 12h TTL. confirm은 CANCELLED/DECLINED 거부+paymentKey 멱등. 결제 페이지 이메일 게이트. 교대일 캘린더 허용.
+- [2026-05-23] 규칙 및 가이드 파일 작성 시 미사어구를 극단적으로 생략하고 불필요한 서술어를 걷어내면 AI 컨텍스트 토큰을 최대 70% 절약할 수 있으며, 지시 이행률이 대폭 상승함.
+- [2026-05-24] 고쳐줘 레거시 코드를 `_legacy-gochiwo/`로 분리하고 Prisma 스키마에서 미사용 모델 제거하면 빌드 용량과 컨텍스트 혼란이 줄어듦.
+- [2026-05-24] 하이엔드 디자인 리뷰: (1) 카피 톤에서 "운영팀/접수/정산" 등 행정 어휘 제거 → 간결·감성적 문장으로 교체, (2) 히어로 overlay 82%→58%로 낮춰 영상 비주얼 살림, (3) rounded-[32px] → 직선 에디토리얼로 통일, (4) CTA 문구 "예약 및 결제 안내 보기"→"예약하기"로 축소, (5) 모바일에서 info박스 숨기고 CTA를 fold 안에 배치, (6) 이미지 min-h 반응형 처리 필수.
+- [2026-05-24] 모바일 UX 개선: (1) 모든 터치 대상 min 44px 확보(햄버거/캘린더/FAQ/푸터), (2) 모바일 메뉴에 배경 오버레이+스크롤 락, (3) 하단 sticky CTA "예약하기" 바 추가(예약/결제 페이지 제외), (4) 홈 Room Guide 모바일 2개로 축소+이미지 aspect-[4/3] 고정, (5) 카카오 버튼 bottom-20으로 CTA바 겹침 방지.
+- [2026-05-24] 예약/제휴 페이지 리팩토링: 3개월 읽기전용 캘린더 → 큰 인터랙티브 캘린더 1개(`LargeCalendarPicker`)로 교체, 왼쪽 캘린더⇔오른쪽 폼 양방향 날짜 동기화 구현.
+- [2026-05-24] PageHero 카피 전페이지 압축: title 3~6자, description 1문장 이내. 하이엔드 브랜드는 제목이 명확하면 부연 최소화.
+- [2026-05-26] Next.js 16.1.6 Turbopack 빌드 시 "Dependency tracking is disabled so invalidation is not allowed" 패닉 에러는 코드 문제가 아닌 Turbopack 버그. Railway 프로덕션 배포(webpack)에서는 정상 동작.
+- [2026-05-26] 에디토리얼 레이아웃 전면 개편: (1) 홈 히어로 타이포그래피 클램프 폰트, (2) 공간 사진 full-bleed alternating (21:9 전폭 + 50/50 그리드), (3) 예약 단계 4카드→다크 배경 텍스트 타임라인, (4) 공간소개 페이지 이미지히어로+교대섹션, (5) PageHero 이미지배경 옵션 추가, (6) TextReveal 클립패스 애니메이션 컴포넌트, (7) editorial-*.jpg 이미지 경로 추가. Gemini API 키 만료로 신규 이미지 생성 실패 → 기존 이미지 복사로 대체. 새 API 키 발급 후 node generate-repause-editorial-images.mjs 로 교체 가능.
+- [2026-05-27] 예약 약관 동의 및 브랜드 로고 개선 -> 9개 필수 약관을 2개 대그룹(취소/환불, 안전수칙)으로 슬림화하여 프리미엄 UX를 완성하고, Option 4(블랙 + private stay) 로고를 헤더/푸터에 완벽 적용함. CSS 필터(invert, mix-blend-screen/multiply)를 활용하여 투명/고정 헤더 모드에 맞춰 로고 색상이 동적으로 반전되도록 최적화함.
+- [2026-05-30] FAQ 리팩토링 및 팩트 동기화 -> 체크인 시간 변경 시 `lib/repause-content.ts`, `lib/mailer.ts`, `lib/mock-stays.ts` 등 체크인 가이드 시간을 완벽 동기화해야 함. 연박 할인은 `lib/repause-pricing.ts`에 자동 차감 비즈니스 로직을 연결하여 실제 결제 창에서 완벽 일치하도록 구성함.
+- [2026-05-30] 모바일 사용성 극대화 -> iOS 홈 바 간섭 방지를 위해 `pb-[calc(12px+env(safe-area-inset-bottom))]`과 같은 고정밀 안전 영역 CSS 공식을 대입하고, 카카오 채널 버튼 등의 플로팅 오프셋이 모바일 sticky CTA 바의 존재 여부에 따라 동적 스위칭(`bottom-[calc(92px+env(safe-area-inset-bottom))]` ⇔ `bottom-[calc(16px+env(safe-area-inset-bottom))]`)되도록 설계함.
+- [2026-05-30] 에디토리얼 조형의 통일성 -> 직선미를 중시하는 에디토리얼 레이아웃에서 캘린더 개별 날짜 버튼은 `rounded-none`으로 정갈하게 면처리를 하되, 선택 원형 하이라이트만 `rounded-full`로 대조 배합하여 기하학적 통일감과 가독성을 동시 충족함.
+- [2026-05-30] 모바일 브라우저 스타일 강제 주입 해결 -> iOS Safari 등 일부 환경에서 html 및 body에 터치/크기 조절 인라인 스타일을 강제 주입하여 발생하는 Next.js 하이드레이션 불일치 에러는 layout.tsx의 html 및 body 태그에 `suppressHydrationWarning`을 부여하여 해결함.
+- [2026-05-30] 비디오 포스터 프레임 완벽 동기화 -> 메인 히어로 비디오(`hero.mp4`) 로드 전 노출되는 포스터 이미지(`hero-exterior.jpg`)가 실제 비디오 첫 프레임(실내)과 달라 발생하던 시각적 이질감(플래시 현상)을 `ffmpeg`로 첫 프레임을 정밀 추출해 포스터로 대체함으로써 완벽히 해결함.
+- [2026-05-30] 결제 검증 및 보안 강화 -> 결제 승인 API(`/api/payment/confirm`)는 클라이언트 `amount`를 맹신하지 않고 DB의 `depositAmount`/`finalAmount`와 서버에서 강제 재비교해 금액 위변조를 차단해야 함. 인증이 없고 요금 폭탄 리스크가 있는 레거시 AI API(`financial-agent`, `generate-image`)는 활성 트리에서 영구 제거해야 함.
+- [2026-05-30] 캘린더 단일 진실 공급원(Single Source of Truth) 설계 -> 캘린더 로직이 분산되면 날짜 가용성/선택 로직 불일치 버그가 유발되므로, `getMonthMatrix`와 `selectDateRange`를 `lib/calendar.ts` 공용 유틸로 완전히 통일해야 함. 화면에 캘린더가 2개 이상 동시 노출되면 혼란스러우므로, 폼 영역은 읽기 전용 날짜 표시로 처리해 UI 복잡도를 줄여야 함.
+- [2026-05-30] 접근성 표준 준수(WCAG 1.4.4) -> `viewport`의 `maximumScale=1`은 저시력자 핀치 줌을 막아 접근성 위반이므로 반드시 제거해야 함. `onClick`이 들어간 모든 날짜 셀과 탭은 스크린리더와 키보드 초점 이동을 위해 `<button>` 태그와 `aria-pressed`, `aria-label` 속성으로 의미론적 구조를 보강해야 함.
+- [2026-06-02] Railway 프로덕션 배포 핵심 사항 -> (1) Next.js 16 Turbopack은 Railway 컨테이너에서 패닉 오류 발생 → `next build`가 아닌 `next@15.3.8`(Dockerfile 내 `npm ci`)를 사용해 webpack 빌드 강제. (2) Dockerfile 빌드 단계에서 `DATABASE_URL=file:/app/prisma/dev.db` (절대경로)로 `prisma db push`를 실행 후 db 파일을 런타임 단계로 복사해야 함. (3) Railway env var `DATABASE_URL` 도 절대경로`file:/app/prisma/dev.db`로 설정해야 상대경로 문제 방지. (4) `next.config.ts`에 `output: 'standalone'`과 `eslint.ignoreDuringBuilds: true` 필수. (5) Railway 무료 트라이얼 만료 시 env var 변경 API 차단됨 → 대시보드 직접 변경. (6) `useSearchParams()` 사용 컴포넌트는 반드시 Suspense 경계로 감싸야 빌드 통과.
+- [2026-06-02] Railway Dockerfile 배포 관리자 계정 설정 -> 관리자 로그인에는 `ADMIN_ID`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` 3개가 모두 필요. `ADMIN_SECRET` 단독으로는 동작하지 않음. Railway 변수 변경 후 재배포 자동 트리거됨.
+- [2026-06-10] 결제 페이지 할인 역산 버그 -> 연박 할인을 50,000원/박으로 하드코딩 역산해 실제 정책(20,000원/박)과 불일치했음. 할인 breakdown은 `calculateReservationQuote` 재계산 후 DB 총할인액과 일치할 때만 항목 분리 표시하도록 단일화해야 함.
+- [2026-06-10] 예약 퍼널 정합화 -> 예약 생성 직후 결제 페이지로 보내면서 PENDING 상태가 결제 UI를 차단해 퍼널이 중간에 끊겼음. 결제 차단은 DECLINED/CANCELLED만으로 한정하고 히어로/상태 카피를 `reservation.status` 분기 처리. 제휴 이메일 도메인 검증은 서버(API)에도 동일 규칙 필수.
+- [2026-06-10] FAQ 체크인 전·후 구조 -> `guideFaqSections`(section→group→items) + `FAQSections` 컴포넌트. CTA는 `cta: { href, label }`로 예약/대관/카카오 연결.
+- [2026-06-12] Railway GitHub 자동배포 단절 -> 6/4 이후 push만으로 배포 안 됨. `.github/workflows/deploy-production.yml` + `RAILWAY_TOKEN` secret + `npm run deploy:production` 폴백. 실제 URL은 `repause-production.up.railway.app`.
+- [2026-07-10] Railway SQLite 영속 -> Volume `repause-sqlite` mount `/data` + `DATABASE_URL=file:/data/dev.db` + `NEXT_PUBLIC_APP_URL=https://repause.co.kr`. GitHub Secret `RAILWAY_TOKEN` 비어 있으면 Actions 배포 Unauthorized.
+- [2026-07-10] NCP 이전 -> 서버 `101.79.25.108`, Cloudflare A→NCP, certbot SSL, CF SSL=Full. 배포 `npm run deploy:ncp`. nginx IPv6 listen 제거 필요. 인증키 blob URL은 만료되므로 Playwright/콘솔 다운로드 PEM을 `deploy/ncp/repause-key.pem`에 보관.
+- [2026-06-03] 하이엔드 럭셔리 스테이 브랜드화 및 대관 문의 오토메이션 -> (1) 조식 관련 키워드를 전면 제거하고 '포치 아래 명상' 등 고요함/비움 미학을 강조함. (2) 최대 인원을 6인으로 확장하고 2/4/6인 짝수 단위 예약으로 제한함. (3) 제휴 기업(네오위즈, 이스트소프트) 우대 혜택을 평일 30%, 주말 20%, 성수기 20%로 날짜별 정밀 세분화하여 SQLite 및 메일러에 연동함. (4) 예약 페이지 내 실시간 조회(Lookup) 탭을 완전히 통합 구현함. (5) 미디어 대관 전용 스키마(RentalInquiry)를 탑재하고 DB 영속화 및 기품 있는 관리자 메일 오토메이션 전송을 연계함. (6) Noto Serif KR 명조체 포인트를 도입하여 하이엔드 타이포그래피 미학을 완성함.

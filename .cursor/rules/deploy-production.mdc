@@ -1,0 +1,21 @@
+---
+description: main 브랜치 작업 완료 시 프로덕션 NCP 배포까지 수행
+alwaysApply: true
+---
+
+# 프로덕션 배포 (필수)
+
+## 배포 경로
+- **프로덕션 URL**: https://repause.co.kr
+- **서버**: NCP `101.79.25.108` (`/opt/repause`)
+- **수동 배포**: `NCP_HOST=101.79.25.108 SSH_OPTS="-i deploy/ncp/repause-key.pem" npm run deploy:ncp`
+
+## 작업 완료 시 절차
+1. 변경사항 커밋
+2. `git push origin main`
+3. 앱/Dockerfile/환경변수 변경 시 `npm run deploy:ncp` 실행
+4. `curl -I https://repause.co.kr` 로 200 확인
+
+## 금지
+- `repause.up.railway.app` 등 구/만료 도메인을 프로덕션 URL로 안내하지 말 것
+- Railway를 기본 배포 경로로 안내하지 말 것

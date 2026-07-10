@@ -1,0 +1,41 @@
+---
+description: Repause 디자인·기술·요금·AI 작업 규칙
+alwaysApply: true
+---
+
+# Repause 개발/디자인 규칙
+
+## 1. 디자인 (Brand & Aesthetics)
+- **컨셉**: 한국형 모던 프리미엄 (스테이폴리오 감성 + 토스 정보구조)
+- **시각**: 화이트 배경, Pretendard 단일 폰트, rounded-xl 카드, shadow-sm/lg, gray 계열
+- **컬러**: 블랙 `#1a1a1a`, 서브 `gray-500/600`, 배경 `white + gray-50`
+- **금지**: 세리프 폰트, 웜 뉴트럴, 영어 uppercase eyebrow, text-[10px] tracking-[0.3em], 에디토리얼 직선 보더, AI 템플릿 느낌
+- **UX 라이팅**: 해요체 기본, 한 문장 한 메시지, 행정 어휘("운영팀/접수/정산") 금지, 쉬운 말
+- **CTA**: 동사 1개("예약하기"/"날짜 선택하기"), rounded-xl, font-semibold, 최소 h-12
+- **모바일**: 터치 대상 min 44px, sticky CTA 바, 375px 기준, 카드형 정보 블록
+- **카드**: rounded-2xl border-gray-200 bg-white shadow-sm (or bg-gray-50 border 없이)
+
+## 2. 기술 스택 & 제약
+- **Framework**: Next.js 16 (App Router, Turbopack), TS, Node 20.20
+- **Styling**: Tailwind v4, shadcn/ui
+- **DB**: Prisma 6, SQLite (`prisma/dev.db`)
+- **폰트**: Pretendard 단일 (CDN import)
+- **네이버 지도**: 반드시 `ncpKeyId` 사용 (clientId 금지)
+ ```tsx
+ <Script src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}&submodules=geocoder`} />
+ ```
+- **이미지**: Gemini Imagen 4 사용 (`generate-korean-images.mjs`). 외부 이미지 다운 금지
+- **메일**: 네이버 SMTP/IMAP (`nodemailer` + `imapflow`)
+
+## 3. 요금 정책 (코드 기준: `lib/repause-pricing.ts`)
+- **비수기 평일(일-목)**: 680,000원/박 | **비수기 주말(금-토)**: 780,000원/박
+- **성수기(7/15~8/24, 12/20~1/15)**: 950,000원/박
+- **인원**: 기본 2인, 초과 시 1인당 40,000원/박 추가 (최대 4인)
+- **할인**: 제휴 임직원 12% 할인
+- **예약금**: 최종 금액의 50% (1,000원 단위 반올림)
+
+## 4. AI 작업 지침
+- **언어**: 한국어
+- **안전**: 수정 전 파일 읽기 필수
+- **주석**: 당연한 설명 금지, 비직관적 설계/제약 사항만 기술
+- **자동 학습/기록**: 작업 중 새 팁/트러블슈팅 발견 시 `.cursor/rules/tips.mdc` 상단에 `- [YYYY-MM-DD] 이슈 -> 팁` 형식으로 기록. `CLAUDE.md`에 팁 기록 금지.

@@ -25,7 +25,9 @@
 *.png
 *.tsbuildinfo
 .DS_Store
-.cursor/
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
 .env*
 .playwright-mcp/
 .pnp.*
