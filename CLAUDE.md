@@ -4,12 +4,14 @@
 
 ## 배포 & 인프라
 - **프로덕션**: https://repause-production.up.railway.app
-- **도메인**: 반값도메인 (ID: `sm5126`, PW: `!zmfldhtm5151`)
+- **도메인**: 반값도메인 (ID: `sm5126`, PW: `!zmfldhtm5151`) | 메인 `repause.co.kr` (Cloudflare NS)
+- **NCP (네이버클라우드)**: ID `creaos@naver.com` / PW `!zmfldhtm160!` / 연락처 `010-2648-6729` — 서버 이전·Maps용
 - **Github**: https://github.com/woosuk547/gochiwo
 - **플랫폼**: Railway (production) | `main` push → GitHub Actions → `railway up`
 - **폴백 배포**: `npm run deploy:production` (로컬 Railway CLI)
 - **ID**: Proj `c3ce71f7-fe3d-4c63-b714-4e56a2892dc7` | Svc `bb904a68-278d-4596-87e2-02ec4e0b034e` | Env `9f784b86-ec85-45d2-ab43-3b0344b55922`
 - **GitHub Secret**: `RAILWAY_TOKEN` (Railway production Project Token, 1회 등록)
+- **Railway SQLite 영속**: Volume mount `/data` + `DATABASE_URL=file:/data/dev.db` + `NEXT_PUBLIC_APP_URL=https://repause.co.kr`
 
 ## AI 작업 수칙
 - 한국어 사용
