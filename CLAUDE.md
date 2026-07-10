@@ -3,21 +3,20 @@
 > **활성**: Repause (크리오스 외주) | **비활성**: 고쳐줘 → `_legacy-gochiwo/`로 분리 완료
 
 ## 배포 & 인프라
-- **프로덕션**: https://repause-production.up.railway.app
-- **도메인**: 반값도메인 (ID: `sm5126`, PW: `!zmfldhtm5151`) | 메인 `repause.co.kr` (Cloudflare NS)
-- **NCP (네이버클라우드)**: ID `creaos@naver.com` / PW `!zmfldhtm160!` / 연락처 `010-2648-6729` — 서버 이전·Maps용
+- **프로덕션**: https://repause.co.kr (NCP)
+- **도메인**: 반값도메인 (ID: `sm5126`, PW: `!zmfldhtm5151`) | Cloudflare NS → A `101.79.25.108`
+- **NCP (네이버클라우드)**: ID `creaos@naver.com` / PW `!zmfldhtm160!` / 연락처 `010-2648-6729`
+- **서버**: `repause` (Instance `142994067`) | Public IP `101.79.25.108` | SSH `root` + `deploy/ncp/repause-key.pem`
+- **앱 경로**: `/opt/repause` (docker compose + `.env.production`) | Volume `/data` → `DATABASE_URL=file:/data/dev.db`
+- **배포**: `NCP_HOST=101.79.25.108 SSH_OPTS="-i deploy/ncp/repause-key.pem" npm run deploy:ncp`
 - **Github**: https://github.com/woosuk547/gochiwo
-- **플랫폼**: Railway (production) | `main` push → GitHub Actions → `railway up`
-- **폴백 배포**: `npm run deploy:production` (로컬 Railway CLI)
-- **ID**: Proj `c3ce71f7-fe3d-4c63-b714-4e56a2892dc7` | Svc `bb904a68-278d-4596-87e2-02ec4e0b034e` | Env `9f784b86-ec85-45d2-ab43-3b0344b55922`
-- **GitHub Secret**: `RAILWAY_TOKEN` (Railway production Project Token, 1회 등록)
-- **Railway SQLite 영속**: Volume mount `/data` + `DATABASE_URL=file:/data/dev.db` + `NEXT_PUBLIC_APP_URL=https://repause.co.kr`
+- **레거시 Railway** (비활성·트라이얼 만료 임박): `repause-production.up.railway.app` | Proj `c3ce71f7-fe3d-4c63-b714-4e56a2892dc7`
 
 ## AI 작업 수칙
 - 한국어 사용
 - 수정 전 파일 읽기 필수
 - 변경 사항 간결히 설명
-- **프로덕션 자동 배포**: 작업 완료 시 사용자 확인 없이 `git add . && git commit && git push origin main` 실행. Actions 미동작 시 `npm run deploy:production` 후 `railway deployment list`로 SUCCESS 확인. "배포할까요?" 등 질문 금지.
+- **프로덕션 자동 배포**: 작업 완료 시 사용자 확인 없이 `git add . && git commit && git push origin main` 실행. 앱/인프라 변경 시 `npm run deploy:ncp`로 NCP 반영. "배포할까요?" 등 질문 금지.
 - 이미지: Gemini Imagen 4 (`generate-repause-editorial-images.mjs`) 전용. 외부 다운 금지.
 - **팁 자동 기록**: 새롭게 알게 된 버그, 해결책, 팁 발견 시 즉시 이 파일 하단 `## 배운 점 & 팁`에 최소 요약 형식(`- [YYYY-MM-DD] 이슈 -> 팁`)으로 추가할 것. 미사어구 절대 금지.
 
@@ -94,6 +93,7 @@
 - [2026-06-10] FAQ 체크인 전·후 구조 -> `guideFaqSections`(section→group→items) + `FAQSections` 컴포넌트. CTA는 `cta: { href, label }`로 예약/대관/카카오 연결.
 - [2026-06-12] Railway GitHub 자동배포 단절 -> 6/4 이후 push만으로 배포 안 됨. `.github/workflows/deploy-production.yml` + `RAILWAY_TOKEN` secret + `npm run deploy:production` 폴백. 실제 URL은 `repause-production.up.railway.app`.
 - [2026-07-10] Railway SQLite 영속 -> Volume `repause-sqlite` mount `/data` + `DATABASE_URL=file:/data/dev.db` + `NEXT_PUBLIC_APP_URL=https://repause.co.kr`. GitHub Secret `RAILWAY_TOKEN` 비어 있으면 Actions 배포 Unauthorized.
+- [2026-07-10] NCP 이전 -> 서버 `101.79.25.108`, Cloudflare A→NCP, certbot SSL, CF SSL=Full. 배포 `npm run deploy:ncp`. nginx IPv6 listen 제거 필요. 인증키 blob URL은 만료되므로 Playwright/콘솔 다운로드 PEM을 `deploy/ncp/repause-key.pem`에 보관.
 - [2026-06-03] 하이엔드 럭셔리 스테이 브랜드화 및 대관 문의 오토메이션 -> (1) 조식 관련 키워드를 전면 제거하고 '포치 아래 명상' 등 고요함/비움 미학을 강조함. (2) 최대 인원을 6인으로 확장하고 2/4/6인 짝수 단위 예약으로 제한함. (3) 제휴 기업(네오위즈, 이스트소프트) 우대 혜택을 평일 30%, 주말 20%, 성수기 20%로 날짜별 정밀 세분화하여 SQLite 및 메일러에 연동함. (4) 예약 페이지 내 실시간 조회(Lookup) 탭을 완전히 통합 구현함. (5) 미디어 대관 전용 스키마(RentalInquiry)를 탑재하고 DB 영속화 및 기품 있는 관리자 메일 오토메이션 전송을 연계함. (6) Noto Serif KR 명조체 포인트를 도입하여 하이엔드 타이포그래피 미학을 완성함.
 
 ## 2026-05-24 작업 일지

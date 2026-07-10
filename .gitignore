@@ -52,3 +52,5 @@ prisma/*.db-wal
 yarn-debug.log*
 yarn-error.log*
 deploy/ncp/.env.production
+deploy/ncp/*.pem
+deploy/ncp/server.env

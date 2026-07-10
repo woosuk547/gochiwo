@@ -6,9 +6,14 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-: "${NCP_HOST:?NCP_HOST required}"
+NCP_HOST="${NCP_HOST:-101.79.25.108}"
 NCP_USER="${NCP_USER:-root}"
-SSH_OPTS="${SSH_OPTS:--o StrictHostKeyChecking=accept-new}"
+KEY_FILE="${KEY_FILE:-$ROOT_DIR/deploy/ncp/repause-key.pem}"
+if [[ -f "$KEY_FILE" ]]; then
+  SSH_OPTS="${SSH_OPTS:--i $KEY_FILE -o StrictHostKeyChecking=accept-new}"
+else
+  SSH_OPTS="${SSH_OPTS:--o StrictHostKeyChecking=accept-new}"
+fi
 
 ENV_FILE="${ENV_FILE:-$ROOT_DIR/deploy/ncp/.env.production}"
 if [[ ! -f "$ENV_FILE" ]]; then
