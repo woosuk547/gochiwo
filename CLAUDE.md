@@ -18,7 +18,7 @@
 - 변경 사항 간결히 설명
 - **프로덕션 자동 배포**: 작업 완료 시 사용자 확인 없이 `git add . && git commit && git push origin main` 실행. 앱/인프라 변경 시 `npm run deploy:ncp`로 NCP 반영. "배포할까요?" 등 질문 금지.
 - 이미지: Gemini Imagen 4 (`generate-repause-editorial-images.mjs`) 전용. 외부 다운 금지.
-- **팁 자동 기록**: `.cursor/rules/tips.mdc`에만 기록 (`CLAUDE.md` 금지). 형식 `- [YYYY-MM-DD] 이슈 -> 팁`.
+- **팁 자동 기록**: `.cursor/rules/tips.mdc`에만 기록 (`CLAUDE.md` 금지). 형식 `- [YYYY-MM-DD] 이슈 -> 팁`. Cursor 훅(`.cursor/hooks.json`)이 sessionStart/stop에서 미기록을 점검한다.
 
 ## 기술 스택
 - Next.js 16.1.6 (App Router, Turbopack), TypeScript

@@ -28,7 +28,9 @@
 .cursor/*
 !.cursor/rules/
 !.cursor/rules/**
-.env*
+!.cursor/hooks.json
+!.cursor/hooks/
+!.cursor/hooks/**.env*
 .playwright-mcp/
 .pnp.*
 .pnpm-debug.log*

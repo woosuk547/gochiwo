@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": ".cursor/hooks/session-start-context.sh",
+        "timeout": 10
+      }
+    ],
+    "stop": [
+      {
+        "type": "prompt",
+        "prompt": "이번 에이전트 턴에서 새로 알게 된 버그·해결책·배포/인프라/PG심사/운영 팁이 있는가?\n\n규칙:\n- 기록 위치는 오직 `.cursor/rules/tips.mdc` (상단 추가)\n- 형식: `- [YYYY-MM-DD] 이슈 -> 팁` (미사어구 금지)\n- `CLAUDE.md`에 팁 기록 금지\n- 이미 tips.mdc에 동일 내용이 있으면 중복 추가 금지\n- 단순 코드 수정·질문 답변만 있고 새 팁이 없으면 추가 작업 없이 종료\n\n미기록 팁이 있으면 follow-up으로 tips.mdc에 기록한 뒤 끝내라.\n훅 입력: $ARGUMENTS",
+        "loop_limit": 1,
+        "timeout": 45
+      }
+    ]
+  }
+}

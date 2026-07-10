@@ -38,4 +38,4 @@ alwaysApply: true
 - **언어**: 한국어
 - **안전**: 수정 전 파일 읽기 필수
 - **주석**: 당연한 설명 금지, 비직관적 설계/제약 사항만 기술
-- **자동 학습/기록**: 작업 중 새 팁/트러블슈팅 발견 시 `.cursor/rules/tips.mdc` 상단에 `- [YYYY-MM-DD] 이슈 -> 팁` 형식으로 기록. `CLAUDE.md`에 팁 기록 금지.
+- **자동 학습/기록**: 작업 중 새 팁/트러블슈팅 발견 시 `.cursor/rules/tips.mdc` 상단에 `- [YYYY-MM-DD] 이슈 -> 팁` 형식으로 기록. `CLAUDE.md`에 팁 기록 금지. `sessionStart`/`stop` 훅(`.cursor/hooks.json`)이 미기록을 점검·후속 기록한다.
