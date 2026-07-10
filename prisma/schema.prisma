@@ -59,10 +59,15 @@ model Reservation {
   finalAmount      Int               @default(0)
   depositAmount    Int               @default(0)
   note             String?
+  paymentKey       String?
+  orderId          String?
   requestedAt      DateTime?
   paidAt           DateTime?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
+
+  @@index([paymentKey])
+  @@index([status, createdAt])
 }
 
 model BlockedDate {

@@ -10,6 +10,7 @@ interface ReservationResult {
   status: string
   paymentStatus: string
   guestName: string
+  email: string
   checkIn: string
   checkOut: string
   guests: number
@@ -20,8 +21,8 @@ interface ReservationResult {
 }
 
 const statusLabel: Record<string, string> = {
-  PENDING: '승인 대기',
-  CONFIRMED: '승인 완료',
+  PENDING: '결제 대기',
+  CONFIRMED: '예약 확정',
   DECLINED: '승인 거절',
   CANCELLED: '취소됨',
 }
@@ -160,9 +161,13 @@ export function MyReservationContent() {
             </div>
           </div>
 
-          {result.status === 'CONFIRMED' && result.paymentStatus !== 'PAID' && result.paymentStatus !== 'DEPOSIT_PAID' && (
+          {(['PENDING', 'CONFIRMED'].includes(result.status) &&
+            result.paymentStatus !== 'PAID' &&
+            result.paymentStatus !== 'DEPOSIT_PAID' &&
+            result.paymentMethod !== 'CORPORATE_BILLING' &&
+            result.depositAmount > 0) && (
             <Button asChild size="lg" className="mt-6 h-12 w-full rounded-none bg-[#1a1a1a] px-6 text-[15px] font-semibold text-white hover:bg-[#333]">
-              <Link href={`/payment/${result.id}`}>결제 진행하기</Link>
+              <Link href={`/payment/${result.id}?email=${encodeURIComponent(result.email)}`}>결제 진행하기</Link>
             </Button>
           )}
 

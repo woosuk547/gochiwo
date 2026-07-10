@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { paymentMethodLabel, reservationStatusLabel, type ReservationSummary } from '@/lib/booking'
 import { contactInfo } from '@/lib/repause-content'
 import { calculateReservationQuote } from '@/lib/repause-pricing'
+import { getAppUrl } from '@/lib/app-url'
 import { FunnelSteps } from '@/components/site/funnel-steps'
 
 interface PaymentCheckoutProps {
@@ -30,7 +31,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
   const [isProcessing, setIsProcessing] = useState(false)
 
   const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  const appUrl = getAppUrl()
 
   const amount = paymentType === 'DEPOSIT' ? reservation.depositAmount : reservation.finalAmount
 

@@ -46,6 +46,8 @@ export async function PATCH(
     })
 
     if (status === 'CONFIRMED') {
+      const alreadyPaid =
+        reservation.paymentStatus === 'PAID' || reservation.paymentStatus === 'DEPOSIT_PAID'
       sendReservationConfirmed({
         to: reservation.email,
         guestName: reservation.guestName,
@@ -54,6 +56,13 @@ export async function PATCH(
         guests: reservation.guests,
         finalAmount: reservation.finalAmount,
         paymentMethod: reservation.paymentMethod as PaymentMethod,
+        paymentCompleted: alreadyPaid,
+        paidAmount: alreadyPaid
+          ? reservation.paymentStatus === 'DEPOSIT_PAID'
+            ? reservation.depositAmount
+            : reservation.finalAmount
+          : 0,
+        isDepositOnly: reservation.paymentStatus === 'DEPOSIT_PAID',
       }).catch((emailError) => {
         console.error('Failed to send reservation confirmed email:', emailError)
       })

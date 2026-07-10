@@ -3,6 +3,7 @@ import { requireAdmin } from '@/lib/admin-auth'
 import {
   parseDateInput,
   formatDateKey,
+  getTodayKey,
   ALLOWED_GUEST_COUNTS,
   isCheckInAllowedForSource,
   type PaymentMethod,
@@ -16,9 +17,10 @@ import {
   partnerBenefitOptions,
 } from '@/lib/repause-pricing'
 import {
-  activeReservationStatuses,
+  activeHoldWhere,
   serializeReservation,
 } from '@/lib/reservation-service'
+import { isValidEmail, isValidPhone } from '@/lib/app-url'
 
 const allowedPaymentMethods: PaymentMethod[] = ['CARD', 'BANK_TRANSFER', 'CORPORATE_BILLING']
 
@@ -58,6 +60,19 @@ export async function POST(request: NextRequest) {
 
     if (!guestName || !email || !phone || !checkIn || !checkOut) {
       return NextResponse.json({ error: '필수 정보를 모두 입력해주세요.' }, { status: 400 })
+    }
+
+    if (!isValidEmail(email)) {
+      return NextResponse.json({ error: '올바른 이메일 주소를 입력해주세요.' }, { status: 400 })
+    }
+
+    if (!isValidPhone(phone)) {
+      return NextResponse.json({ error: '올바른 연락처를 입력해주세요.' }, { status: 400 })
+    }
+
+    const todayKey = getTodayKey()
+    if (formatDateKey(checkIn) < todayKey) {
+      return NextResponse.json({ error: '과거 날짜로는 예약할 수 없습니다.' }, { status: 400 })
     }
 
     if (source === 'PARTNERSHIP' && !companyName) {
@@ -120,9 +135,13 @@ export async function POST(request: NextRequest) {
         }),
         tx.reservation.findFirst({
           where: {
-            status: { in: activeReservationStatuses },
-            checkIn: { lt: checkOut },
-            checkOut: { gt: checkIn },
+            AND: [
+              activeHoldWhere(),
+              {
+                checkIn: { lt: checkOut },
+                checkOut: { gt: checkIn },
+              },
+            ],
           },
         }),
       ])

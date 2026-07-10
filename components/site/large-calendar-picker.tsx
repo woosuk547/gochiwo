@@ -166,9 +166,11 @@ export function LargeCalendarPicker({
 
               const dateKey = formatDateKey(cell)
               const isPast = dateKey < earliestKey
+              const selectingCheckout = Boolean(checkIn && !checkOut)
               const isBlocked = blockedKeys.has(dateKey)
               const isReserved = reservedKeys.has(dateKey)
-              const isUnavailable = isPast || isBlocked || isReserved
+              // 교대일: 기존 예약 체크인일은 내 체크아웃으로 선택 가능
+              const isUnavailable = isPast || isBlocked || (isReserved && !selectingCheckout)
 
               const isSelected = isDateSelected(dateKey)
               const isStart = dateKey === checkIn

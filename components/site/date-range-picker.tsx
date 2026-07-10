@@ -157,9 +157,10 @@ export function DateRangePicker({
 
               const dateKey = formatDateKey(cell)
               const isPast = dateKey < earliestKey
+              const selectingCheckout = Boolean(checkIn && !checkOut)
               const isBlocked = blockedKeys.has(dateKey)
               const isReserved = reservedKeys.has(dateKey)
-              const isUnavailable = isPast || isBlocked || isReserved
+              const isUnavailable = isPast || isBlocked || (isReserved && !selectingCheckout)
               const isSelected = isDateSelected(dateKey)
               const isInRange = isDateInRange(dateKey)
 

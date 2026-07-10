@@ -5,3 +5,9 @@ dockerfilePath = "Dockerfile"
 [deploy]
 healthcheckPath = "/"
 restartPolicyType = "ON_FAILURE"
+
+# SQLite 영속 볼륨. Railway 대시보드에서도 동일 경로(/data)로 Volume 연결 필요.
+# Variables: DATABASE_URL=file:/data/dev.db
+[[deploy.mounts]]
+volumeName = "repause-sqlite"
+mountPath = "/data"

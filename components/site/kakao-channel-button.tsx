@@ -15,9 +15,10 @@ export function KakaoChannelButton() {
   const [ctaVisible, setCtaVisible] = useState(false)
   const kakaoChannelUrl = 'https://pf.kakao.com/_repause'
 
-  const hideOnPages = ['/reservation', '/partnership', '/payment', '/admin']
+  const hideOnPages = ['/reservation', '/partnership', '/admin']
   const pageAllowsCtaBar = !hideOnPages.some((p) => pathname.startsWith(p))
-  const liftForCta = pageAllowsCtaBar && ctaVisible
+  const isPaymentPage = pathname.startsWith('/payment')
+  const liftForCta = (pageAllowsCtaBar && ctaVisible) || isPaymentPage
 
   useEffect(() => {
     const onCta = (event: Event) => {

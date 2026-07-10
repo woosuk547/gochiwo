@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import { ImapFlow } from "imapflow";
 import { simpleParser } from "mailparser";
 import { formatCurrency, paymentMethodLabel, type PaymentMethod, type ReservationSource } from '@/lib/booking'
+import { getAppUrl } from '@/lib/app-url'
 import { contactInfo } from './repause-content'
 
 const transporter = nodemailer.createTransport({
@@ -174,23 +175,34 @@ interface ReservationConfirmationOptions {
 }
 
 export async function sendReservationConfirmation(options: ReservationConfirmationOptions) {
+  const needsImmediatePayment =
+    options.paymentMethod === 'CARD' || options.paymentMethod === 'BANK_TRANSFER'
+
   const paymentLine =
     options.paymentMethod === 'CORPORATE_BILLING'
       ? '법인 정산 일정은 운영팀 승인 후 세금계산서 또는 별도 정산 방식으로 안내드립니다.'
       : `예상 결제 금액은 <strong>${formatCurrency(options.finalAmount)}</strong>이며, 예약금(50%)은 <strong>${formatCurrency(options.depositAmount)}</strong>입니다.`
 
+  const nextStep = needsImmediatePayment
+    ? `* 일정은 <strong>12시간</strong> 동안 임시 확보됩니다. 결제를 완료해 주시면 예약이 최종 확정됩니다.<br />
+        * 결제 페이지에서 바로 진행해 주세요. 기한 내 미결제 시 일정이 자동 해제됩니다.`
+    : `* 본 접수는 검토 단계입니다. 운영팀에서 확인 후 안내드립니다.`
+
   await sendMail({
     to: options.to,
-    subject: "[Repause] 예약 신청이 성공적으로 접수되었습니다",
-    senderName: "Repause",
+    subject: needsImmediatePayment
+      ? '[Repause] 예약 접수 — 결제를 완료해 주세요'
+      : '[Repause] 예약 신청이 성공적으로 접수되었습니다',
+    senderName: 'Repause',
     html: repauseEmailBase(`
       <h2 style="font-size: 22px; font-weight: 700; line-height: 1.4; margin: 0 0 12px; color: #1a1a1a;">안녕하세요, ${options.guestName}님</h2>
       <p style="font-size: 14px; color: #666666; margin: 0 0 32px; line-height: 1.7;">
         리포즈를 선택해 주셔서 감사합니다.<br />
-        예약 정보가 정상적으로 접수되었으며, 운영팀에서 검토 중입니다.
+        ${needsImmediatePayment
+          ? '예약 정보가 접수되었습니다. 결제를 완료하시면 예약이 확정됩니다.'
+          : '예약 정보가 정상적으로 접수되었으며, 운영팀에서 검토 중입니다.'}
       </p>
 
-      <!-- 예약 정보 테이블 -->
       <div style="margin-bottom: 36px; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; background-color: #f8f8f8; padding: 24px 28px;">
         <p style="font-size: 12px; letter-spacing: 0.1em; color: #999999; margin: 0 0 16px; font-weight: 600;">RESERVATION INFO</p>
         <table style="width: 100%; border-collapse: collapse; font-size: 13px; color: #1a1a1a;">
@@ -209,7 +221,7 @@ export async function sendReservationConfirmation(options: ReservationConfirmati
           ${options.benefitLabel ? `
           <tr style="border-bottom: 1px solid #e5e5e5;">
             <td style="padding: 12px 0; color: #666666;">제휴 구분</td>
-            <td style="padding: 12px 0; text-align: right;"><strong>${options.benefitLabel} (제휴 임직원 우대 적용)</strong></td>
+            <td style="padding: 12px 0; text-align: right;"><strong>${options.benefitLabel}</strong></td>
           </tr>` : ''}
           <tr>
             <td style="padding: 12px 0; color: #666666;">선호 결제</td>
@@ -218,15 +230,13 @@ export async function sendReservationConfirmation(options: ReservationConfirmati
         </table>
       </div>
 
-      <!-- 결제 안내 -->
       <div style="background-color: #f8f8f8; padding: 24px 28px; border-radius: 12px; margin-bottom: 32px; font-size: 13px; color: #666666; line-height: 1.7; border: 1px solid #e5e5e5;">
         <p style="margin: 0 0 8px; font-weight: 600; color: #1a1a1a;">결제 안내</p>
         <p style="margin: 0;">${paymentLine}</p>
       </div>
 
       <p style="font-size: 13px; line-height: 1.8; color: #666666; margin: 0 0 12px;">
-        * 본 접수는 <strong>예약 확정</strong>이 아닌 검토 단계입니다.<br />
-        * 24시간 이내에 승인 메일과 결제 안내를 보내드립니다.
+        ${nextStep}
       </p>
     `, true),
   })
@@ -242,12 +252,51 @@ interface ReservationConfirmedOptions {
   paymentMethod: PaymentMethod
   paidAmount?: number
   isDepositOnly?: boolean
+  /** false면 관리자 확정(미결제) 안내 */
+  paymentCompleted?: boolean
 }
 
 export async function sendReservationConfirmed(options: ReservationConfirmedOptions) {
+  const paymentCompleted = options.paymentCompleted !== false
   const isDeposit = options.isDepositOnly ?? false
-  const paid = options.paidAmount ?? options.finalAmount
+  const paid = options.paidAmount ?? (paymentCompleted ? options.finalAmount : 0)
   const remaining = options.finalAmount - paid
+
+  if (!paymentCompleted) {
+    await sendMail({
+      to: options.to,
+      subject: '[Repause] 예약이 확정되었습니다',
+      senderName: 'Repause',
+      html: repauseEmailBase(`
+        <h2 style="font-size: 22px; font-weight: 700; line-height: 1.4; margin: 0 0 12px; color: #1a1a1a;">예약이 확정되었습니다</h2>
+        <p style="font-size: 14px; color: #666666; margin: 0 0 32px; line-height: 1.7;">
+          ${options.guestName}님, 감사합니다.<br />
+          운영팀 검토 결과 <strong>예약이 확정</strong>되었습니다.
+          ${options.paymentMethod === 'CORPORATE_BILLING' ? '<br />법인 정산 일정은 별도로 안내드립니다.' : '<br />결제 안내가 필요한 경우 별도 메일을 보내드립니다.'}
+        </p>
+        <div style="margin-bottom: 36px; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; background-color: #f8f8f8; padding: 24px 28px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px; color: #1a1a1a;">
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 12px 0; color: #666666; width: 110px;">체크인</td>
+              <td style="padding: 12px 0; font-weight: 500; text-align: right;"><strong>${options.checkIn} (16:00 입실)</strong></td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e5e5;">
+              <td style="padding: 12px 0; color: #666666;">체크아웃</td>
+              <td style="padding: 12px 0; font-weight: 500; text-align: right;"><strong>${options.checkOut} (11:00 퇴실)</strong></td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; color: #666666;">체류 인원</td>
+              <td style="padding: 12px 0; text-align: right;">${options.guests}명</td>
+            </tr>
+          </table>
+        </div>
+        <p style="font-size: 13px; line-height: 1.8; color: #666666; margin: 0;">
+          문의: <a href="mailto:creaos@naver.com" style="color: #1a1a1a; text-decoration: underline;">creaos@naver.com</a>
+        </p>
+      `),
+    })
+    return
+  }
 
   await sendMail({
     to: options.to,
@@ -330,9 +379,8 @@ export async function sendPaymentGuide(options: PaymentGuideOptions) {
   const isCard = options.paymentMethod === 'CARD'
   const isCorp = options.paymentMethod === 'CORPORATE_BILLING'
   
-  // 배포된 실 도메인 또는 로컬 도메인을 바탕으로 결제 페이지 링크 생성
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  const paymentLink = `${appUrl}/payment/${options.id}`
+  const appUrl = getAppUrl()
+  const paymentLink = `${appUrl}/payment/${options.id}?email=${encodeURIComponent(options.to)}`
 
   const paymentDetail = isCorp
     ? '<p style="font-size: 14px; line-height: 1.9; color: #666666;">법인 정산 방식으로 접수되었습니다. 세금계산서 발행 및 정산 일정은 별도 안내드립니다.</p>'

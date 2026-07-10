@@ -327,7 +327,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         }
 
         if (form.paymentMethod === 'CARD' || form.paymentMethod === 'BANK_TRANSFER') {
-          router.push(`/payment/${result.id}`)
+          router.push(`/payment/${result.id}?email=${encodeURIComponent(form.email.trim().toLowerCase())}`)
           return
         }
 
@@ -409,7 +409,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           <FormInput id="rsv-email" type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required error={fieldErrors.email} />
           {source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0] && (
             <p className="text-[11px] text-gray-400 leading-relaxed">
-              * 평일 30%, 주말/공휴일 20%의 전용 우대 요금이 자동 적용됩니다. 예약 진행을 위해 회사 이메일 주소(@neowiz.com 또는 @estsoft.com)를 정확히 기재해 주세요. 해당 이메일로 전용 인증 코드를 전송해 드립니다.
+              * 평일 30%, 주말/공휴일 20%의 전용 우대 요금이 자동 적용됩니다. 회사 이메일(@neowiz.com 또는 @estsoft.com)로만 신청할 수 있어요.
             </p>
           )}
         </label>

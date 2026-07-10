@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
       status: true,
       paymentStatus: true,
       guestName: true,
+      email: true,
       checkIn: true,
       checkOut: true,
       guests: true,
