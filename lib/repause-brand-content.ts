@@ -74,10 +74,10 @@ export const operatingStandards = [
 
 export const noticeEntries = [
   {
-    category: '오픈 소식',
-    date: '2026-05-17',
-    title: '리포즈 포레스트 하우스, 2026년 6월 정식 프리오픈',
-    summary: '공간의 궁극적인 완성도와 조용한 사전 답사 일정이 정돈되는 호흡에 맞춰, 한정된 일정을 세심히 조율하여 조용히 열어가고 있습니다.',
+    category: '운영 안내',
+    date: '2026-06-01',
+    title: '리포즈 포레스트 하우스, 정식 운영을 시작합니다',
+    summary: '2026년 6월부터 일반 예약·제휴 예약을 정식으로 받고 있습니다. 가용 일정은 예약 페이지 캘린더에서 확인해 주세요.',
   },
   {
     category: '예약 안내',

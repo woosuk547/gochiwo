@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition, useEffect } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
@@ -13,7 +14,7 @@ import {
   type PaymentMethod,
   type ReservationSource,
 } from '@/lib/booking'
-import { contactInfo } from '@/lib/repause-content'
+import { cancellationPolicy, contactInfo } from '@/lib/repause-content'
 import {
   calculateReservationQuote,
   partnerBenefitOptions,
@@ -48,9 +49,25 @@ interface AgreementItem {
   title: string
   content: string
   hasTable?: boolean
+  href?: string
+  hrefLabel?: string
 }
 
 const agreements: AgreementItem[] = [
+  {
+    id: 'terms',
+    title: '이용약관 동의',
+    content: '예약·결제·취소·환불에 관한 이용약관에 동의합니다. 상세 내용은 이용약관 페이지에서 확인할 수 있습니다.',
+    href: '/terms',
+    hrefLabel: '이용약관 보기',
+  },
+  {
+    id: 'privacy',
+    title: '개인정보 수집·이용 동의',
+    content: `예약 처리, 결제·환불, 고객 응대를 위해 예약자명·이메일·연락처·일정·인원 등 개인정보를 수집·이용합니다. 보유 기간·처리위탁(토스페이먼츠 등)은 개인정보처리방침을 따릅니다. 문의: ${contactInfo.email}`,
+    href: '/privacy',
+    hrefLabel: '개인정보처리방침 보기',
+  },
   {
     id: 'refund',
     title: '취소 및 환불 규정에 대한 동의',
@@ -187,23 +204,18 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [submittedSummary, setSubmittedSummary] = useState<SubmittedSummary | null>(null)
 
-  const [agreedItems, setAgreedItems] = useState<Record<string, boolean>>({
-    refund: false,
-    rules: false,
-  })
+  const [agreedItems, setAgreedItems] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(agreements.map((item) => [item.id, false])),
+  )
 
-  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({
-    refund: false,
-    rules: false,
-  })
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(agreements.map((item) => [item.id, false])),
+  )
 
-  const allAgreed = Object.values(agreedItems).every((v) => v)
+  const allAgreed = agreements.every((item) => agreedItems[item.id])
 
   const handleAllAgreeChange = (checked: boolean) => {
-    setAgreedItems({
-      refund: checked,
-      rules: checked,
-    })
+    setAgreedItems(Object.fromEntries(agreements.map((item) => [item.id, checked])))
   }
 
   const handleItemAgreeChange = (id: string, checked: boolean) => {
@@ -567,81 +579,44 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
                   >
                     <div className="mt-3 rounded-none bg-gray-50/75 p-4 text-[13px] leading-relaxed text-gray-500 whitespace-pre-line tracking-tight">
                       {item.content}
+                      {item.href && (
+                        <p className="mt-3">
+                          <Link href={item.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-[#1a1a1a]">
+                            {item.hrefLabel ?? '자세히 보기'}
+                          </Link>
+                        </p>
+                      )}
 
-                      {/* 1번 약관 취소 및 환불 규정인 경우 수수료 테이블 노출 */}
                       {item.hasTable && (
                         <>
-                          <div className="overflow-x-auto mt-4 border border-gray-200 rounded-none">
-                            <table className="w-full text-left text-[12px] border-collapse bg-white">
+                          <div className="mt-4 overflow-x-auto rounded-none border border-gray-200">
+                            <table className="w-full border-collapse bg-white text-left text-[12px]">
                               <thead>
-                                <tr className="bg-gray-50 border-b border-gray-200 text-gray-500 font-medium">
-                                  <th className="py-2.5 px-3">취소 및 변경 요청일</th>
-                                  <th className="py-2.5 px-3">비수기</th>
-                                  <th className="py-2.5 px-3">성수기</th>
+                                <tr className="border-b border-gray-200 bg-gray-50 font-medium text-gray-500">
+                                  <th className="px-3 py-2.5">취소 및 변경 요청일</th>
+                                  <th className="px-3 py-2.5">비수기</th>
+                                  <th className="px-3 py-2.5">성수기</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-gray-100 text-gray-600">
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 15일전</td>
-                                  <td className="py-2 px-3 font-semibold text-emerald-700">100% 환불</td>
-                                  <td className="py-2 px-3 font-semibold text-emerald-700">100% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 14~11일전</td>
-                                  <td className="py-2 px-3 font-semibold text-emerald-700">100% 환불</td>
-                                  <td className="py-2 px-3">80% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 10일전</td>
-                                  <td className="py-2 px-3 font-semibold text-emerald-700">100% 환불</td>
-                                  <td className="py-2 px-3">70% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 9일전</td>
-                                  <td className="py-2 px-3">90% 환불</td>
-                                  <td className="py-2 px-3">60% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 8일전</td>
-                                  <td className="py-2 px-3">80% 환불</td>
-                                  <td className="py-2 px-3">50% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 7일전</td>
-                                  <td className="py-2 px-3">70% 환불</td>
-                                  <td className="py-2 px-3">40% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 6일전</td>
-                                  <td className="py-2 px-3">60% 환불</td>
-                                  <td className="py-2 px-3">30% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 5일전</td>
-                                  <td className="py-2 px-3">50% 환불</td>
-                                  <td className="py-2 px-3">20% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 4일전</td>
-                                  <td className="py-2 px-3">40% 환불</td>
-                                  <td className="py-2 px-3">10% 환불</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 3일전</td>
-                                  <td className="py-2 px-3">30% 환불</td>
-                                  <td className="py-2 px-3 text-red-600 font-semibold bg-red-50/10">환불 불가(0%)</td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 px-3 font-medium">이용 2일전~당일</td>
-                                  <td className="py-2 px-3 text-red-600 font-semibold bg-red-50/10">환불 불가(0%)</td>
-                                  <td className="py-2 px-3 text-red-600 font-semibold bg-red-50/10">환불 불가(0%)</td>
-                                </tr>
+                                {cancellationPolicy.tableRows.map((row) => (
+                                  <tr key={row.daysLabel}>
+                                    <td className="px-3 py-2 font-medium">{row.daysLabel}</td>
+                                    <td className={`px-3 py-2 ${row.offpeak.includes('100%') ? 'font-semibold text-emerald-700' : ''} ${row.offpeak.includes('불가') ? 'bg-red-50/10 font-semibold text-red-600' : ''}`}>
+                                      {row.offpeak}
+                                    </td>
+                                    <td className={`px-3 py-2 ${row.peak.includes('100%') ? 'font-semibold text-emerald-700' : ''} ${row.peak.includes('불가') ? 'bg-red-50/10 font-semibold text-red-600' : ''}`}>
+                                      {row.peak}
+                                    </td>
+                                  </tr>
+                                ))}
                               </tbody>
                             </table>
                           </div>
-                          <div className="mt-3 text-[11px] text-gray-400 space-y-0.5 leading-relaxed">
-                            <p>* 여름 성수기 : 7월 15일~8월 24일 적용</p>
-                            <p>* 겨울 연말 성수기 : 12월 1일~ 1월 15일</p>
+                          <div className="mt-3 space-y-0.5 text-[11px] leading-relaxed text-gray-400">
+                            {cancellationPolicy.peakSeasons.map((season) => (
+                              <p key={season}>* {season}</p>
+                            ))}
                             <p className="mt-1 font-medium text-gray-500">참고: 당일 예약 후 당일 취소하더라도 이용일이 당일이거나 &lsquo;환불 불가 기간&rsquo;에 해당될 경우 환불이 불가합니다.</p>
                           </div>
                         </>

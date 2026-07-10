@@ -402,7 +402,7 @@ export async function sendPaymentGuide(options: PaymentGuideOptions) {
            <table style="width: 100%; border-collapse: collapse;">
              <tr style="border-bottom: 1px solid #e5e5e5;"><td style="padding: 10px 0; color: #666666; width: 90px;">은행명</td><td style="padding: 10px 0; font-weight: 500;"><strong>네이버뱅크</strong></td></tr>
              <tr style="border-bottom: 1px solid #e5e5e5;"><td style="padding: 10px 0; color: #666666;">계좌번호</td><td style="padding: 10px 0; font-weight: 500;"><strong>1002-514-553600</strong></td></tr>
-             <tr><td style="padding: 10px 0; color: #666666;">예금주</td><td style="padding: 10px 0; font-weight: 500;"><strong>(주)크리오스</strong></td></tr>
+             <tr><td style="padding: 10px 0; color: #666666;">예금주</td><td style="padding: 10px 0; font-weight: 500;"><strong>주식회사 크리오스</strong></td></tr>
            </table>
          </div>`
 

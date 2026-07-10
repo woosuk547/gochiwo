@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { contactInfo } from '@/lib/repause-content'
 
 interface ReservationResult {
   id: string
@@ -172,7 +173,7 @@ export function MyReservationContent() {
           )}
 
           <p className="mt-4 text-[13px] text-gray-400">
-            예약 취소 및 변경은 repause.stay@naver.com으로 문의해 주세요.
+            예약 취소 및 변경은 {contactInfo.email}으로 문의해 주세요.
           </p>
         </div>
       )}

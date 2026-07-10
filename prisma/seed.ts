@@ -11,8 +11,8 @@ async function main() {
 
   // 차단일 예시 (운영 준비 기간)
   const blockedDates = [
-    { date: new Date('2026-06-01'), label: '프리오픈 준비' },
-    { date: new Date('2026-06-02'), label: '프리오픈 준비' },
+    { date: new Date('2026-06-01'), label: '운영 준비' },
+    { date: new Date('2026-06-02'), label: '운영 준비' },
     { date: new Date('2026-06-03'), label: '내부 점검' },
   ]
 
