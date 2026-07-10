@@ -1,65 +1,53 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-/lib/generated/prisma
-
+!public/**/*.jpg
+!public/**/*.png
+!public/**/*.webp
 # SQLite DB 파일 (프로덕션에서는 Railway 환경변수 DATABASE_URL 사용)
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# debug
+# dependencies
+# env files (can opt-in for committing if needed)
+# misc
+# next.js
+# production
+# testing
+# typescript
+# vercel
+# 개발 도구 임시 파일
+# 개발 중 생성된 스크린샷/이미지 캡처
+# 기타 임시 파일
+*.log
+*.pem
+*.png
+*.tsbuildinfo
+.DS_Store
+.cursor/
+.env*
+.playwright-mcp/
+.pnp.*
+.pnpm-debug.log*
+.railway-project-token
+.vercel
+.vscode/
+.yarn/*
+/.next/
+/.pnp
+/build
+/coverage
+/lib/generated/prisma
+/node_modules
+/out/
+home-snapshot.yml
+naver_cookies.json
+next-env.d.ts
+npm-debug.log*
 prisma/*.db
 prisma/*.db-journal
 prisma/*.db-shm
 prisma/*.db-wal
-
-# 개발 도구 임시 파일
-.playwright-mcp/
-.cursor/
-.vscode/
-
-# 개발 중 생성된 스크린샷/이미지 캡처
-*.png
-!public/**/*.png
-!public/**/*.jpg
-!public/**/*.webp
-
-# 기타 임시 파일
-*.log
-home-snapshot.yml
-naver_cookies.json
+yarn-debug.log*
+yarn-error.log*

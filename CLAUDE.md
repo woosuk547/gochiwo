@@ -93,6 +93,7 @@
 - [2026-06-10] 예약 퍼널 정합화 -> 예약 생성 직후 결제 페이지로 보내면서 PENDING 상태가 결제 UI를 차단해 퍼널이 중간에 끊겼음. 결제 차단은 DECLINED/CANCELLED만으로 한정하고 히어로/상태 카피를 `reservation.status` 분기 처리. 제휴 이메일 도메인 검증은 서버(API)에도 동일 규칙 필수.
 - [2026-06-10] FAQ 체크인 전·후 구조 -> `guideFaqSections`(section→group→items) + `FAQSections` 컴포넌트. CTA는 `cta: { href, label }`로 예약/대관/카카오 연결.
 - [2026-06-12] Railway GitHub 자동배포 단절 -> 6/4 이후 push만으로 배포 안 됨. `.github/workflows/deploy-production.yml` + `RAILWAY_TOKEN` secret + `npm run deploy:production` 폴백. 실제 URL은 `repause-production.up.railway.app`.
+- [2026-07-10] Railway SQLite 영속 -> Volume `repause-sqlite` mount `/data` + `DATABASE_URL=file:/data/dev.db` + `NEXT_PUBLIC_APP_URL=https://repause.co.kr`. GitHub Secret `RAILWAY_TOKEN` 비어 있으면 Actions 배포 Unauthorized.
 - [2026-06-03] 하이엔드 럭셔리 스테이 브랜드화 및 대관 문의 오토메이션 -> (1) 조식 관련 키워드를 전면 제거하고 '포치 아래 명상' 등 고요함/비움 미학을 강조함. (2) 최대 인원을 6인으로 확장하고 2/4/6인 짝수 단위 예약으로 제한함. (3) 제휴 기업(네오위즈, 이스트소프트) 우대 혜택을 평일 30%, 주말 20%, 성수기 20%로 날짜별 정밀 세분화하여 SQLite 및 메일러에 연동함. (4) 예약 페이지 내 실시간 조회(Lookup) 탭을 완전히 통합 구현함. (5) 미디어 대관 전용 스키마(RentalInquiry)를 탑재하고 DB 영속화 및 기품 있는 관리자 메일 오토메이션 전송을 연계함. (6) Noto Serif KR 명조체 포인트를 도입하여 하이엔드 타이포그래피 미학을 완성함.
 
 ## 2026-05-24 작업 일지
