@@ -404,13 +404,27 @@ export const cancellationPolicy = {
   ],
 }
 
+/** 숙박 제공·결제 당사자 (푸터·심사용) */
+export const lodgingProvider = {
+  title: '숙박 제공 및 결제 당사자',
+  company: '슈가스테이',
+  ceo: '문혜은',
+  businessNumber: '753-32-01614',
+  mailOrderNumber: '제2026-화도수동-0450 호',
+  address: '경기도 남양주시 화도읍 수레로 1178, 104동 902호',
+  /** 클라이언트 전달값 미완 — 전체 번호 확인 후 기입 */
+  phone: '',
+}
+
+/** 예약 대행·시스템 운영 (푸터·심사용) + 사이트 문의 기본 연락처 */
 export const contactInfo = {
   brand: '리포즈',
-  company: '주식회사 크리오스',
+  roleTitle: '예약 대행 및 시스템 운영',
+  company: '(주)크리오스',
   ceo: '이상민',
   businessNumber: '422-87-00064',
-  mailOrderNumber: '제 2026-서울강남-03705호',
-  address: '서울특별시 강남구 강남대로160길 26, 2층(신사동)',
+  mailOrderNumber: '제2026-서울강남-03705 호',
+  address: '서울특별시 강남구 강남대로160길 26, 2층',
   phone: '02-514-5536',
   site: 'repause.co.kr',
   instagram: 'https://www.instagram.com/repause_poolvilla/',

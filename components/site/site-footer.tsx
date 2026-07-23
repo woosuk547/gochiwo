@@ -1,16 +1,50 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { contactInfo, siteNavigation } from '@/lib/repause-content'
+import { contactInfo, lodgingProvider, siteNavigation } from '@/lib/repause-content'
 import { InstagramIcon } from '@/components/site/instagram-icon'
 
-const businessRows = [
-  { label: '상호명', value: contactInfo.company },
-  { label: '대표자명', value: contactInfo.ceo },
-  { label: '사업자등록번호', value: contactInfo.businessNumber },
-  { label: '사업장 소재지', value: contactInfo.address },
-  { label: '전화번호', value: contactInfo.phone },
-  { label: '통신판매업 신고번호', value: contactInfo.mailOrderNumber },
-] as const
+type BizParty = {
+  title: string
+  company: string
+  ceo: string
+  businessNumber: string
+  mailOrderNumber: string
+  address: string
+  phone: string
+}
+
+function BusinessPartyBlock({ party }: { party: BizParty }) {
+  const rows = [
+    { label: '상호명', value: party.company },
+    { label: '대표자명', value: party.ceo },
+    { label: '사업자등록번호', value: party.businessNumber },
+    { label: '사업장 소재지', value: party.address },
+    { label: '전화번호', value: party.phone },
+    { label: '통신판매업 신고번호', value: party.mailOrderNumber },
+  ]
+
+  return (
+    <div>
+      <p className="text-[12px] font-semibold tracking-tight text-[#1a1a1a] md:text-[13px]">{party.title}</p>
+      <dl className="mt-3 grid grid-cols-1 gap-x-8 gap-y-2 text-[12px] leading-relaxed md:text-[13px]">
+        {rows.map((row) => (
+          <div key={row.label} className="flex gap-3 sm:gap-4">
+            <dt className="w-[7.5rem] shrink-0 text-gray-400">{row.label}</dt>
+            <dd className="min-w-0 text-gray-600">
+              {row.label === '전화번호' && row.value ? (
+                <a href={`tel:${row.value.replace(/-/g, '')}`} className="hover:text-brand">
+                  {row.value}
+                </a>
+              ) : (
+                row.value || '—'
+              )}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  )
+}
 
 export function SiteFooter() {
   return (
@@ -70,18 +104,24 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* 카드사·통신판매 심사용: 사업자등록증과 일치하는 필수 정보 (항상 노출) */}
-        <div className="mt-8 border-t border-gray-200 pt-5 md:mt-10 md:pt-6">
-          <dl className="grid grid-cols-1 gap-x-8 gap-y-2 text-[12px] leading-relaxed md:grid-cols-2 md:text-[13px]">
-            {businessRows.map((row) => (
-              <div key={row.label} className="flex gap-3 sm:gap-4">
-                <dt className="w-[7.5rem] shrink-0 text-gray-400">{row.label}</dt>
-                <dd className="min-w-0 text-gray-600">{row.value}</dd>
-              </div>
-            ))}
-          </dl>
+        {/* 카드사·통신판매 심사용: 결제 당사자 + 운영사 필수 정보 (항상 노출) */}
+        <div className="mt-8 space-y-8 border-t border-gray-200 pt-5 md:mt-10 md:space-y-10 md:pt-6">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
+            <BusinessPartyBlock party={lodgingProvider} />
+            <BusinessPartyBlock
+              party={{
+                title: contactInfo.roleTitle,
+                company: contactInfo.company,
+                ceo: contactInfo.ceo,
+                businessNumber: contactInfo.businessNumber,
+                mailOrderNumber: contactInfo.mailOrderNumber,
+                address: contactInfo.address,
+                phone: contactInfo.phone,
+              }}
+            />
+          </div>
 
-          <div className="mt-5 flex flex-col gap-3 pt-1 text-[12px] text-gray-400 md:mt-6 md:flex-row md:items-center md:justify-between md:text-[13px]">
+          <div className="flex flex-col gap-3 border-t border-gray-100 pt-5 text-[12px] text-gray-400 md:flex-row md:items-center md:justify-between md:text-[13px]">
             <p>&copy; 2026 Repause. All rights reserved.</p>
             <div className="flex gap-4">
               <Link href="/terms" className="min-h-[44px] flex items-center hover:text-gray-600 md:min-h-[32px]">이용약관</Link>
