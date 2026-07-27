@@ -4,22 +4,37 @@ import { NextRequest, NextResponse } from 'next/server'
 const ADMIN_SESSION_COOKIE = 'repause_admin_session'
 const ADMIN_SESSION_MAX_AGE = 60 * 60 * 12
 
-interface AdminConfig {
+interface AdminAccount {
   adminId: string
   password: string
+}
+
+interface AdminConfig {
+  accounts: AdminAccount[]
   secret: string
 }
 
 function getAdminConfig(): AdminConfig | null {
-  const adminId = process.env.ADMIN_ID?.trim()
-  const password = process.env.ADMIN_PASSWORD?.trim()
   const secret = process.env.ADMIN_SESSION_SECRET?.trim()
+  if (!secret) return null
 
-  if (!adminId || !password || !secret) {
-    return null
+  const accounts: AdminAccount[] = []
+
+  const primaryId = process.env.ADMIN_ID?.trim()
+  const primaryPassword = process.env.ADMIN_PASSWORD?.trim()
+  if (primaryId && primaryPassword) {
+    accounts.push({ adminId: primaryId, password: primaryPassword })
   }
 
-  return { adminId, password, secret }
+  const testId = process.env.ADMIN_TEST_ID?.trim()
+  const testPassword = process.env.ADMIN_TEST_PASSWORD?.trim()
+  if (testId && testPassword) {
+    accounts.push({ adminId: testId, password: testPassword })
+  }
+
+  if (accounts.length === 0) return null
+
+  return { accounts, secret }
 }
 
 function safeEqual(left: string, right: string) {
@@ -56,8 +71,9 @@ function verifySessionToken(token: string, config: AdminConfig) {
 
     const [adminId, expiresAtText, signature] = parts
     const expiresAt = Number(expiresAtText)
+    const knownIds = config.accounts.map((account) => account.adminId)
 
-    if (!safeEqual(adminId, config.adminId)) {
+    if (!knownIds.some((id) => safeEqual(adminId, id))) {
       return false
     }
 
@@ -76,14 +92,21 @@ export function isAdminConfigured() {
   return getAdminConfig() !== null
 }
 
-export function validateAdminCredentials(adminId: string, password: string) {
+/** 일치하면 해당 adminId, 아니면 null */
+export function validateAdminCredentials(adminId: string, password: string): string | null {
   const config = getAdminConfig()
 
   if (!config) {
-    return false
+    return null
   }
 
-  return safeEqual(adminId, config.adminId) && safeEqual(password, config.password)
+  for (const account of config.accounts) {
+    if (safeEqual(adminId, account.adminId) && safeEqual(password, account.password)) {
+      return account.adminId
+    }
+  }
+
+  return null
 }
 
 export function hasAdminSession(request: NextRequest) {
@@ -97,14 +120,18 @@ export function hasAdminSession(request: NextRequest) {
   return verifySessionToken(token, config)
 }
 
-export function setAdminSession(response: NextResponse) {
+export function setAdminSession(response: NextResponse, adminId: string) {
   const config = getAdminConfig()
 
   if (!config) {
     throw new Error('관리자 계정이 설정되지 않았습니다.')
   }
 
-  response.cookies.set(ADMIN_SESSION_COOKIE, createSessionToken(config.adminId, config.secret), {
+  if (!config.accounts.some((account) => safeEqual(account.adminId, adminId))) {
+    throw new Error('유효하지 않은 관리자 계정입니다.')
+  }
+
+  response.cookies.set(ADMIN_SESSION_COOKIE, createSessionToken(adminId, config.secret), {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',

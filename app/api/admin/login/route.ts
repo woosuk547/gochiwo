@@ -25,7 +25,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!validateAdminCredentials(adminId, password)) {
+    const matchedAdminId = validateAdminCredentials(adminId, password)
+    if (!matchedAdminId) {
       return NextResponse.json(
         { error: '관리자 ID 또는 비밀번호가 올바르지 않습니다.' },
         { status: 401 }
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     const response = NextResponse.json({ success: true })
-    setAdminSession(response)
+    setAdminSession(response, matchedAdminId)
 
     return response
   } catch {
