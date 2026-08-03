@@ -5,7 +5,8 @@ const WEEKDAY_RATE = 680000
 const WEEKEND_RATE = 780000
 const PEAK_RATE = 950000
 const EXTRA_GUEST_FEE = 40000
-const BASE_GUESTS = 2
+export const BASE_GUESTS = 4
+export const MAX_GUESTS = 4
 
 export interface ReservationQuoteInput {
   checkIn: string

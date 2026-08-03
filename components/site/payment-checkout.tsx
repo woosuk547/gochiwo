@@ -6,7 +6,7 @@ import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { paymentMethodLabel, reservationStatusLabel, type ReservationSummary } from '@/lib/booking'
 import { contactInfo } from '@/lib/repause-content'
-import { calculateReservationQuote } from '@/lib/repause-pricing'
+import { calculateReservationQuote, BASE_GUESTS } from '@/lib/repause-pricing'
 import { getAppUrl } from '@/lib/app-url'
 import { FunnelSteps } from '@/components/site/funnel-steps'
 
@@ -65,7 +65,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
     try {
       const tossPayments = window.TossPayments(clientKey)
       const orderId = `rep_${reservation.id}_${Date.now().toString().slice(-6)}`
-      const orderName = `Repause 포레스트 하우스 예약 - ${reservation.guestName}`
+      const orderName = `리포즈 프라이빗 독채 예약 - ${reservation.guestName}`
       const method = reservation.paymentMethod === 'CARD' ? 'CARD' : 'TRANSFER'
 
       const successUrl = `${appUrl}/payment/success?reservationId=${reservation.id}&paymentType=${paymentType}`
@@ -302,7 +302,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                   </div>
                   {reservation.extraGuestAmount > 0 && (
                     <div className="flex justify-between text-sm py-1.5 text-gray-500">
-                      <span>추가 인원 요금 ({reservation.guests - 2}인)</span>
+                      <span>추가 인원 요금 ({reservation.guests - BASE_GUESTS}인)</span>
                       <span>+{reservation.extraGuestAmount.toLocaleString('ko-KR')}원</span>
                     </div>
                   )}

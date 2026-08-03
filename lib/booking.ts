@@ -87,7 +87,7 @@ export function getTodayKey() {
 }
 
 export const PARTNERSHIP_MIN_ADVANCE_DAYS = 21
-export const ALLOWED_GUEST_COUNTS = [2, 4, 6] as const
+export const ALLOWED_GUEST_COUNTS = [2, 4] as const
 
 export function addDaysToDateKey(dateKey: string, days: number) {
   const parsed = parseDateInput(dateKey)

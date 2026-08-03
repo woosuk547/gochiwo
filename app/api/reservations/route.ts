@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!ALLOWED_GUEST_COUNTS.includes(guests as (typeof ALLOWED_GUEST_COUNTS)[number])) {
-      return NextResponse.json({ error: '인원은 2명, 4명, 6명 중에서 선택할 수 있습니다.' }, { status: 400 })
+      return NextResponse.json({ error: '인원은 2명 또는 4명 중에서 선택할 수 있습니다.' }, { status: 400 })
     }
 
     const checkInKey = formatDateKey(checkIn)

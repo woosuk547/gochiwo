@@ -40,7 +40,7 @@ interface SubmittedSummary {
 }
 
 const arrivalOptions = ['18:00 이전', '18:00 - 20:00', '20:00 이후', '별도 조율']
-const guestOptions = ['2', '4', '6']
+const guestOptions = ['2', '4']
 const directPaymentMethods: PaymentMethod[] = ['CARD', 'BANK_TRANSFER']
 const partnershipPaymentMethods: PaymentMethod[] = ['CARD', 'BANK_TRANSFER', 'CORPORATE_BILLING']
 
@@ -233,7 +233,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
     phone: '',
     checkIn: '',
     checkOut: '',
-    guests: '2',
+    guests: '4',
     arrivalTime: '18:00 이전',
     benefitLabel: source === 'PARTNERSHIP' ? partnerBenefitOptions[0] : '',
     paymentMethod: 'CARD' as PaymentMethod,
@@ -346,7 +346,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         setSubmittedSummary(
           quote ? { paymentMethod: form.paymentMethod, benefitLabel: form.benefitLabel, finalAmount: quote.finalAmount, depositAmount: quote.depositAmount } : null,
         )
-        setForm({ guestName: '', companyName: '', email: '', phone: '', checkIn: '', checkOut: '', guests: '2', arrivalTime: '18:00 이전', benefitLabel: source === 'PARTNERSHIP' ? partnerBenefitOptions[0] : '', paymentMethod: 'CARD', note: '' })
+        setForm({ guestName: '', companyName: '', email: '', phone: '', checkIn: '', checkOut: '', guests: '4', arrivalTime: '18:00 이전', benefitLabel: source === 'PARTNERSHIP' ? partnerBenefitOptions[0] : '', paymentMethod: 'CARD', note: '' })
         setSuccess(true)
       } catch (submitError) {
         setError(submitError instanceof Error ? submitError.message : '예약 접수 과정에 일시적인 정체가 발생했습니다.')
@@ -434,11 +434,6 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           <FormSelect value={form.guests} onChange={(e) => updateField('guests', e.target.value)} required>
             {guestOptions.map((opt) => <option key={opt} value={opt}>{opt}명</option>)}
           </FormSelect>
-          {form.guests === '6' && (
-            <p className="text-[12px] text-gray-500 leading-relaxed font-medium">
-              * 6인 예약 시, 편안하게 머무실 수 있도록 2명 분의 토퍼 및 프리미엄 침구 세트가 추가로 정성스레 준비됩니다.
-            </p>
-          )}
         </label>
 
         {source === 'PARTNERSHIP' && (

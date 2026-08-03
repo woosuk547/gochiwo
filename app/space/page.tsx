@@ -8,7 +8,7 @@ import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
 
 export const metadata: Metadata = {
   title: '공간 소개 — 리포즈',
-  description: '전면창 거실, 히노끼 욕조, 프라이빗 데크. 리포즈 포레스트 하우스의 객실과 시설을 살펴보세요.',
+  description: '전면창 거실, 자쿠지, 프라이빗 데크. 리포즈 프라이빗 독채의 객실과 시설을 살펴보세요.',
 }
 
 const spaceDetails = [
@@ -21,8 +21,8 @@ const spaceDetails = [
   },
   {
     label: '욕실',
-    title: '히노끼 욕조',
-    copy: '히노끼 향이 천천히 퍼지는 저녁. 반신욕이 하루의 마무리가 되는 공간이에요.',
+    title: '자쿠지',
+    copy: '따뜻한 물에 몸을 맡기는 저녁. 반신욕이 하루의 마무리가 되는 공간이에요.',
     image: '/repause/editorial-bath.jpg',
     reverse: true,
   },
@@ -50,7 +50,7 @@ export default function SpacePage() {
       <section className="relative -mt-16 aspect-[16/10] w-full overflow-hidden md:aspect-[21/9]">
         <ParallaxImage
           src="/repause/editorial-exterior.jpg"
-          alt="리포즈 포레스트 하우스 외관"
+          alt="리포즈 프라이빗 독채 외관"
           aspectRatioClassName=""
           className="absolute inset-0"
           priority
@@ -60,12 +60,12 @@ export default function SpacePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.4)_100%)]" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
           <FadeIn delay={0.1}>
-            <p className="text-eyebrow text-white/70">프라이빗 포레스트 하우스</p>
+            <p className="text-eyebrow text-white/70">프라이빗 독채</p>
           </FadeIn>
           <div className="overflow-hidden mt-3">
             <FadeIn delay={0.2} duration={0.9} distance={50}>
               <h1 className="text-[clamp(2.4rem,6vw,5rem)] font-extralight leading-tight tracking-[-0.02em] text-white">
-                포레스트 하우스
+                리포즈
               </h1>
             </FadeIn>
           </div>
@@ -83,7 +83,7 @@ export default function SpacePage() {
           <TextReveal>
             <p className="text-[clamp(1.3rem,2.5vw,2rem)] font-light leading-[1.8] tracking-[-0.025em] text-[#1a1a1a]">
               공간 안에서 마주하는 사색의 깊이가 길어질수록, 회복의 부피 또한 깊어집니다.<br />
-              자연을 응시하는 거실에서 조용히 시작되어 깊은 수면, 히노끼 정화, 그리고 테라스 데크로 이어지는 유려한 여정을 경험해 보세요.
+              자연을 응시하는 거실에서 조용히 시작되어 깊은 수면, 자쿠지, 그리고 테라스 데크로 이어지는 유려한 여정을 경험해 보세요.
             </p>
           </TextReveal>
 
@@ -91,9 +91,9 @@ export default function SpacePage() {
             <div className="mt-10 grid grid-cols-2 gap-4 border-t border-gray-100 pt-8 md:grid-cols-4">
               {[
                 { label: '전면창 거실', value: '자연을 응시하는 소파 라운지' },
-                { label: '히노끼 욕조', value: '따뜻한 반신욕과 편백 향' },
+                { label: '자쿠지', value: '따뜻한 반신욕' },
                 { label: '프라이빗 데크', value: '포치 아래 고요한 명상' },
-                { label: '다이닝 & 키친', value: 'BBQ 존과 프라이빗 다이닝' },
+                { label: '다이닝 & 키친', value: '6인용 식탁과 완비된 주방' },
               ].map((item) => (
                 <div key={item.label} className="border-b border-gray-50 pb-4 md:border-b-0 md:pb-0">
                   <p className="text-eyebrow text-gray-500">{item.label}</p>

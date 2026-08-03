@@ -39,7 +39,7 @@ export function NaverMap({
   latitude = 37.721200,
   longitude = 127.653400,
   zoom = 14,
-  title = '리포즈 포레스트 하우스',
+  title = '리포즈 프라이빗 독채',
   address = '강원 홍천군 서면 숲속길 21',
 }: NaverMapProps) {
   const [useFallback, setUseFallback] = useState(false)

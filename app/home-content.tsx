@@ -44,7 +44,7 @@ export function HomeContent() {
         {prefersReducedMotion ? (
           <Image
             src="/repause/hero-exterior.jpg"
-            alt="리포즈 포레스트 하우스"
+            alt="리포즈 프라이빗 독채"
             fill
             className="pointer-events-none object-cover"
             priority
@@ -56,7 +56,7 @@ export function HomeContent() {
             muted
             loop
             playsInline
-            aria-label="리포즈 포레스트 하우스 소개 영상"
+            aria-label="리포즈 프라이빗 독채 소개 영상"
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
             poster="/repause/hero-exterior.jpg"
           >
@@ -242,7 +242,7 @@ export function HomeContent() {
             </Link>
             <span className="hidden h-3 w-px bg-gray-200 md:block" />
             <p className="text-[13px] text-gray-400">
-              {primaryStay.fromPrice} / 2인 기준
+              {primaryStay.fromPrice} / 4인 기준
             </p>
           </div>
         </FadeIn>

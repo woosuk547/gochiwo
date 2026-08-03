@@ -20,7 +20,7 @@ export const mockStays: MockStay[] = [
     slug: 'sol-atelier',
     name: '솔 아틀리에',
     region: '강원 양양',
-    category: '포레스트 풀 하우스',
+    category: '프라이빗 풀빌라',
     guests: '2~4명',
     price: '390,000원~',
     badge: '프라이빗 독채',
@@ -73,7 +73,7 @@ export const mockStays: MockStay[] = [
       '노을 릿지는 경주 외곽의 낮은 지형을 따라 만든 중정형 풀 빌라입니다. 침실 두 개와 거실, 다이닝이 마당을 향해 열려 있어 함께 머무르면서도 각자의 시간을 지키기 좋습니다.',
     highlights: ['중정 풀', '침실 2개', '대형 다이닝', '야간 조명 정원'],
     facts: [
-      { label: '기준 인원', value: '4인 기준, 최대 6인' },
+      { label: '기준 인원', value: '4인 기준, 최대 4인' },
       { label: '체크인', value: '16:00 / 11:00' },
       { label: '포함 서비스', value: '웰컴 티 · 40ml 기프트 어메니티 · 주차 2대' },
     ],

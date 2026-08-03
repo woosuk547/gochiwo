@@ -79,7 +79,7 @@ export function PaymentSuccessContent() {
           <p className="text-[13px] font-medium text-gray-400">결제 완료</p>
           <h2 className="text-2xl font-bold text-[#1a1a1a] md:text-3xl">결제가 완료되었어요</h2>
           <p className="mx-auto max-w-md text-sm leading-relaxed text-gray-500">
-            리포즈 포레스트 하우스 예약이 확정되었어요. 상세 내역은 이메일로 보내드렸어요.
+            리포즈 프라이빗 독채 예약이 확정되었어요. 상세 내역은 이메일로 보내드렸어요.
           </p>
 
           <div className="mx-auto mt-8 max-w-sm grid gap-4 border-t border-gray-100 pt-8 text-left text-sm">
