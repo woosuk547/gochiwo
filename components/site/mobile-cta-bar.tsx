@@ -47,7 +47,7 @@ export function MobileCTABar() {
             className="group flex min-h-14 w-full flex-col items-center justify-center rounded-none border border-brand bg-brand px-4 py-2 text-white transition-all duration-300 hover:bg-transparent hover:text-brand active:scale-[0.98]"
           >
             <span className="text-[14px] font-semibold tracking-wide">예약하기</span>
-            <span className="mt-0.5 text-[11px] font-normal tracking-tight text-white/65 group-hover:text-brand/60">4인 기준 · 최대 4인</span>
+            <span className="mt-0.5 text-[11px] font-normal tracking-tight text-white/65 group-hover:text-brand/60">4인 기준 · 최대 6인</span>
           </Link>
         </motion.div>
       )}

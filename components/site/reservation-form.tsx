@@ -40,7 +40,7 @@ interface SubmittedSummary {
 }
 
 const arrivalOptions = ['18:00 이전', '18:00 - 20:00', '20:00 이후', '별도 조율']
-const guestOptions = ['2', '4']
+const guestOptions = ['2', '4', '6']
 const directPaymentMethods: PaymentMethod[] = ['CARD', 'BANK_TRANSFER']
 const partnershipPaymentMethods: PaymentMethod[] = ['CARD', 'BANK_TRANSFER', 'CORPORATE_BILLING']
 
@@ -434,6 +434,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           <FormSelect value={form.guests} onChange={(e) => updateField('guests', e.target.value)} required>
             {guestOptions.map((opt) => <option key={opt} value={opt}>{opt}명</option>)}
           </FormSelect>
+          {form.guests === '6' && (
+            <p className="text-[12px] text-gray-500 leading-relaxed font-medium">
+              * 6인 예약 시 2명 분의 토퍼와 프리미엄 침구가 추가로 준비돼요. 기준 4인 초과분에는 1인당 40,000원/박이 적용돼요.
+            </p>
+          )}
         </label>
 
         {source === 'PARTNERSHIP' && (
