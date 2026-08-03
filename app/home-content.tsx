@@ -284,8 +284,8 @@ export function HomeContent() {
             {reservationSteps.map((step, i) => (
               <FadeIn key={step.step} delay={i * 0.1}>
                 <div
-                  className={`border-t border-white/10 pt-6 md:pr-8 ${
-                    i > 0 ? 'mt-8 md:mt-0 md:border-l md:border-t-0 md:pl-8 md:pt-0' : ''
+                  className={`border-t border-white/10 pt-6 md:border-t-0 md:pt-0 md:pr-8 ${
+                    i > 0 ? 'mt-8 md:mt-0 md:border-l md:pl-8' : ''
                   }`}
                 >
                   <span className="font-serif text-[11px] tracking-[0.12em] text-white/30">0{step.step}</span>
