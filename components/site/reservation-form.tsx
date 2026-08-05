@@ -445,7 +445,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           <>
             <label className="flex flex-col gap-2">
               <span className="text-[11px] font-semibold tracking-wider text-gray-400">회사명 · 제휴사명 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
-              <FormInput id="rsv-company" value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 네오위즈 복지지원팀" required error={fieldErrors.companyName} />
+              <FormInput id="rsv-company" value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 소속 회사명 · 부서명" required error={fieldErrors.companyName} />
             </label>
             <label className="flex flex-col gap-2">
               <span className="text-[11px] font-semibold tracking-wider text-gray-400">제휴 우대 구분 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>

@@ -57,7 +57,7 @@ export const homeNarrative = {
     '자연을 응시하는 거실, 지하수 풀이 반짝이는 낮,\n포치 아래 잠시 감은 눈 끝에 가닿는 온전한 고요.',
   brandQuote: '고요가 흐르는 시간, 자연이 설계한 휴식.',
   locationTeaser: '강원 홍천, 프라이빗 독채',
-  partnershipBadge: '네오위즈 · 이스트소프트 임직원 우대',
+  partnershipBadge: '제휴사 임직원 우대',
 }
 
 export const homeSignatureFacts = [
@@ -227,7 +227,7 @@ export const reservationNotes = [
   },
   {
     title: '파트너 전용 배려',
-    description: '제휴 파트너사 임직원 혜택 및 VIP 투숙 일정은 제휴 예약 채널을 통해 조율해 드립니다. 상업 촬영·대관은 제휴 페이지의 [미디어 대관 문의] 탭을 이용해 주세요.',
+    description: '제휴 협력사 임직원 혜택 및 VIP 투숙 일정은 제휴 예약 채널을 통해 조율해 드립니다. 상업 촬영·워케이션은 제휴 페이지의 [미디어 대관 · 워케이션 문의] 탭을 이용해 주세요.',
   },
 ]
 
@@ -241,11 +241,11 @@ export const reservationSteps = [
 export const partnershipBenefits = [
   {
     title: '임직원 전용 우대',
-    copy: '네오위즈와 이스트소프트 임직원을 위해 평일 30%, 주말·공휴일 및 성수기 20% 우대 혜택을 제공합니다.',
+    copy: '제휴사 임직원을 위해 평일 30%, 주말·공휴일 및 성수기 20% 우대 혜택을 제공합니다.',
   },
   {
-    title: '미디어 대관 문의',
-    copy: '쇼핑몰 룩북, 광고·미디어 촬영 등 상업 목적 이용은 제휴 페이지의 [미디어 대관 문의] 탭을 통해 별도 접수해 주세요.',
+    title: '미디어 대관 · 워케이션 문의',
+    copy: '쇼핑몰 룩북, 광고·미디어 촬영, 워케이션 등은 제휴 페이지의 [미디어 대관 · 워케이션 문의] 탭에서 안내받아 주세요.',
   },
   {
     title: '정교한 기업 정산',
