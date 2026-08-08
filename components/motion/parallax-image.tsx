@@ -11,6 +11,7 @@ interface ParallaxImageProps {
   className?: string
   priority?: boolean
   revealDirection?: 'center' | 'left' | 'right' | 'up' | 'down'
+  sizes?: string
 }
 
 export function ParallaxImage({
@@ -20,6 +21,7 @@ export function ParallaxImage({
   className = "",
   priority = false,
   revealDirection = 'center',
+  sizes = '100vw',
 }: ParallaxImageProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const prefersReduced = useReducedMotion()
@@ -66,7 +68,7 @@ export function ParallaxImage({
   if (prefersReduced) {
     return (
       <div ref={containerRef} className={`relative overflow-hidden ${aspectRatioClassName} ${className}`}>
-        <Image src={src} alt={alt} fill className="object-cover" priority={priority} sizes="100vw" />
+        <Image src={src} alt={alt} fill className="object-cover" priority={priority} sizes={sizes} />
       </div>
     )
   }
@@ -100,7 +102,7 @@ export function ParallaxImage({
             fill
             className="object-cover"
             priority={priority}
-            sizes="100vw"
+            sizes={sizes}
           />
         </motion.div>
       </motion.div>

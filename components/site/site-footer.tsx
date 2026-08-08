@@ -58,6 +58,7 @@ export function SiteFooter() {
                   src="/repause/logo.png"
                   alt="RE:PAUSE private stay"
                   fill
+                  sizes="100px"
                   className="object-contain object-left"
                 />
               </div>

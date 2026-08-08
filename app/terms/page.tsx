@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import { PageHero } from '@/components/site/page-hero'
 import { PageShell } from '@/components/site/page-shell'
 import { cancellationPolicy, contactInfo } from '@/lib/repause-content'
+
+export const metadata: Metadata = {
+  title: '이용약관 — 리포즈',
+  description: '예약과 결제에 적용되는 기본 원칙이에요.',
+}
 
 const sections = [
   {

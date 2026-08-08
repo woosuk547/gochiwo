@@ -117,6 +117,7 @@ export default function SpacePage() {
                 aspectRatioClassName=""
                 className="absolute inset-0"
                 revealDirection={space.reverse ? 'right' : 'left'}
+                sizes="(min-width: 768px) 50vw, 100vw"
               />
             </div>
             {/* 텍스트 */}

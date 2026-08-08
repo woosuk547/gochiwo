@@ -63,6 +63,7 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
               src="/repause/logo-header.png"
               alt="RE:PAUSE private stay"
               fill
+              sizes="88px"
               className={`object-contain object-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 solidHeader
                   ? 'mix-blend-multiply'

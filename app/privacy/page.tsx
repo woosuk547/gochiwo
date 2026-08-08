@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import { PageHero } from '@/components/site/page-hero'
 import { PageShell } from '@/components/site/page-shell'
 import { contactInfo } from '@/lib/repause-content'
+
+export const metadata: Metadata = {
+  title: '개인정보처리방침 — 리포즈',
+  description: '예약에 필요한 최소한의 정보만 수집해요.',
+}
 
 const sections = [
   {
