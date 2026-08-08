@@ -21,10 +21,15 @@ if [[ ! -f "$ENV_FILE" ]]; then
   exit 1
 fi
 
-# shellcheck disable=SC1090
-set -a
 # build-args용 public 값만 로드
-source <(grep -E '^(NEXT_PUBLIC_|NAVER_MAP_CLIENT_SECRET=)' "$ENV_FILE" || true)
+# 주의: macOS 기본 bash 3.2는 `source <(...)` 프로세스 치환에서 변수가
+# 부모 셸에 반영되지 않는 버그가 있어(항상 빈 값), 임시 파일을 경유한다.
+ENV_TMP="$(mktemp)"
+trap 'rm -f "$ENV_TMP"' EXIT
+grep -E '^(NEXT_PUBLIC_|NAVER_MAP_CLIENT_SECRET=)' "$ENV_FILE" > "$ENV_TMP" || true
+set -a
+# shellcheck disable=SC1090
+source "$ENV_TMP"
 set +a
 
 if [[ -z "${NEXT_PUBLIC_TOSS_CLIENT_KEY:-}" ]]; then
