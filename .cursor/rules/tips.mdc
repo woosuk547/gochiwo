@@ -9,6 +9,8 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-08-12] 디자인 규칙 문서 vs 실제 코드 불일치 -> `repause-rules.mdc`에 "rounded-xl 카드/CTA, shadow-sm/lg" 문구가 남아있었으나 실제 코드(`app/home-content.tsx`, `lib/editorial.ts`, `stay-card.tsx`)는 2026-05-24 에디토리얼 리디자인 이후 전면 `rounded-none` + 보더 기반 위계로 전환되어 있었음(레거시 서술 미정리). 실제 코드를 실측해 `docs/design-guide.md`로 정식 문서화하고 `repause-rules.mdc`/`CLAUDE.md`에서 참조하도록 연결. 앞으로 디자인 규칙 문서를 코드와 별개로 오래 방치하면 이런 드리프트가 재발하므로, 큰 리디자인 후에는 규칙 파일도 같이 갱신 필요.
+
 - [2026-08-08] 배포전 총점검 -> `scripts/deploy-ncp.sh`의 `source <(grep ...)` 프로세스 치환이 macOS 기본 `bash 3.2`(`/bin/bash`, 홈브류 bash 미설치)에서 변수를 부모 셸에 반영하지 못하는 버그 확인(항상 빈 값 → TOSS 키 가드에서 매번 실패). 임시 파일(`mktemp`)에 grep 결과를 쓰고 `source` 하는 방식으로 수정. `source <(...)` 패턴은 이 환경에서 전면 금지, 임시 파일 경유 필수. 공지사항/이용약관/개인정보처리방침 페이지에 `export const metadata` 누락되어 브라우저 탭·SEO에 사이트 기본 타이틀만 노출되던 문제도 함께 발견·수정(사이트맵엔 포함되어 있었음). `ParallaxImage`가 항상 `sizes="100vw"` 고정이라 50/50 교대 레이아웃(예: `/space`)에서 next/image 경고 발생 → `sizes` prop 추가.
 - [2026-08-03] 인원 정책 정정 -> 기준 4인 · 최대 6인(`ALLOWED=[2,4,6]`, `BASE_GUESTS=4`). 6인 시 초과 2명분 추가요금·토퍼 안내.
 - [2026-08-03] 콘텐츠·인원 정책 -> 히노끼/포레스트 하우스 삭제, 공간명 `리포즈 프라이빗 독채`, 수영장 지하수·가을겨울 미온수, BBQ는 도입 예정 문구. CCTV는 보류.
