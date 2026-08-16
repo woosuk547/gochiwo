@@ -1,12 +1,19 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { PageShell } from '@/components/site/page-shell'
 import { PageHero } from '@/components/site/page-hero'
 import { PaymentCheckout } from '@/components/site/payment-checkout'
 import { PaymentEmailGate } from '@/components/site/payment-email-gate'
 import { prisma } from '@/lib/prisma'
-import { serializeReservation } from '@/lib/reservation-service'
+import { expireStalePendingReservations, serializeReservation } from '@/lib/reservation-service'
+import { noIndexRobots } from '@/lib/page-metadata'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: '결제',
+  robots: noIndexRobots,
+}
 
 interface PaymentPageProps {
   params: Promise<{ id: string }>
@@ -16,6 +23,8 @@ interface PaymentPageProps {
 export default async function PaymentPage({ params, searchParams }: PaymentPageProps) {
   const { id } = await params
   const { email: emailParam } = await searchParams
+
+  await expireStalePendingReservations()
 
   const reservationData = await prisma.reservation.findUnique({
     where: { id },

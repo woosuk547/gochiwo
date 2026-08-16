@@ -38,7 +38,7 @@ export interface BlockedDateSummary {
 }
 
 export const reservationStatusLabel: Record<ReservationStatus, string> = {
-  PENDING: '검토 중',
+  PENDING: '결제 대기',
   CONFIRMED: '예약 확정',
   DECLINED: '승인 거절',
   CANCELLED: '예약 취소',
@@ -88,6 +88,13 @@ export function getTodayKey() {
 
 export const PARTNERSHIP_MIN_ADVANCE_DAYS = 21
 export const ALLOWED_GUEST_COUNTS = [2, 4, 6] as const
+export const MAX_NIGHTS = 14
+export const MAX_GUEST_NAME_LENGTH = 80
+export const MAX_NOTE_LENGTH = 2000
+
+export function nightsBetween(checkIn: Date, checkOut: Date) {
+  return Math.round((checkOut.getTime() - checkIn.getTime()) / 86400000)
+}
 
 export function addDaysToDateKey(dateKey: string, days: number) {
   const parsed = parseDateInput(dateKey)

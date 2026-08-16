@@ -5,6 +5,10 @@ import {
   formatDateKey,
   getTodayKey,
   ALLOWED_GUEST_COUNTS,
+  MAX_NIGHTS,
+  MAX_GUEST_NAME_LENGTH,
+  MAX_NOTE_LENGTH,
+  nightsBetween,
   isCheckInAllowedForSource,
   type PaymentMethod,
   type ReservationSource,
@@ -17,7 +21,8 @@ import {
   partnerBenefitOptions,
 } from '@/lib/repause-pricing'
 import {
-  activeHoldWhere,
+  expireStalePendingReservations,
+  findOverlappingHold,
   serializeReservation,
 } from '@/lib/reservation-service'
 import { isValidEmail, isValidPhone } from '@/lib/app-url'
@@ -46,17 +51,18 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const source: ReservationSource = body.source === 'PARTNERSHIP' ? 'PARTNERSHIP' : 'DIRECT'
-    const guestName = typeof body.guestName === 'string' ? body.guestName.trim() : ''
-    const companyName = typeof body.companyName === 'string' ? body.companyName.trim() : ''
+    const guestName = typeof body.guestName === 'string' ? body.guestName.trim().slice(0, MAX_GUEST_NAME_LENGTH) : ''
+    const companyName = typeof body.companyName === 'string' ? body.companyName.trim().slice(0, 120) : ''
     const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
     const phone = typeof body.phone === 'string' ? body.phone.trim() : ''
     const guests = Number(body.guests)
     const checkIn = typeof body.checkIn === 'string' ? parseDateInput(body.checkIn) : null
     const checkOut = typeof body.checkOut === 'string' ? parseDateInput(body.checkOut) : null
-    const arrivalTime = typeof body.arrivalTime === 'string' ? body.arrivalTime.trim() : ''
+    const arrivalTime = typeof body.arrivalTime === 'string' ? body.arrivalTime.trim().slice(0, 40) : ''
     const benefitLabel = typeof body.benefitLabel === 'string' ? body.benefitLabel.trim() : ''
     const paymentMethod = typeof body.paymentMethod === 'string' ? body.paymentMethod : ''
     const note = typeof body.note === 'string' ? body.note.trim() : ''
+    const agreementsAccepted = body.agreementsAccepted === true
 
     if (!guestName || !email || !phone || !checkIn || !checkOut) {
       return NextResponse.json({ error: '필수 정보를 모두 입력해주세요.' }, { status: 400 })
@@ -68,6 +74,14 @@ export async function POST(request: NextRequest) {
 
     if (!isValidPhone(phone)) {
       return NextResponse.json({ error: '올바른 연락처를 입력해주세요.' }, { status: 400 })
+    }
+
+    if (!agreementsAccepted) {
+      return NextResponse.json({ error: '예약 약관에 동의해 주세요.' }, { status: 400 })
+    }
+
+    if (note.length > MAX_NOTE_LENGTH) {
+      return NextResponse.json({ error: '요청 사항은 2,000자 이내로 작성해 주세요.' }, { status: 400 })
     }
 
     const todayKey = getTodayKey()
@@ -115,6 +129,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '체크아웃 날짜는 체크인 이후여야 합니다.' }, { status: 400 })
     }
 
+    if (nightsBetween(checkIn, checkOut) > MAX_NIGHTS) {
+      return NextResponse.json({ error: `한 번에 ${MAX_NIGHTS}박까지만 예약할 수 있어요.` }, { status: 400 })
+    }
+
     const quote = calculateReservationQuote({
       checkIn: body.checkIn,
       checkOut: body.checkOut,
@@ -129,21 +147,13 @@ export async function POST(request: NextRequest) {
     }
 
     const reservation = await prisma.$transaction(async (tx) => {
+      await expireStalePendingReservations(new Date(), tx)
+
       const [blockedDates, overlappingReservation] = await Promise.all([
         tx.blockedDate.findMany({
           where: { date: { gte: checkIn, lt: checkOut } },
         }),
-        tx.reservation.findFirst({
-          where: {
-            AND: [
-              activeHoldWhere(),
-              {
-                checkIn: { lt: checkOut },
-                checkOut: { gt: checkIn },
-              },
-            ],
-          },
-        }),
+        findOverlappingHold(tx, checkIn, checkOut),
       ])
 
       if (blockedDates.length > 0 || overlappingReservation) {
@@ -171,11 +181,12 @@ export async function POST(request: NextRequest) {
           note: note || null,
         },
       })
-    }, { timeout: 10000 })
+    }, { timeout: 15000 })
 
     void sendReservationConfirmation({
       to: email,
       guestName,
+      reservationId: reservation.id,
       checkIn: body.checkIn,
       checkOut: body.checkOut,
       source,

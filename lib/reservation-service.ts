@@ -7,17 +7,16 @@ import {
   type ReservationStatus,
   type ReservationSummary,
 } from '@/lib/booking'
+import type { PrismaClient } from '@/lib/generated/prisma/client'
+import { pendingHoldCutoff } from '@/lib/reservation-hold'
+
+export { PENDING_HOLD_MS, pendingHoldCutoff, isUnpaidHoldExpired, orderIdBelongsToReservation } from '@/lib/reservation-hold'
+
+type ReservationStore = Pick<PrismaClient, 'reservation' | 'blockedDate'>
 
 export const activeReservationStatuses: ReservationStatus[] = ['PENDING', 'CONFIRMED']
 
-/** 미결제 PENDING 일정 홀드 시간 (12시간) */
-export const PENDING_HOLD_MS = 12 * 60 * 60 * 1000
-
-export function pendingHoldCutoff(now = new Date()) {
-  return new Date(now.getTime() - PENDING_HOLD_MS)
-}
-
-/** 가용성·충돌 검사에 포함할 활성 예약 조건 */
+/** 가용성·충돌 검사에 포함할 활성 예약 조건. 법인 정산 미승인은 캘린더를 막지 않는다. */
 export function activeHoldWhere(now = new Date()) {
   const cutoff = pendingHoldCutoff(now)
   return {
@@ -25,6 +24,7 @@ export function activeHoldWhere(now = new Date()) {
       { status: 'CONFIRMED' as const },
       {
         status: 'PENDING' as const,
+        paymentMethod: { not: 'CORPORATE_BILLING' as const },
         OR: [
           { paymentStatus: { in: ['DEPOSIT_PAID', 'PAID'] as PaymentStatus[] } },
           { createdAt: { gte: cutoff } },
@@ -34,16 +34,36 @@ export function activeHoldWhere(now = new Date()) {
   }
 }
 
-/** 만료된 미결제 PENDING을 CANCELLED로 정리 */
-export async function expireStalePendingReservations(now = new Date()) {
-  const cutoff = pendingHoldCutoff(now)
-  return prisma.reservation.updateMany({
-    where: {
-      status: 'PENDING',
-      paymentStatus: { in: ['REVIEW_PENDING', 'PAYMENT_GUIDE_SENT'] },
-      createdAt: { lt: cutoff },
-    },
+export function staleUnpaidPendingWhere(now = new Date()) {
+  return {
+    status: 'PENDING' as const,
+    paymentStatus: { in: ['REVIEW_PENDING', 'PAYMENT_GUIDE_SENT'] as PaymentStatus[] },
+    createdAt: { lt: pendingHoldCutoff(now) },
+  }
+}
+
+/** 만료된 미결제 PENDING을 CANCELLED로 정리. 트랜잭션 안에서는 첫 write로 SQLite 락을 잡는다. */
+export async function expireStalePendingReservations(now = new Date(), db: ReservationStore = prisma) {
+  return db.reservation.updateMany({
+    where: staleUnpaidPendingWhere(now),
     data: { status: 'CANCELLED' },
+  })
+}
+
+export async function findOverlappingHold(
+  db: ReservationStore,
+  checkIn: Date,
+  checkOut: Date,
+  excludeId?: string,
+) {
+  return db.reservation.findFirst({
+    where: {
+      AND: [
+        activeHoldWhere(),
+        { checkIn: { lt: checkOut }, checkOut: { gt: checkIn } },
+        ...(excludeId ? [{ id: { not: excludeId } }] : []),
+      ],
+    },
   })
 }
 

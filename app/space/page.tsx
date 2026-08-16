@@ -6,39 +6,49 @@ import { AnimatedSection, AnimatedGrid, AnimatedGridItem } from '@/components/mo
 import { amenityGroups } from '@/lib/repause-content'
 import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
 
-export const metadata: Metadata = {
-  title: '공간 소개 — 리포즈',
-  description: '전면창 거실, 자쿠지, 프라이빗 데크. 리포즈 프라이빗 독채의 객실과 시설을 살펴보세요.',
-}
+import { publicPageMeta } from '@/lib/page-metadata'
+
+export const metadata: Metadata = publicPageMeta(
+  '공간 소개',
+  '전면창 거실, 자쿠지, 프라이빗 데크와 지하수 사계절 전용 풀. 리포즈 프라이빗 독채의 객실과 시설을 살펴보세요.',
+  '/space',
+)
 
 const spaceDetails = [
+  {
+    label: '수영장',
+    title: '사계절 전용 풀',
+    copy: '지하수로 채운 프라이빗 풀이에요. 투숙 기간 동안 우리만 쓰고, 가을·겨울에는 미온수로 맞춰 드려요.',
+    image: '/repause/room-outdoor.jpg',
+    reverse: false,
+  },
   {
     label: '거실',
     title: '전면창 거실',
     copy: '자연이 액자처럼 들어오는 거실. 깊은 소파와 낮은 조명 사이로 우리만의 시간이 천천히 시작돼요.',
     image: '/repause/editorial-living.jpg',
-    reverse: false,
+    reverse: true,
   },
   {
     label: '욕실',
     title: '자쿠지',
     copy: '따뜻한 물에 몸을 맡기는 저녁. 반신욕이 하루의 마무리가 되는 공간이에요.',
     image: '/repause/editorial-bath.jpg',
-    reverse: true,
+    reverse: false,
   },
   {
     label: '침실',
     title: '침실',
     copy: '밤이 조용하고 깊어요. 잠드는 게 아깝다는 말을 자주 듣는 방이에요.',
     image: '/repause/editorial-bedroom.jpg',
-    reverse: false,
+    reverse: true,
   },
   {
     label: '데크',
     title: '프라이빗 데크',
     copy: '포치 아래 의자에 앉아 잠시 눈을 감아보세요. 마음이 차분해지며 고요한 명상에 잠기게 됩니다.',
     image: '/repause/editorial-deck.jpg',
-    reverse: true,
+    reverse: false,
   },
 ]
 
@@ -65,7 +75,7 @@ export default function SpacePage() {
           <div className="overflow-hidden mt-3">
             <FadeIn delay={0.2} duration={0.9} distance={50}>
               <h1 className="text-[clamp(2.4rem,6vw,5rem)] font-extralight leading-tight tracking-[-0.02em] text-white">
-                리포즈
+                리포즈 프라이빗 독채
               </h1>
             </FadeIn>
           </div>
@@ -88,8 +98,9 @@ export default function SpacePage() {
           </TextReveal>
 
           <FadeIn delay={0.3}>
-            <div className="mt-10 grid grid-cols-2 gap-4 border-t border-gray-100 pt-8 md:grid-cols-4">
+            <div className="mt-10 grid grid-cols-2 gap-4 border-t border-gray-100 pt-8 md:grid-cols-3 lg:grid-cols-5">
               {[
+                { label: '사계절 전용 풀', value: '지하수 · 가을·겨울 미온수' },
                 { label: '전면창 거실', value: '자연을 응시하는 소파 라운지' },
                 { label: '자쿠지', value: '따뜻한 반신욕' },
                 { label: '프라이빗 데크', value: '포치 아래 고요한 명상' },

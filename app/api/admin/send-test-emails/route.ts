@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
     await sendReservationConfirmation({
       to: email,
       guestName: '홍길동',
+      reservationId: 'test-reservation-id',
       checkIn: '2026-06-15',
       checkOut: '2026-06-17',
       source: 'DIRECT',

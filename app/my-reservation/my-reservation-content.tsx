@@ -89,7 +89,7 @@ export function MyReservationContent() {
     <>
       <form onSubmit={handleSubmit} className="rounded-none border border-gray-200 bg-white p-6 md:p-10">
         <p className="text-[13px] leading-relaxed text-gray-500">
-          결제 완료 이메일에 포함된 예약 번호를 입력하세요.
+          접수 메일 또는 결제 완료 메일에 있는 예약 번호를 입력하세요.
         </p>
 
         <div className="mt-6 space-y-4">

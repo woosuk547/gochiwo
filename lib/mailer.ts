@@ -162,9 +162,18 @@ const repauseEmailBase = (body: string, isConfirmation = false) => `
 </div>
 `
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
 interface ReservationConfirmationOptions {
   to: string
   guestName: string
+  reservationId: string
   checkIn: string
   checkOut: string
   source: ReservationSource
@@ -177,66 +186,86 @@ interface ReservationConfirmationOptions {
 export async function sendReservationConfirmation(options: ReservationConfirmationOptions) {
   const needsImmediatePayment =
     options.paymentMethod === 'CARD' || options.paymentMethod === 'BANK_TRANSFER'
+  const safeName = escapeHtml(options.guestName)
+  const safeBenefit = options.benefitLabel ? escapeHtml(options.benefitLabel) : ''
+  const appUrl = getAppUrl()
+  const paymentLink = `${appUrl}/payment/${options.reservationId}`
+  const lookupLink = `${appUrl}/my-reservation`
 
   const paymentLine =
     options.paymentMethod === 'CORPORATE_BILLING'
-      ? '법인 정산 일정은 운영팀 승인 후 세금계산서 또는 별도 정산 방식으로 안내드립니다.'
+      ? '법인 결제 일정은 확인 후 세금계산서 또는 별도 방식으로 안내드려요.'
       : `예상 결제 금액은 <strong>${formatCurrency(options.finalAmount)}</strong>이며, 예약금(50%)은 <strong>${formatCurrency(options.depositAmount)}</strong>입니다.`
 
   const nextStep = needsImmediatePayment
-    ? `* 일정은 <strong>12시간</strong> 동안 임시 확보됩니다. 결제를 완료해 주시면 예약이 최종 확정됩니다.<br />
-        * 결제 페이지에서 바로 진행해 주세요. 기한 내 미결제 시 일정이 자동 해제됩니다.`
-    : `* 본 접수는 검토 단계입니다. 운영팀에서 확인 후 안내드립니다.`
+    ? `* 일정은 <strong>12시간</strong> 동안 임시 확보됩니다. 결제를 완료해 주시면 예약이 확정됩니다.<br />
+        * 아래 버튼으로 결제를 이어 주세요. 기한 내 미결제 시 일정이 자동 해제됩니다.`
+    : `* 신청을 확인한 뒤 안내드릴게요. 예약 번호로 조회 페이지에서 상태를 확인할 수 있어요.`
+
+  const paymentCta = needsImmediatePayment
+    ? `<div style="margin: 28px 0 32px; text-align: center;">
+         <a href="${paymentLink}" target="_blank" style="display: inline-block; background-color: #1a1a1a; color: #ffffff; text-decoration: none; font-size: 14px; padding: 14px 32px; font-weight: 600;">결제 이어가기</a>
+       </div>`
+    : ''
 
   await sendMail({
     to: options.to,
     subject: needsImmediatePayment
       ? '[Repause] 예약 접수 — 결제를 완료해 주세요'
-      : '[Repause] 예약 신청이 성공적으로 접수되었습니다',
+      : '[Repause] 예약 신청이 도착했습니다',
     senderName: 'Repause',
     html: repauseEmailBase(`
-      <h2 style="font-size: 22px; font-weight: 700; line-height: 1.4; margin: 0 0 12px; color: #1a1a1a;">안녕하세요, ${options.guestName}님</h2>
+      <h2 style="font-size: 22px; font-weight: 700; line-height: 1.4; margin: 0 0 12px; color: #1a1a1a;">안녕하세요, ${safeName}님</h2>
       <p style="font-size: 14px; color: #666666; margin: 0 0 32px; line-height: 1.7;">
         리포즈를 선택해 주셔서 감사합니다.<br />
         ${needsImmediatePayment
           ? '예약 정보가 접수되었습니다. 결제를 완료하시면 예약이 확정됩니다.'
-          : '예약 정보가 정상적으로 접수되었으며, 운영팀에서 검토 중입니다.'}
+          : '예약 신청을 확인한 뒤 안내드릴게요.'}
       </p>
 
       <div style="margin-bottom: 36px; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; background-color: #f8f8f8; padding: 24px 28px;">
-        <p style="font-size: 12px; letter-spacing: 0.1em; color: #999999; margin: 0 0 16px; font-weight: 600;">RESERVATION INFO</p>
+        <p style="font-size: 12px; letter-spacing: 0.1em; color: #999999; margin: 0 0 16px; font-weight: 600;">예약 정보</p>
         <table style="width: 100%; border-collapse: collapse; font-size: 13px; color: #1a1a1a;">
           <tr style="border-bottom: 1px solid #e5e5e5;">
-            <td style="padding: 12px 0; color: #666666; width: 110px;">체크인</td>
-            <td style="padding: 12px 0; font-weight: 500; text-align: right;"><strong>${options.checkIn} (16:00 입실)</strong></td>
+            <td style="padding: 12px 0; color: #666666; width: 110px;">예약 번호</td>
+            <td style="padding: 12px 0; font-weight: 500; text-align: right;"><strong>${escapeHtml(options.reservationId)}</strong></td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 12px 0; color: #666666;">체크인</td>
+            <td style="padding: 12px 0; font-weight: 500; text-align: right;"><strong>${escapeHtml(options.checkIn)} (16:00 입실)</strong></td>
           </tr>
           <tr style="border-bottom: 1px solid #e5e5e5;">
             <td style="padding: 12px 0; color: #666666;">체크아웃</td>
-            <td style="padding: 12px 0; font-weight: 500; text-align: right;"><strong>${options.checkOut} (11:00 퇴실)</strong></td>
+            <td style="padding: 12px 0; font-weight: 500; text-align: right;"><strong>${escapeHtml(options.checkOut)} (11:00 퇴실)</strong></td>
           </tr>
           <tr style="border-bottom: 1px solid #e5e5e5;">
-            <td style="padding: 12px 0; color: #666666;">예약 소스</td>
-            <td style="padding: 12px 0; text-align: right;">${options.source === 'PARTNERSHIP' ? '제휴기업 임직원 예약' : '일반 다이렉트 예약'}</td>
+            <td style="padding: 12px 0; color: #666666;">예약 구분</td>
+            <td style="padding: 12px 0; text-align: right;">${options.source === 'PARTNERSHIP' ? '제휴 예약' : '일반 예약'}</td>
           </tr>
-          ${options.benefitLabel ? `
+          ${safeBenefit ? `
           <tr style="border-bottom: 1px solid #e5e5e5;">
             <td style="padding: 12px 0; color: #666666;">제휴 구분</td>
-            <td style="padding: 12px 0; text-align: right;"><strong>${options.benefitLabel}</strong></td>
+            <td style="padding: 12px 0; text-align: right;"><strong>${safeBenefit}</strong></td>
           </tr>` : ''}
           <tr>
-            <td style="padding: 12px 0; color: #666666;">선호 결제</td>
+            <td style="padding: 12px 0; color: #666666;">결제 수단</td>
             <td style="padding: 12px 0; text-align: right;">${paymentMethodLabel[options.paymentMethod]}</td>
           </tr>
         </table>
       </div>
 
-      <div style="background-color: #f8f8f8; padding: 24px 28px; border-radius: 12px; margin-bottom: 32px; font-size: 13px; color: #666666; line-height: 1.7; border: 1px solid #e5e5e5;">
+      ${paymentCta}
+
+      <div style="background-color: #f8f8f8; padding: 24px 28px; margin-bottom: 32px; font-size: 13px; color: #666666; line-height: 1.7; border: 1px solid #e5e5e5;">
         <p style="margin: 0 0 8px; font-weight: 600; color: #1a1a1a;">결제 안내</p>
         <p style="margin: 0;">${paymentLine}</p>
       </div>
 
       <p style="font-size: 13px; line-height: 1.8; color: #666666; margin: 0 0 12px;">
         ${nextStep}
+      </p>
+      <p style="font-size: 13px; line-height: 1.8; color: #666666; margin: 0;">
+        예약 조회: <a href="${lookupLink}" style="color: #1a1a1a; text-decoration: underline;">${lookupLink}</a>
       </p>
     `, true),
   })
@@ -271,8 +300,8 @@ export async function sendReservationConfirmed(options: ReservationConfirmedOpti
         <h2 style="font-size: 22px; font-weight: 700; line-height: 1.4; margin: 0 0 12px; color: #1a1a1a;">예약이 확정되었습니다</h2>
         <p style="font-size: 14px; color: #666666; margin: 0 0 32px; line-height: 1.7;">
           ${options.guestName}님, 감사합니다.<br />
-          운영팀 검토 결과 <strong>예약이 확정</strong>되었습니다.
-          ${options.paymentMethod === 'CORPORATE_BILLING' ? '<br />법인 정산 일정은 별도로 안내드립니다.' : '<br />결제 안내가 필요한 경우 별도 메일을 보내드립니다.'}
+          예약이 확정되었습니다.
+          ${options.paymentMethod === 'CORPORATE_BILLING' ? '<br />법인 결제는 별도로 안내드려요.' : '<br />결제가 필요하면 안내 메일을 보내드려요.'}
         </p>
         <div style="margin-bottom: 36px; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; background-color: #f8f8f8; padding: 24px 28px;">
           <table style="width: 100%; border-collapse: collapse; font-size: 13px; color: #1a1a1a;">
@@ -383,27 +412,15 @@ export async function sendPaymentGuide(options: PaymentGuideOptions) {
   const paymentLink = `${appUrl}/payment/${options.id}?email=${encodeURIComponent(options.to)}`
 
   const paymentDetail = isCorp
-    ? '<p style="font-size: 14px; line-height: 1.9; color: #666666;">법인 정산 방식으로 접수되었습니다. 세금계산서 발행 및 정산 일정은 별도 안내드립니다.</p>'
-    : isCard
-      ? `<p style="font-size: 14px; line-height: 1.9; color: #666666;">
-           예약 확정을 위한 결제 링크를 아래에 안내드립니다.<br />
-           예약금 <strong>${formatCurrency(options.depositAmount)}</strong>을 결제해 주시면 예약이 최종 확정됩니다.
+    ? '<p style="font-size: 14px; line-height: 1.9; color: #666666;">법인 결제로 신청되었습니다. 세금계산서와 일정은 별도로 안내드려요. 숙박·결제 당사자는 슈가스테이입니다.</p>'
+    : `<p style="font-size: 14px; line-height: 1.9; color: #666666;">
+           카드·계좌이체 모두 토스페이먼츠로 진행돼요. 숙박·결제 당사자는 슈가스테이입니다.<br />
+           예약금 <strong>${formatCurrency(options.depositAmount)}</strong>을 결제해 주시면 예약이 확정됩니다.
          </p>
          <div style="margin: 32px 0; text-align: center;">
-           <a href="${paymentLink}" target="_blank" style="display: inline-block; background-color: #1a1a1a; color: #ffffff; text-decoration: none; font-size: 14px; padding: 14px 32px; font-weight: 600; border-radius: 12px;">
-             카드 결제하기
+           <a href="${paymentLink}" target="_blank" style="display: inline-block; background-color: #1a1a1a; color: #ffffff; text-decoration: none; font-size: 14px; padding: 14px 32px; font-weight: 600;">
+             ${isCard ? '카드 결제하기' : '결제 이어가기'}
            </a>
-         </div>`
-      : `<p style="font-size: 14px; line-height: 1.9; color: #666666;">
-           아래 계좌로 12시간 내에 예약금 <strong>${formatCurrency(options.depositAmount)}</strong>을 입금해 주시면 예약이 최종 확정됩니다.
-         </p>
-         <div style="background-color: #f8f8f8; padding: 24px 28px; border-radius: 12px; font-size: 13px; color: #1a1a1a; margin: 24px 0; border: 1px solid #e5e5e5;">
-           <p style="margin: 0 0 10px; color: #999999; font-size: 12px; letter-spacing: 0.1em; font-weight: 600;">BANK ACCOUNT</p>
-           <table style="width: 100%; border-collapse: collapse;">
-             <tr style="border-bottom: 1px solid #e5e5e5;"><td style="padding: 10px 0; color: #666666; width: 90px;">은행명</td><td style="padding: 10px 0; font-weight: 500;"><strong>네이버뱅크</strong></td></tr>
-             <tr style="border-bottom: 1px solid #e5e5e5;"><td style="padding: 10px 0; color: #666666;">계좌번호</td><td style="padding: 10px 0; font-weight: 500;"><strong>1002-514-553600</strong></td></tr>
-             <tr><td style="padding: 10px 0; color: #666666;">예금주</td><td style="padding: 10px 0; font-weight: 500;"><strong>주식회사 크리오스</strong></td></tr>
-           </table>
          </div>`
 
   await sendMail({

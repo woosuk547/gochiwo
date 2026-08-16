@@ -1,10 +1,15 @@
 import { Suspense } from 'react'
-import Link from 'next/link'
+import type { Metadata } from 'next'
 import { PageShell } from '@/components/site/page-shell'
 import { PageHero } from '@/components/site/page-hero'
-import { Button } from '@/components/ui/button'
 import { contactInfo } from '@/lib/repause-content'
 import PaymentFailContent from './payment-fail-content'
+import { noIndexRobots } from '@/lib/page-metadata'
+
+export const metadata: Metadata = {
+  title: '결제 실패',
+  robots: noIndexRobots,
+}
 
 export default function PaymentFailPage() {
   return (

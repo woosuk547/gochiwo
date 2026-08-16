@@ -9,6 +9,7 @@ import { contactInfo } from '@/lib/repause-content'
 import { calculateReservationQuote, BASE_GUESTS } from '@/lib/repause-pricing'
 import { getAppUrl } from '@/lib/app-url'
 import { FunnelSteps } from '@/components/site/funnel-steps'
+import { isUnpaidHoldExpired } from '@/lib/reservation-hold'
 
 interface PaymentCheckoutProps {
   reservation: ReservationSummary
@@ -49,7 +50,13 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
   const consecutiveDiscount = breakdownMatches ? quote.consecutiveDiscount : 0
   const partnerDiscount = breakdownMatches ? quote.partnerDiscount : 0
 
+  const holdExpired = isUnpaidHoldExpired(reservation)
+
   const handlePayment = async () => {
+    if (holdExpired) {
+      setError('결제 기한이 지나 일정이 해제되었어요. 다시 예약해 주세요.')
+      return
+    }
     if (!clientKey) {
       setError('결제 설정이 완료되지 않았어요. 잠시 후 다시 시도하거나 문의해 주세요.')
       return
@@ -196,10 +203,10 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                   문의: {contactInfo.email}
                 </p>
               </div>
-            ) : reservation.status === 'DECLINED' || reservation.status === 'CANCELLED' ? (
+            ) : holdExpired || reservation.status === 'DECLINED' || reservation.status === 'CANCELLED' ? (
               <div className="mt-5 rounded-none border border-gray-200 bg-gray-50 px-5 py-5 text-sm leading-8 text-gray-500 text-center">
                 <p className="font-semibold text-[#1a1a1a] text-lg">
-                  {reservation.status === 'CANCELLED' ? '취소된 예약이에요' : '진행할 수 없는 예약이에요'}
+                  {holdExpired || reservation.status === 'CANCELLED' ? '결제 기한이 지났거나 취소된 예약이에요' : '진행할 수 없는 예약이에요'}
                 </p>
                 <p className="mt-2">
                   해당 예약은 결제를 진행할 수 없어요. 새 일정으로 다시 신청해 주세요.

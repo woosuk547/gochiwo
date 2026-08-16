@@ -127,7 +127,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                 <p>· 이용일 기준 <span className="font-semibold text-[#1a1a1a]">3주 전(21일 전)</span>부터 예약이 가능합니다.</p>
                 <p>· 임직원 <span className="font-semibold text-[#1a1a1a]">본인이 반드시 투숙</span>하는 것을 원칙으로 합니다.</p>
                 <p>· 임직원 본인이 동반하지 않거나 타인에게 양도한 것이 적발될 경우, 즉시 예약이 취소되며 환불이 불가합니다.</p>
-                <p>· 예약 시 기업 전용 이메일로 신청해 주시면 할인 코드를 전송해 드립니다.</p>
+                <p>· 예약 시 회사 전용 이메일(@neowiz.com 또는 @estsoft.com)로 신청하면 우대 요금이 바로 적용됩니다. 별도의 할인 코드는 없어요.</p>
               </div>
             </div>
 
@@ -183,7 +183,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
               {rentalMode === 'media' ? (
                 <>
                   <div className="space-y-4">
-                    <p className="text-[11px] tracking-[0.15em] text-gray-400 uppercase">MEDIA RENTAL GUIDE</p>
+                    <p className="text-[11px] tracking-[0.12em] text-gray-400">미디어 대관 안내</p>
                     <h3 className="text-xl font-light tracking-tight text-[#1a1a1a] font-serif">상업적 미디어 대관 규정</h3>
                     <div className="w-12 h-px bg-gray-300 my-4" />
                   </div>
@@ -206,7 +206,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                     <div className="space-y-2 border-t border-gray-100 pt-4 bg-gray-50/50 p-4 rounded-none">
                       <h4 className="font-bold text-red-700 text-[14px]">3. 원상복구 및 손해배상 의무 (필수 서약)</h4>
                       <p className="text-gray-500 italic text-[12px] leading-relaxed">
-                        &ldquo;촬영을 위한 가구 및 소품의 이동은 사전 협의된 범위 내에서만 가능하며, 촬영 종료 직후 입실 전 상태로 완벽히 원상복구해야 합니다. 촬영 중 발생한 시설물, 가구, 식생(잔디 및 조경)의 파손, 오염, 스크래치에 대해서는 촬영 주체(브랜드 및 대행사)가 전액 실비로 손해배상할 책임이 있습니다.&rdquo;
+                        촬영을 위한 가구 및 소품의 이동은 사전 협의된 범위 내에서만 가능하며, 촬영 종료 직후 입실 전 상태로 원상복구해야 합니다. 촬영 중 발생한 시설물, 가구, 식생(잔디 및 조경)의 파손, 오염, 스크래치에 대해서는 촬영 주체(브랜드 및 대행사)가 전액 실비로 손해배상할 책임이 있습니다.
                       </p>
                       <p className="text-[11px] text-gray-400 mt-2">
                         * 원상복구 보증금은 고객센터 상담 시 안내해 드립니다.
@@ -231,7 +231,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
               ) : (
                 <>
                   <div className="space-y-4">
-                    <p className="text-[11px] tracking-[0.15em] text-gray-400 uppercase">WORKATION GUIDE</p>
+                    <p className="text-[11px] tracking-[0.12em] text-gray-400">워케이션 안내</p>
                     <h3 className="text-xl font-light tracking-tight text-[#1a1a1a] font-serif">워케이션 이용 안내</h3>
                     <div className="w-12 h-px bg-gray-300 my-4" />
                   </div>

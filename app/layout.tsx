@@ -30,9 +30,6 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     siteName: '리포즈',
-    title: '리포즈 | 하이엔드 프라이빗 독채 스테이',
-    description: '연인과 가족을 위한 프라이빗 독채 풀빌라. 고요한 휴식과 우리만의 시간을 제안합니다.',
-    url: 'https://repause.co.kr',
   },
   twitter: {
     card: 'summary_large_image',

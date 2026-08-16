@@ -3,13 +3,15 @@ import { PageHero } from '@/components/site/page-hero'
 import { PageShell } from '@/components/site/page-shell'
 import { PartnershipContent } from '@/components/site/partnership-content'
 import { getAvailabilitySnapshot } from '@/lib/reservation-service'
+import { publicPageMeta } from '@/lib/page-metadata'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: '제휴 및 대관 — 리포즈',
-  description: '임직원 전용 요금 혜택 및 미디어 상업 촬영 대관 가이드. 법인 정산 및 전문 디렉팅 협의.',
-}
+export const metadata: Metadata = publicPageMeta(
+  '제휴 및 대관',
+  '임직원 전용 요금 혜택과 미디어 촬영·워케이션 대관 안내.',
+  '/partnership',
+)
 
 export default async function PartnershipPage() {
   const availability = await getAvailabilitySnapshot()

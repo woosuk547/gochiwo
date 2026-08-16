@@ -10,7 +10,10 @@ import {
   paymentMethodLabel,
   getMinBookableDateKey,
   isCheckInAllowedForSource,
+  parseDateInput,
+  nightsBetween,
   PARTNERSHIP_MIN_ADVANCE_DAYS,
+  MAX_NIGHTS,
   type PaymentMethod,
   type ReservationSource,
 } from '@/lib/booking'
@@ -71,7 +74,7 @@ const agreements: AgreementItem[] = [
   {
     id: 'refund',
     title: '취소 및 환불 규정에 대한 동의',
-    content: '리포즈(RE:PAUSE)는 하루에 단 한 팀만을 위한 프라이빗 스테이로, 예약 확정 후 취소 시점에 따라 위약금이 발생합니다. 올바른 예약 문화와 완벽한 객실 준비를 위한 규정이오니 신중한 예약을 부탁드립니다.',
+    content: '리포즈는 하루에 단 한 팀만 받는 프라이빗 스테이입니다. 예약 확정 후 취소 시점에 따라 위약금이 발생하니, 일정을 한 번 더 확인해 주세요.',
     hasTable: true,
   },
   {
@@ -94,8 +97,8 @@ const agreements: AgreementItem[] = [
 5. 미성년자 단독 투숙 불가
 보호자 동반 없는 미성년자(만 19세 미만)의 단독 투숙 또는 미성년자 간의 혼숙이 적발될 경우 예약 취소 및 즉시 퇴실 조치됩니다.
 
-6. 건물 외부 CCTV 설치 및 녹화
-투숙객의 안전, 차량 보안, 화재 및 범죄 예방을 위해 건물 외부(대문, 현관, 마당 등)에 24시간 CCTV를 운영합니다. 객실 내부에는 절대 설치되어 있지 않습니다.
+6. CCTV
+현재 건물 외부·내부에 CCTV를 운영하지 않습니다. 설치하게 되면 사전 안내 후 동의를 다시 받습니다.
 
 7. 수영장 및 자쿠지 이용 수칙
 개인용 입욕제(가루, 거품, 꽃잎, 오일 등) 사용을 엄격히 금지하며, 위반 시 여과기 수리 및 영업 손실 비용이 청구됩니다. 음주 후 입수 금지 및 미끄러짐 등 개인 부주의 안전사고는 면책됩니다.
@@ -293,6 +296,12 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       errors.dates = '체크인/아웃 날짜를 선택해 주세요.'
     } else if (!isCheckInAllowedForSource(form.checkIn, source)) {
       errors.dates = '제휴 예약은 이용일 기준 3주 전(21일 전)부터 가능합니다.'
+    } else {
+      const start = parseDateInput(form.checkIn)
+      const end = parseDateInput(form.checkOut)
+      if (start && end && nightsBetween(start, end) > MAX_NIGHTS) {
+        errors.dates = `한 번에 ${MAX_NIGHTS}박까지만 예약할 수 있어요.`
+      }
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -330,7 +339,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         const response = await fetch('/api/reservations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...form, source }),
+          body: JSON.stringify({ ...form, source, agreementsAccepted: allAgreed }),
         })
         const result = await response.json()
 
@@ -363,7 +372,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           </div>
           <h2 className="mt-4 text-xl font-bold text-[#1a1a1a]">여정 신청 완료</h2>
           <p className="mt-2 text-[14px] text-gray-500">
-            고객님의 독립된 여정이 안전하게 승인되도록 세심히 검토한 뒤, 24시간 이내에 최종 결제 가이드를 메일로 차분히 전달해 드리겠습니다.
+            신청을 확인한 뒤 메일로 안내드릴게요. 예약 번호는 메일에서 확인할 수 있어요.
           </p>
         </div>
         {submittedSummary && (
@@ -392,7 +401,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         <p className="mt-1.5 text-[13px] leading-relaxed tracking-tight text-gray-500">
           {source === 'PARTNERSHIP'
             ? '제휴사 임직원 우대 혜택, 촬영 대관, 기업 일정을 정교하게 맞춰 드립니다.'
-            : '머무실 일정과 결제 수단을 가만히 남겨 주시면, 안락한 여정의 여백을 정성스레 준비해 드립니다.'}
+            : '날짜와 인원을 고르면 예상 요금을 바로 보여 드려요. 결제가 끝나면 예약이 확정돼요.'}
         </p>
         <div className="mt-4 grid grid-cols-3 gap-2">
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
@@ -405,7 +414,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           </div>
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
             <p className="text-[12px] font-semibold tracking-wide text-gray-400">신청 방식</p>
-            <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">개별 일정 조율</p>
+            <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">캘린더에서 선택</p>
           </div>
         </div>
       </div>
@@ -421,7 +430,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           <FormInput id="rsv-email" type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required error={fieldErrors.email} />
           {source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0] && (
             <p className="text-[11px] text-gray-400 leading-relaxed">
-              * 평일 30%, 주말/공휴일 20%의 전용 우대 요금이 자동 적용됩니다. 회사 이메일(@neowiz.com 또는 @estsoft.com)로만 신청할 수 있어요.
+              * 평일 30%, 주말·공휴일·성수기 20% 우대 요금이 자동 적용돼요. 회사 이메일(@neowiz.com 또는 @estsoft.com)로만 신청할 수 있어요.
             </p>
           )}
         </label>
@@ -633,8 +642,8 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
 
       <div className="mt-4 rounded-none bg-gray-50 px-4 py-3 text-[13px] text-gray-500">
         {form.paymentMethod === 'CORPORATE_BILLING'
-          ? '법인 일괄 정산은 여정 최종 승인 후 기합의된 법인 수납 프로세스 또는 세금계산서 발행에 따라 정교하게 조율됩니다.'
-          : '여정 신청이 완료되면 바로 결제 페이지로 유연하게 인계되며, 대금 수납 처리가 마감되는 즉시 안식이 확정됩니다.'}
+          ? '법인 결제는 신청 후 확인을 거쳐 세금계산서 또는 협의된 방식으로 안내드려요. 일정은 확정 전까지 캘린더에 막히지 않아요.'
+          : '신청이 끝나면 결제 페이지로 이동해요. 결제가 완료되면 예약이 확정돼요.'}
       </div>
 
       {error && <p role="alert" className="mt-3 text-[14px] text-red-500">{error}</p>}
@@ -645,7 +654,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         className="mt-5 h-12 w-full rounded-none bg-[#1a1a1a] text-[15px] font-semibold text-white hover:bg-[#333]"
         disabled={isPending}
       >
-        {isPending ? '처리 중...' : form.paymentMethod === 'CORPORATE_BILLING' ? '제휴 예약 신청' : '여정 예약 신청 및 결제'}
+        {isPending ? '처리 중...' : form.paymentMethod === 'CORPORATE_BILLING' ? '제휴 예약 신청' : '예약하고 결제하기'}
       </Button>
     </form>
   )

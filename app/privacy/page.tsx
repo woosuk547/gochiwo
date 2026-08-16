@@ -3,15 +3,18 @@ import { PageHero } from '@/components/site/page-hero'
 import { PageShell } from '@/components/site/page-shell'
 import { contactInfo } from '@/lib/repause-content'
 
-export const metadata: Metadata = {
-  title: '개인정보처리방침 — 리포즈',
-  description: '예약에 필요한 최소한의 정보만 수집해요.',
-}
+import { publicPageMeta } from '@/lib/page-metadata'
+
+export const metadata: Metadata = publicPageMeta(
+  '개인정보처리방침',
+  '예약에 필요한 최소한의 정보만 수집해요.',
+  '/privacy',
+)
 
 const sections = [
   {
     title: '수집 목적',
-    body: '주식회사 크리오스(이하 “회사”)는 Repause 예약 신청 확인, 일정 조율, 결제·환불 처리, 제휴 예약 관리, 고객 문의 응대, 관련 법령상 의무 이행을 위해 개인정보를 수집·이용합니다.',
+    body: '주식회사 크리오스(예약 대행·시스템 운영)와 슈가스테이(숙박 제공 및 결제 당사자)는 Repause 예약 확인, 일정 안내, 결제·환불 처리, 제휴 예약 관리, 고객 문의 응대, 관련 법령상 의무 이행을 위해 개인정보를 수집·이용합니다.',
   },
   {
     title: '수집 항목',
@@ -40,6 +43,10 @@ const sections = [
       `· 수탁자: 네이버 주식회사(네이버 메일) — 위탁 업무: 예약·결제 안내 메일 발송`,
       '위탁 계약 시 개인정보 보호 관련 법령을 준수하며, 위탁 업무 변경 시 본 방침을 통해 고지합니다.',
     ].join('\n'),
+  },
+  {
+    title: '영상정보처리기기',
+    body: '현재 숙소 내부·외부에 CCTV 등 영상정보처리기기를 운영하지 않습니다. 설치하게 되면 설치 위치·촬영 범위·보관 기간을 본 방침에 적고, 예약 시 동의를 다시 받습니다.',
   },
   {
     title: '이용자 권리',

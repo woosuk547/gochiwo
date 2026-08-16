@@ -6,8 +6,9 @@ import { AnimatedGrid, AnimatedGridItem } from '@/components/motion/animated-sec
 import { mockStays } from '@/lib/mock-stays'
 
 export const metadata: Metadata = {
-  title: '스테이 컬렉션 — 리포즈',
+  title: '스테이 컬렉션',
   description: '강원, 제주, 경주. 풍경이 다른 세 가지 프리미엄 독채 스테이를 둘러보세요.',
+  robots: { index: false, follow: false },
 }
 
 export default function StaysPage() {

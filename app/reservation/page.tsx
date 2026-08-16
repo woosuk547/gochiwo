@@ -3,13 +3,15 @@ import { PageHero } from '@/components/site/page-hero'
 import { PageShell } from '@/components/site/page-shell'
 import { ReservationContent } from '@/components/site/reservation-content'
 import { getAvailabilitySnapshot } from '@/lib/reservation-service'
+import { publicPageMeta } from '@/lib/page-metadata'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: '예약 — 리포즈',
-  description: '날짜와 인원을 선택하면 예상 요금을 바로 확인할 수 있어요. 리포즈 프라이빗 독채 예약.',
-}
+export const metadata: Metadata = publicPageMeta(
+  '예약',
+  '날짜와 인원을 선택하면 예상 요금을 바로 확인할 수 있어요. 리포즈 프라이빗 독채 예약.',
+  '/reservation',
+)
 
 export default async function ReservationPage() {
   const availability = await getAvailabilitySnapshot()

@@ -4,10 +4,13 @@ import { PageShell } from '@/components/site/page-shell'
 import { AnimatedGrid, AnimatedGridItem } from '@/components/motion/animated-sections'
 import { noticeEntries } from '@/lib/repause-brand-content'
 
-export const metadata: Metadata = {
-  title: '공지사항 — 리포즈',
-  description: '예약과 운영에 관한 소식을 안내해요.',
-}
+import { publicPageMeta } from '@/lib/page-metadata'
+
+export const metadata: Metadata = publicPageMeta(
+  '공지사항',
+  '예약과 운영에 관한 소식을 안내해요.',
+  '/notices',
+)
 
 export default function NoticesPage() {
   return (

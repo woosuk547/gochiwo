@@ -19,10 +19,11 @@ export async function generateMetadata({ params }: StayDetailPageProps): Promise
   const stay = getMockStay(slug)
   if (!stay) return { title: '리포즈' }
   return {
-    title: `${stay.name} — 리포즈`,
+    title: stay.name,
     description: stay.summary,
+    robots: { index: false, follow: false },
     openGraph: {
-      title: `${stay.name} — 리포즈`,
+      title: `${stay.name} | 리포즈`,
       description: stay.summary,
       images: [stay.coverImage],
     },

@@ -3,15 +3,18 @@ import { PageHero } from '@/components/site/page-hero'
 import { PageShell } from '@/components/site/page-shell'
 import { cancellationPolicy, contactInfo } from '@/lib/repause-content'
 
-export const metadata: Metadata = {
-  title: '이용약관 — 리포즈',
-  description: '예약과 결제에 적용되는 기본 원칙이에요.',
-}
+import { publicPageMeta } from '@/lib/page-metadata'
+
+export const metadata: Metadata = publicPageMeta(
+  '이용약관',
+  '예약과 결제에 적용되는 기본 원칙이에요.',
+  '/terms',
+)
 
 const sections = [
   {
     title: '서비스 범위',
-    body: 'Repause 웹사이트는 독채 스테이 예약, 제휴기업 예약, 운영 안내 제공을 목적으로 합니다. 일반 예약과 제휴 예약은 서로 다른 승인 및 결제 기준으로 운영될 수 있습니다. 운영 주체는 주식회사 크리오스입니다.',
+    body: 'Repause 웹사이트는 독채 스테이 예약, 제휴기업 예약, 운영 안내 제공을 목적으로 합니다. 숙박 제공 및 결제 당사자는 슈가스테이이며, 예약 대행 및 시스템 운영은 주식회사 크리오스입니다. 일반 예약과 제휴 예약은 요금·신청 경로가 다를 수 있습니다.',
   },
   {
     title: '예약 신청',
@@ -19,7 +22,7 @@ const sections = [
   },
   {
     title: '승인 및 결제',
-    body: '예약은 운영자 검토 후 확정됩니다. 승인된 예약에 한해 카드 결제(토스페이먼츠), 계좌 안내 또는 법인 정산 방식이 개별 안내되며, 결제 완료 전에는 예약이 최종 확정되지 않을 수 있습니다. 예약금은 최종 금액의 50%(1,000원 단위 반올림)입니다.',
+    body: '카드 결제와 계좌이체(토스페이먼츠)는 결제가 완료되면 예약이 확정됩니다. 법인 결제는 신청 후 확인을 거쳐 세금계산서 또는 협의된 방식으로 안내됩니다. 결제 완료 전에는 예약이 확정되지 않으며, 미결제 일정은 12시간 후 자동 해제됩니다. 예약금은 최종 금액의 50%(1,000원 단위 반올림)입니다.',
   },
   {
     title: '취소 및 환불',

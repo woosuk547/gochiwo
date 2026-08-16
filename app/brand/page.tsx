@@ -15,11 +15,13 @@ import {
 import { contactInfo } from '@/lib/repause-content'
 import { InstagramIcon } from '@/components/site/instagram-icon'
 import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
+import { publicPageMeta } from '@/lib/page-metadata'
 
-export const metadata: Metadata = {
-  title: '브랜드 — 리포즈',
-  description: '리포즈의 브랜드 철학과 진정한 쉼의 가치를 소개합니다.',
-}
+export const metadata: Metadata = publicPageMeta(
+  '브랜드',
+  '리포즈의 브랜드 철학과 진정한 쉼의 가치를 소개합니다.',
+  '/brand',
+)
 
 export default function BrandPage() {
   return (

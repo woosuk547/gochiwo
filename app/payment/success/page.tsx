@@ -3,9 +3,11 @@ import type { Metadata } from 'next'
 import { PageShell } from '@/components/site/page-shell'
 import { PageHero } from '@/components/site/page-hero'
 import { PaymentSuccessContent } from './payment-success-content'
+import { noIndexRobots } from '@/lib/page-metadata'
 
 export const metadata: Metadata = {
-  title: '결제 완료 — 리포즈',
+  title: '결제 완료',
+  robots: noIndexRobots,
 }
 
 export default function PaymentSuccessPage() {

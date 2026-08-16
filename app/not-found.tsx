@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { noIndexRobots } from '@/lib/page-metadata'
+
+export const metadata: Metadata = {
+  title: '페이지를 찾을 수 없어요',
+  robots: noIndexRobots,
+}
 
 export default function NotFound() {
   return (

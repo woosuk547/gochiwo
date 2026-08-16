@@ -9,10 +9,13 @@ import { AnimatedSection } from '@/components/motion/animated-sections'
 import { guideFaqSections, guideGroups, cancellationPolicy } from '@/lib/repause-content'
 import { editorialBtnDark, editorialBtnDarkOutline } from '@/lib/editorial'
 
-export const metadata: Metadata = {
-  title: '이용 안내 — 리포즈',
-  description: '체크인, 결제, 취소 규정, 위치, FAQ를 확인하세요.',
-}
+import { publicPageMeta } from '@/lib/page-metadata'
+
+export const metadata: Metadata = publicPageMeta(
+  '이용 안내',
+  '체크인, 결제, 취소 규정, 위치, FAQ를 확인하세요.',
+  '/guide',
+)
 
 export const dynamic = 'force-dynamic'
 

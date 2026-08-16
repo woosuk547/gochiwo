@@ -9,6 +9,8 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-08-16] 결제 confirm 동시성 -> Toss HTTP 호출 전에 SQLite 트랜잭션에서 만료 PENDING 정리(첫 write로 DB 락) + 겹침 재검사 + paymentKey 클레임. 트랜잭션 안에 외부 HTTP를 넣지 말 것. orderId는 `rep_{reservationId}_` 접두사만 허용하고, ALREADY_PROCESSED는 Toss GET으로 orderId·금액을 재확인.
+- [2026-08-16] Next.js title.template 중복 -> 루트 `title.template: '%s | 리포즈'`인데 페이지 title이 이미 `공간 소개 — 리포즈`면 라이브가 `공간 소개 — 리포즈 | 리포즈`. 페이지 title은 짧은 이름만, 브랜드는 template에만. 루트 `openGraph`를 홈 전용으로 두면 하위 페이지가 og:title/og:url을 홈으로 상속하므로 페이지마다 openGraph를 넣거나 레이아웃 OG에서 url/title을 빼야 함.
 - [2026-08-12] 디자인 규칙 문서 vs 실제 코드 불일치 -> `repause-rules.mdc`에 "rounded-xl 카드/CTA, shadow-sm/lg" 문구가 남아있었으나 실제 코드(`app/home-content.tsx`, `lib/editorial.ts`, `stay-card.tsx`)는 2026-05-24 에디토리얼 리디자인 이후 전면 `rounded-none` + 보더 기반 위계로 전환되어 있었음(레거시 서술 미정리). 실제 코드를 실측해 `docs/design-guide.md`로 정식 문서화하고 `repause-rules.mdc`/`CLAUDE.md`에서 참조하도록 연결. 앞으로 디자인 규칙 문서를 코드와 별개로 오래 방치하면 이런 드리프트가 재발하므로, 큰 리디자인 후에는 규칙 파일도 같이 갱신 필요.
 
 - [2026-08-08] 배포전 총점검 -> `scripts/deploy-ncp.sh`의 `source <(grep ...)` 프로세스 치환이 macOS 기본 `bash 3.2`(`/bin/bash`, 홈브류 bash 미설치)에서 변수를 부모 셸에 반영하지 못하는 버그 확인(항상 빈 값 → TOSS 키 가드에서 매번 실패). 임시 파일(`mktemp`)에 grep 결과를 쓰고 `source` 하는 방식으로 수정. `source <(...)` 패턴은 이 환경에서 전면 금지, 임시 파일 경유 필수. 공지사항/이용약관/개인정보처리방침 페이지에 `export const metadata` 누락되어 브라우저 탭·SEO에 사이트 기본 타이틀만 노출되던 문제도 함께 발견·수정(사이트맵엔 포함되어 있었음). `ParallaxImage`가 항상 `sizes="100vw"` 고정이라 50/50 교대 레이아웃(예: `/space`)에서 next/image 경고 발생 → `sizes` prop 추가.
