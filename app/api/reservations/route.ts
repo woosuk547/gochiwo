@@ -26,6 +26,7 @@ import {
   serializeReservation,
 } from '@/lib/reservation-service'
 import { isValidEmail, isValidPhone } from '@/lib/app-url'
+import { clientIp, rateLimitExceeded, tooManyRequestsResponse } from '@/lib/rate-limit'
 
 const allowedPaymentMethods: PaymentMethod[] = ['CARD', 'BANK_TRANSFER', 'CORPORATE_BILLING']
 
@@ -49,11 +50,19 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = clientIp(request)
+    if (rateLimitExceeded(`res:ip:${ip}`, 5, 15 * 60 * 1000)) {
+      return tooManyRequestsResponse()
+    }
+
     const body = await request.json()
     const source: ReservationSource = body.source === 'PARTNERSHIP' ? 'PARTNERSHIP' : 'DIRECT'
     const guestName = typeof body.guestName === 'string' ? body.guestName.trim().slice(0, MAX_GUEST_NAME_LENGTH) : ''
     const companyName = typeof body.companyName === 'string' ? body.companyName.trim().slice(0, 120) : ''
     const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
+    if (email && rateLimitExceeded(`res:email:${email}`, 3, 60 * 60 * 1000)) {
+      return tooManyRequestsResponse()
+    }
     const phone = typeof body.phone === 'string' ? body.phone.trim() : ''
     const guests = Number(body.guests)
     const checkIn = typeof body.checkIn === 'string' ? parseDateInput(body.checkIn) : null

@@ -27,7 +27,7 @@ export default function NoticesPage() {
               <article className="rounded-none border border-gray-200 bg-white p-6 transition-colors duration-300 hover:border-gray-300">
                 <div className="flex items-center gap-2">
                   <span className="rounded-md bg-gray-100 px-2 py-0.5 text-[12px] font-medium text-gray-500">{notice.category}</span>
-                  <span className="text-[13px] text-gray-400">{notice.date}</span>
+                  <span className="text-[13px] text-gray-500">{notice.date}</span>
                 </div>
                 <h2 className="mt-3 text-[17px] font-bold text-[#1a1a1a]">{notice.title}</h2>
                 <p className="mt-2 text-[14px] leading-relaxed text-gray-500">{notice.summary}</p>

@@ -5,11 +5,12 @@ import {
   expireStalePendingReservations,
   findOverlappingHold,
   isUnpaidHoldExpired,
+  markReservationPaid,
   orderIdBelongsToReservation,
   serializeReservation,
+  UNPAID_PAYMENT_STATUSES,
 } from '@/lib/reservation-service'
-
-const UNPAID_STATUSES = ['REVIEW_PENDING', 'PAYMENT_GUIDE_SENT'] as const
+import { clientIp, rateLimitExceeded, tooManyRequestsResponse } from '@/lib/rate-limit'
 
 async function fetchTossPayment(paymentKey: string, basicAuth: string) {
   const response = await fetch(`https://api.tosspayments.com/v1/payments/${encodeURIComponent(paymentKey)}`, {
@@ -19,8 +20,34 @@ async function fetchTossPayment(paymentKey: string, basicAuth: string) {
   return { ok: response.ok, data }
 }
 
+function notifyPaid(
+  reservation: NonNullable<Awaited<ReturnType<typeof markReservationPaid>>['reservation']>,
+  expectedAmount: number,
+  isDeposit: boolean,
+) {
+  const serialized = serializeReservation(reservation)
+  void sendReservationConfirmed({
+    to: reservation.email,
+    guestName: reservation.guestName,
+    checkIn: serialized.checkIn,
+    checkOut: serialized.checkOut,
+    guests: reservation.guests,
+    paymentMethod: reservation.paymentMethod,
+    finalAmount: reservation.finalAmount,
+    paidAmount: expectedAmount,
+    isDepositOnly: isDeposit,
+    paymentCompleted: true,
+  }).catch((emailError) => {
+    console.error('Failed to send confirmation email:', emailError)
+  })
+}
+
 export async function POST(request: NextRequest) {
   try {
+    if (rateLimitExceeded(`confirm:${clientIp(request)}`, 20, 15 * 60 * 1000)) {
+      return tooManyRequestsResponse()
+    }
+
     const body = await request.json()
     const { paymentKey, orderId, amount, reservationId, paymentType } = body
 
@@ -70,7 +97,7 @@ export async function POST(request: NextRequest) {
 
     if (isUnpaidHoldExpired(reservation)) {
       await prisma.reservation.updateMany({
-        where: { id: reservationId, ...{ status: 'PENDING', paymentStatus: { in: [...UNPAID_STATUSES] } } },
+        where: { id: reservationId, ...{ status: 'PENDING', paymentStatus: { in: [...UNPAID_PAYMENT_STATUSES] } } },
         data: { status: 'CANCELLED' },
       })
       return NextResponse.json({ error: '결제 기한이 지나 일정이 해제되었어요. 다시 예약해 주세요.' }, { status: 400 })
@@ -108,7 +135,7 @@ export async function POST(request: NextRequest) {
       }
       if (isUnpaidHoldExpired(current)) {
         await tx.reservation.updateMany({
-          where: { id: reservationId, status: 'PENDING', paymentStatus: { in: [...UNPAID_STATUSES] } },
+          where: { id: reservationId, status: 'PENDING', paymentStatus: { in: [...UNPAID_PAYMENT_STATUSES] } },
           data: { status: 'CANCELLED' },
         })
         return { ok: false as const, error: '결제 기한이 지나 일정이 해제되었어요. 다시 예약해 주세요.', status: 400 }
@@ -130,7 +157,7 @@ export async function POST(request: NextRequest) {
         where: {
           id: reservationId,
           status: { in: ['PENDING', 'CONFIRMED'] },
-          paymentStatus: { in: [...UNPAID_STATUSES] },
+          paymentStatus: { in: [...UNPAID_PAYMENT_STATUSES] },
           OR: [{ paymentKey: null }, { paymentKey }],
         },
         data: { paymentKey, orderId },
@@ -176,7 +203,7 @@ export async function POST(request: NextRequest) {
           where: {
             id: reservationId,
             paymentKey,
-            paymentStatus: { in: [...UNPAID_STATUSES] },
+            paymentStatus: { in: [...UNPAID_PAYMENT_STATUSES] },
           },
           data: { paymentKey: null, orderId: null },
         })
@@ -195,7 +222,7 @@ export async function POST(request: NextRequest) {
           where: {
             id: reservationId,
             paymentKey,
-            paymentStatus: { in: [...UNPAID_STATUSES] },
+            paymentStatus: { in: [...UNPAID_PAYMENT_STATUSES] },
           },
           data: { paymentKey: null, orderId: null },
         })
@@ -203,38 +230,41 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const updatedReservation = await prisma.reservation.update({
-      where: { id: reservationId },
-      data: {
-        status: 'CONFIRMED',
-        paymentStatus: isDeposit ? 'DEPOSIT_PAID' : 'PAID',
-        paidAt: new Date(),
-        paymentKey,
-        orderId,
-      },
+    const paid = await markReservationPaid({
+      reservationId,
+      paymentKey,
+      orderId,
+      isDeposit,
     })
 
-    const serialized = serializeReservation(updatedReservation)
-    void sendReservationConfirmed({
-      to: updatedReservation.email,
-      guestName: updatedReservation.guestName,
-      checkIn: serialized.checkIn,
-      checkOut: serialized.checkOut,
-      guests: updatedReservation.guests,
-      paymentMethod: updatedReservation.paymentMethod,
-      finalAmount: updatedReservation.finalAmount,
-      paidAmount: expectedAmount,
-      isDepositOnly: isDeposit,
-      paymentCompleted: true,
-    }).catch((emailError) => {
-      console.error('Failed to send confirmation email:', emailError)
-    })
+    if (!paid.reservation) {
+      return NextResponse.json({ error: '해당 예약을 찾을 수 없습니다.' }, { status: 404 })
+    }
+
+    if (!paid.applied && !paid.alreadyPaid) {
+      return NextResponse.json(
+        { error: '예약 상태가 바뀌어 확정할 수 없어요. 결제가 됐다면 문의해 주세요.' },
+        { status: 409 },
+      )
+    }
+
+    if (paid.applied) {
+      notifyPaid(paid.reservation, expectedAmount, isDeposit)
+    }
+
+    if (paid.alreadyPaid) {
+      return NextResponse.json({
+        message: '이미 결제가 승인된 예약입니다.',
+        status: 'ALREADY_PAID',
+        reservationId: paid.reservation.id,
+      })
+    }
 
     return NextResponse.json({
       success: true,
-      reservationId: updatedReservation.id,
-      status: updatedReservation.status,
-      paymentStatus: updatedReservation.paymentStatus,
+      reservationId: paid.reservation.id,
+      status: paid.reservation.status,
+      paymentStatus: paid.reservation.paymentStatus,
     })
   } catch (error) {
     console.error('Payment confirmation error:', error)

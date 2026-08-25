@@ -137,7 +137,7 @@ export default function GuidePage() {
                     { label: '주차', value: '전용 단독 주차 공간 2대 제공. 전기차 완속 충전 스테이션 무료 이용 가능.' },
                   ].map((item) => (
                     <div key={item.label} className="border-t border-gray-100 pt-4">
-                      <p className="text-[11px] tracking-[0.1em] text-gray-400">{item.label}</p>
+                      <p className="text-[11px] tracking-[0.1em] text-gray-500">{item.label}</p>
                       <p className="mt-1.5 text-[15px] text-[#1a1a1a]">{item.value}</p>
                     </div>
                   ))}

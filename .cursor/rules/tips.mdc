@@ -9,6 +9,9 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-08-25] 히어로 `<video useRef>`가 클릭 시 null -> 일시정지 버튼의 parent querySelector('video')로 토글.
+- [2026-08-25] 토스 PAYMENT_STATUS_CHANGED 웹훅은 서명 헤더 없음 -> Secret으로 GET 재조회 후 updateMany. transmission-id로 중복 무시. URL은 개발자센터 등록해야 이벤트가 옴.
+- [2026-08-25] Lighthouse 접근성 95도 color-contrast·landmark 실패면 전역 이슈 -> 점수만 보지 말고 failed audits 항목을 연다. gray-400 on white는 2.6:1.
 - [2026-08-16] 결제 confirm 동시성 -> Toss HTTP 호출 전에 SQLite 트랜잭션에서 만료 PENDING 정리(첫 write로 DB 락) + 겹침 재검사 + paymentKey 클레임. 트랜잭션 안에 외부 HTTP를 넣지 말 것. orderId는 `rep_{reservationId}_` 접두사만 허용하고, ALREADY_PROCESSED는 Toss GET으로 orderId·금액을 재확인.
 - [2026-08-16] Next.js title.template 중복 -> 루트 `title.template: '%s | 리포즈'`인데 페이지 title이 이미 `공간 소개 — 리포즈`면 라이브가 `공간 소개 — 리포즈 | 리포즈`. 페이지 title은 짧은 이름만, 브랜드는 template에만. 루트 `openGraph`를 홈 전용으로 두면 하위 페이지가 og:title/og:url을 홈으로 상속하므로 페이지마다 openGraph를 넣거나 레이아웃 OG에서 url/title을 빼야 함.
 - [2026-08-12] 디자인 규칙 문서 vs 실제 코드 불일치 -> `repause-rules.mdc`에 "rounded-xl 카드/CTA, shadow-sm/lg" 문구가 남아있었으나 실제 코드(`app/home-content.tsx`, `lib/editorial.ts`, `stay-card.tsx`)는 2026-05-24 에디토리얼 리디자인 이후 전면 `rounded-none` + 보더 기반 위계로 전환되어 있었음(레거시 서술 미정리). 실제 코드를 실측해 `docs/design-guide.md`로 정식 문서화하고 `repause-rules.mdc`/`CLAUDE.md`에서 참조하도록 연결. 앞으로 디자인 규칙 문서를 코드와 별개로 오래 방치하면 이런 드리프트가 재발하므로, 큰 리디자인 후에는 규칙 파일도 같이 갱신 필요.

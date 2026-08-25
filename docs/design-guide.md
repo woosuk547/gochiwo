@@ -20,7 +20,7 @@
 |---|---|---|
 | 브랜드 잉크(텍스트/강조 배경) | `#1a1a1a` | `text-brand`, `bg-brand`, `border-brand` (`--color-brand` 토큰) |
 | 본문 서브 텍스트 | gray-500 (`#737373` 계열) | `text-gray-500` |
-| 보조/캡션 텍스트 | gray-400 | `text-gray-400` |
+| 보조/캡션 텍스트 | gray-500 | `text-gray-500` |
 | 더 옅은 캡션(날짜 등) | gray-300 | `text-gray-300` |
 | 보더(기본) | gray-100 | `border-gray-100` |
 | 보더(구분선, 진함) | gray-200 | `border-gray-200` |

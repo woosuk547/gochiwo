@@ -110,8 +110,8 @@ export function DateRangePicker({
             isOpen ? 'border-[#1a1a1a] bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'
           }`}
         >
-          <span className="block text-[12px] font-medium text-gray-400">체크인</span>
-          <span className={`mt-0.5 block text-[14px] font-medium ${checkIn ? 'text-[#1a1a1a]' : 'text-gray-400'}`}>
+          <span className="block text-[12px] font-medium text-gray-500">체크인</span>
+          <span className={`mt-0.5 block text-[14px] font-medium ${checkIn ? 'text-[#1a1a1a]' : 'text-gray-500'}`}>
             {checkIn ? formatDisplayDate(checkIn) : '날짜 선택'}
           </span>
         </button>
@@ -122,8 +122,8 @@ export function DateRangePicker({
             isOpen ? 'border-[#1a1a1a] bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'
           }`}
         >
-          <span className="block text-[12px] font-medium text-gray-400">체크아웃</span>
-          <span className={`mt-0.5 block text-[14px] font-medium ${checkOut ? 'text-[#1a1a1a]' : 'text-gray-400'}`}>
+          <span className="block text-[12px] font-medium text-gray-500">체크아웃</span>
+          <span className={`mt-0.5 block text-[14px] font-medium ${checkOut ? 'text-[#1a1a1a]' : 'text-gray-500'}`}>
             {checkOut ? formatDisplayDate(checkOut) : '날짜 선택'}
           </span>
         </button>
@@ -144,7 +144,7 @@ export function DateRangePicker({
           </div>
 
           {/* 요일 */}
-          <div className="grid grid-cols-7 py-2 text-center text-[12px] font-medium text-gray-400">
+          <div className="grid grid-cols-7 py-2 text-center text-[12px] font-medium text-gray-500">
             {weekLabels.map((label) => (
               <div key={label}>{label}</div>
             ))}

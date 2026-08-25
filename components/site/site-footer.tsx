@@ -29,7 +29,7 @@ function BusinessPartyBlock({ party }: { party: BizParty }) {
       <dl className="mt-3 grid grid-cols-1 gap-x-8 gap-y-2 text-[12px] leading-relaxed md:text-[13px]">
         {rows.map((row) => (
           <div key={row.label} className="flex gap-3 sm:gap-4">
-            <dt className="w-[7.5rem] shrink-0 text-gray-400">{row.label}</dt>
+            <dt className="w-[7.5rem] shrink-0 text-gray-500">{row.label}</dt>
             <dd className="min-w-0 text-gray-600">
               {row.label === '전화번호' && row.value ? (
                 <a href={`tel:${row.value.replace(/-/g, '')}`} className="hover:text-brand">
@@ -70,7 +70,7 @@ export function SiteFooter() {
 
           <div className="flex gap-10 md:gap-12">
             <div>
-              <p className="text-[13px] font-semibold text-gray-400">바로가기</p>
+              <p className="text-[13px] font-semibold text-gray-500">바로가기</p>
               <div className="mt-3 flex flex-col gap-2.5 md:gap-2">
                 {siteNavigation.map((item) => (
                   <Link key={item.href} href={item.href} className="min-h-[44px] flex items-center text-[14px] text-gray-600 hover:text-brand md:min-h-[32px]">
@@ -83,7 +83,7 @@ export function SiteFooter() {
               </div>
             </div>
             <div>
-              <p className="text-[13px] font-semibold text-gray-400">문의</p>
+              <p className="text-[13px] font-semibold text-gray-500">문의</p>
               <div className="mt-3 flex flex-col gap-2.5 text-[14px] text-gray-600 md:gap-2">
                 <a href={`tel:${contactInfo.phone.replace(/-/g, '')}`} className="min-h-[44px] flex items-center hover:text-brand md:min-h-[32px]">
                   {contactInfo.phone}
@@ -122,7 +122,7 @@ export function SiteFooter() {
             />
           </div>
 
-          <div className="flex flex-col gap-3 border-t border-gray-100 pt-5 text-[12px] text-gray-400 md:flex-row md:items-center md:justify-between md:text-[13px]">
+          <div className="flex flex-col gap-3 border-t border-gray-100 pt-5 text-[12px] text-gray-500 md:flex-row md:items-center md:justify-between md:text-[13px]">
             <p>&copy; 2026 Repause. All rights reserved.</p>
             <div className="flex gap-4">
               <Link href="/terms" className="min-h-[44px] flex items-center hover:text-gray-600 md:min-h-[32px]">이용약관</Link>

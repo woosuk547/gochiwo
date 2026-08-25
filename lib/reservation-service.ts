@@ -10,7 +10,9 @@ import {
 import type { PrismaClient } from '@/lib/generated/prisma/client'
 import { pendingHoldCutoff } from '@/lib/reservation-hold'
 
-export { PENDING_HOLD_MS, pendingHoldCutoff, isUnpaidHoldExpired, orderIdBelongsToReservation } from '@/lib/reservation-hold'
+export { PENDING_HOLD_MS, pendingHoldCutoff, isUnpaidHoldExpired, orderIdBelongsToReservation, reservationIdFromOrderId } from '@/lib/reservation-hold'
+
+export const UNPAID_PAYMENT_STATUSES = ['REVIEW_PENDING', 'PAYMENT_GUIDE_SENT'] as const
 
 type ReservationStore = Pick<PrismaClient, 'reservation' | 'blockedDate'>
 
@@ -152,4 +154,39 @@ export async function getAvailabilitySnapshot() {
     blockedDates: blockedDates.map(serializeBlockedDate),
     reservations: reservations.map(serializeReservation),
   }
+}
+
+export async function markReservationPaid(input: {
+  reservationId: string
+  paymentKey: string
+  orderId: string
+  isDeposit: boolean
+}) {
+  const { reservationId, paymentKey, orderId, isDeposit } = input
+  const result = await prisma.reservation.updateMany({
+    where: {
+      id: reservationId,
+      status: { in: ['PENDING', 'CONFIRMED'] },
+      paymentStatus: { in: [...UNPAID_PAYMENT_STATUSES] },
+      OR: [{ paymentKey: null }, { paymentKey }],
+    },
+    data: {
+      status: 'CONFIRMED',
+      paymentStatus: isDeposit ? 'DEPOSIT_PAID' : 'PAID',
+      paidAt: new Date(),
+      paymentKey,
+      orderId,
+    },
+  })
+
+  const reservation = await prisma.reservation.findUnique({ where: { id: reservationId } })
+
+  if (result.count === 0) {
+    if (reservation && (reservation.paymentStatus === 'PAID' || reservation.paymentStatus === 'DEPOSIT_PAID')) {
+      return { applied: false as const, alreadyPaid: true as const, reservation }
+    }
+    return { applied: false as const, alreadyPaid: false as const, reservation }
+  }
+
+  return { applied: true as const, alreadyPaid: false as const, reservation }
 }

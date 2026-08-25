@@ -74,7 +74,7 @@ export default async function StayDetailPage({ params }: StayDetailPageProps) {
                 {stay.facts.map((fact) => (
                   <AnimatedGridItem key={fact.label}>
                     <div className="rounded-none bg-gray-50 p-4">
-                      <p className="text-[12px] font-medium text-gray-400">{fact.label}</p>
+                      <p className="text-[12px] font-medium text-gray-500">{fact.label}</p>
                       <p className="mt-1 text-[14px] font-semibold text-[#1a1a1a]">{fact.value}</p>
                     </div>
                   </AnimatedGridItem>

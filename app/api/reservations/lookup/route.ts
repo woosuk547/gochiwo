@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { clientIp, rateLimitExceeded, tooManyRequestsResponse } from '@/lib/rate-limit'
 
 export async function GET(request: NextRequest) {
+  if (rateLimitExceeded(`lookup:${clientIp(request)}`, 10, 15 * 60 * 1000)) {
+    return tooManyRequestsResponse()
+  }
+
   const { searchParams } = request.nextUrl
   const id = searchParams.get('id')
   const email = searchParams.get('email')

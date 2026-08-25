@@ -19,3 +19,12 @@ export function isUnpaidHoldExpired(input: {
 export function orderIdBelongsToReservation(orderId: string, reservationId: string) {
   return orderId.startsWith(`rep_${reservationId}_`)
 }
+
+/** `rep_{reservationId}_{suffix}` */
+export function reservationIdFromOrderId(orderId: string): string | null {
+  if (!orderId.startsWith('rep_')) return null
+  const last = orderId.lastIndexOf('_')
+  if (last <= 4) return null
+  const id = orderId.slice(4, last)
+  return id || null
+}

@@ -23,13 +23,13 @@ export default function PaymentFailContent({ contactEmail }: PaymentFailContentP
         </svg>
       </div>
 
-      <p className="mt-6 text-[13px] font-medium text-gray-400">결제 실패</p>
+      <p className="mt-6 text-[13px] font-medium text-gray-500">결제 실패</p>
       <h2 className="mt-3 text-2xl font-bold text-[#1a1a1a] md:text-3xl">결제가 완료되지 않았어요</h2>
 
       <div className="mt-6 border border-red-100 bg-red-50/50 p-5 rounded-none text-left max-w-md mx-auto">
-        <p className="text-[13px] font-medium text-gray-400">오류 내용</p>
+        <p className="text-[13px] font-medium text-gray-500">오류 내용</p>
         <p className="mt-2 text-sm font-semibold text-red-700">{message}</p>
-        <p className="mt-1 text-xs text-gray-400 font-mono">코드: {code}</p>
+        <p className="mt-1 text-xs text-gray-500 font-mono">코드: {code}</p>
       </div>
 
       <p className="mt-6 text-sm leading-relaxed text-gray-500 max-w-md mx-auto">
@@ -45,7 +45,7 @@ export default function PaymentFailContent({ contactEmail }: PaymentFailContentP
         </Button>
       </div>
 
-      <p className="mt-6 text-[13px] text-gray-400">
+      <p className="mt-6 text-[13px] text-gray-500">
         결제 실패가 반복되면 {contactEmail}로 예약 ID와 함께 문의해 주세요.
       </p>
     </div>

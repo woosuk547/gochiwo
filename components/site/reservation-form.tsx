@@ -110,7 +110,7 @@ const agreements: AgreementItem[] = [
 
 function SelectArrow() {
   return (
-    <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-gray-400">
+    <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-gray-500">
       <svg width="10" height="6" viewBox="0 0 12 7" fill="none" aria-hidden="true">
         <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
@@ -405,15 +405,15 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         </p>
         <div className="mt-4 grid grid-cols-3 gap-2">
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
-            <p className="text-[12px] font-semibold tracking-wide text-gray-400">기본 요금</p>
+            <p className="text-[12px] font-semibold tracking-wide text-gray-500">기본 요금</p>
             <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">680,000원~/박</p>
           </div>
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
-            <p className="text-[12px] font-semibold tracking-wide text-gray-400">예약 확정</p>
+            <p className="text-[12px] font-semibold tracking-wide text-gray-500">예약 확정</p>
             <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">결제 즉시 확정</p>
           </div>
           <div className="rounded-none border border-gray-100 bg-gray-50/50 px-3 py-2">
-            <p className="text-[12px] font-semibold tracking-wide text-gray-400">신청 방식</p>
+            <p className="text-[12px] font-semibold tracking-wide text-gray-500">신청 방식</p>
             <p className="mt-0.5 text-[12px] font-semibold tracking-tight text-[#1a1a1a]">캘린더에서 선택</p>
           </div>
         </div>
@@ -422,24 +422,24 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       {/* 폼 필드 */}
       <div className="mt-8 flex flex-col gap-6">
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">예약자 성함 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">예약자 성함 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-guest-name" value={form.guestName} onChange={(e) => updateField('guestName', e.target.value)} required error={fieldErrors.guestName} />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">이메일 주소 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">이메일 주소 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-email" type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required error={fieldErrors.email} />
           {source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0] && (
-            <p className="text-[11px] text-gray-400 leading-relaxed">
+            <p className="text-[11px] text-gray-500 leading-relaxed">
               * 평일 30%, 주말·공휴일·성수기 20% 우대 요금이 자동 적용돼요. 회사 이메일(@neowiz.com 또는 @estsoft.com)로만 신청할 수 있어요.
             </p>
           )}
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">연락처 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">연락처 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-phone" value={form.phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="010-0000-0000" required error={fieldErrors.phone} />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">머무실 인원 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">머무실 인원 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormSelect value={form.guests} onChange={(e) => updateField('guests', e.target.value)} required>
             {guestOptions.map((opt) => <option key={opt} value={opt}>{opt}명</option>)}
           </FormSelect>
@@ -453,11 +453,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         {source === 'PARTNERSHIP' && (
           <>
             <label className="flex flex-col gap-2">
-              <span className="text-[11px] font-semibold tracking-wider text-gray-400">회사명 · 제휴사명 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+              <span className="text-[11px] font-semibold tracking-wider text-gray-500">회사명 · 제휴사명 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
               <FormInput id="rsv-company" value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 소속 회사명 · 부서명" required error={fieldErrors.companyName} />
             </label>
             <label className="flex flex-col gap-2">
-              <span className="text-[11px] font-semibold tracking-wider text-gray-400">제휴 우대 구분 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+              <span className="text-[11px] font-semibold tracking-wider text-gray-500">제휴 우대 구분 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
               <FormSelect value={form.benefitLabel} onChange={(e) => updateField('benefitLabel', e.target.value)} required>
                 {partnerBenefitOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
               </FormSelect>
@@ -466,7 +466,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         )}
 
         <div>
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">체크인 · 체크아웃 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">체크인 · 체크아웃 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <div className="mt-2">
             {showDatePicker ? (
               <DateRangePicker
@@ -480,14 +480,14 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
             ) : (
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-none border-b border-gray-200 bg-transparent px-0 pb-1.5 pt-1 text-left">
-                  <span className="block text-[11px] font-semibold tracking-wider text-gray-400">입실 일정</span>
-                  <span className={`mt-1.5 block text-[14px] font-medium ${form.checkIn ? 'text-[#1a1a1a]' : 'text-gray-400'}`}>
+                  <span className="block text-[11px] font-semibold tracking-wider text-gray-500">입실 일정</span>
+                  <span className={`mt-1.5 block text-[14px] font-medium ${form.checkIn ? 'text-[#1a1a1a]' : 'text-gray-500'}`}>
                     {form.checkIn ? formatDateLabel(form.checkIn) : '캘린더 날짜 선택 대기'}
                   </span>
                 </div>
                 <div className="rounded-none border-b border-gray-200 bg-transparent px-0 pb-1.5 pt-1 text-left">
-                  <span className="block text-[11px] font-semibold tracking-wider text-gray-400">퇴실 일정</span>
-                  <span className={`mt-1.5 block text-[14px] font-medium ${form.checkOut ? 'text-[#1a1a1a]' : 'text-gray-400'}`}>
+                  <span className="block text-[11px] font-semibold tracking-wider text-gray-500">퇴실 일정</span>
+                  <span className={`mt-1.5 block text-[14px] font-medium ${form.checkOut ? 'text-[#1a1a1a]' : 'text-gray-500'}`}>
                     {form.checkOut ? formatDateLabel(form.checkOut) : '캘린더 날짜 선택 대기'}
                   </span>
                 </div>
@@ -498,13 +498,13 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         </div>
 
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">도착 예정 시간</span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">도착 예정 시간</span>
           <FormSelect value={form.arrivalTime} onChange={(e) => updateField('arrivalTime', e.target.value)}>
             {arrivalOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
           </FormSelect>
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-400">결제 수단 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">결제 수단 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
           <FormSelect value={form.paymentMethod} onChange={(e) => updateField('paymentMethod', e.target.value as PaymentMethod)} required>
             {paymentMethods.map((m) => <option key={m} value={m}>{paymentMethodLabel[m]}</option>)}
           </FormSelect>
@@ -529,7 +529,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       )}
 
       <label className="mt-5 flex flex-col gap-2">
-        <span className="text-[11px] font-semibold tracking-wider text-gray-400">요청 사항 <span className="text-gray-300 font-light text-[12px] ml-0.5">(선택)</span></span>
+        <span className="text-[11px] font-semibold tracking-wider text-gray-500">요청 사항 <span className="text-gray-300 font-light text-[12px] ml-0.5">(선택)</span></span>
         <FormTextarea value={form.note} onChange={(e) => updateField('note', e.target.value)} placeholder="기념일, 인원 구성, 촬영 목적 등" />
       </label>
 
@@ -570,7 +570,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
                 <button
                   type="button"
                   onClick={() => toggleExpand(item.id)}
-                  className="text-[12px] text-gray-400 hover:text-gray-600 font-medium transition-colors cursor-pointer"
+                  className="min-h-[44px] min-w-[44px] px-3 text-[12px] text-gray-500 hover:text-gray-700 font-medium transition-colors cursor-pointer"
                 >
                   {expandedItems[item.id] ? '접기' : '자세히 보기'}
                 </button>
@@ -622,7 +622,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
                               </tbody>
                             </table>
                           </div>
-                          <div className="mt-3 space-y-0.5 text-[11px] leading-relaxed text-gray-400">
+                          <div className="mt-3 space-y-0.5 text-[11px] leading-relaxed text-gray-500">
                             {cancellationPolicy.peakSeasons.map((season) => (
                               <p key={season}>* {season}</p>
                             ))}

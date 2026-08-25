@@ -82,7 +82,7 @@ export default function PrivacyPage() {
             </article>
           ))}
         </div>
-        <p className="mt-6 text-[13px] text-gray-400">본 방침은 2026년 7월 10일부터 적용됩니다.</p>
+        <p className="mt-6 text-[13px] text-gray-500">본 방침은 2026년 7월 10일부터 적용됩니다.</p>
       </section>
     </PageShell>
   )

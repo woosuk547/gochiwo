@@ -53,7 +53,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
           aria-selected={activeTab === 'reserve'}
           onClick={() => setActiveTab('reserve')}
           className={`min-h-[44px] pb-3 pt-1 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
-            activeTab === 'reserve' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
+            activeTab === 'reserve' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-500 hover:text-gray-600'
           }`}
         >
           예약하기
@@ -71,7 +71,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
           aria-selected={activeTab === 'lookup'}
           onClick={() => setActiveTab('lookup')}
           className={`min-h-[44px] pb-3 pt-1 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
-            activeTab === 'lookup' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
+            activeTab === 'lookup' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-500 hover:text-gray-600'
           }`}
         >
           예약 조회
@@ -106,7 +106,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
                 <div className="mt-3 md:mt-4">
                   <h2 className="text-lg font-bold text-[#1a1a1a] md:text-xl">{primaryStay.name}</h2>
                   <p className="mt-2 text-[13px] leading-relaxed text-gray-500 md:text-[14px]">{primaryStay.description}</p>
-                  <p className="mt-2 text-[12px] text-gray-400 md:text-[13px]">
+                  <p className="mt-2 text-[12px] text-gray-500 md:text-[13px]">
                     제휴사 임직원 예약 및 대관 문의는{' '}
                     <Link href="/partnership" className="font-medium text-gray-600 underline">제휴 / 대관 안내</Link>
                     에서 확인해 주시기 바랍니다.
@@ -114,7 +114,7 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
                   <div className="mt-3 grid grid-cols-2 gap-2 md:mt-4">
                     {staySnapshot.map((item) => (
                       <div key={item.label} className="rounded-none bg-gray-50 px-3 py-2">
-                        <p className="text-[11px] font-medium text-gray-400">{item.label}</p>
+                        <p className="text-[11px] font-medium text-gray-500">{item.label}</p>
                         <p className="mt-0.5 text-[12px] font-semibold text-[#1a1a1a] md:text-[13px]">{item.value}</p>
                       </div>
                     ))}

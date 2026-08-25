@@ -4,10 +4,15 @@ import {
   getNaverMapCredentials,
   NAVER_STATIC_MAP_ENDPOINT,
 } from '@/lib/naver-map-config'
+import { clientIp, rateLimitExceeded, tooManyRequestsResponse } from '@/lib/rate-limit'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
+  if (rateLimitExceeded(`map:${clientIp(request)}`, 30, 60 * 1000)) {
+    return tooManyRequestsResponse()
+  }
+
   const { searchParams } = request.nextUrl
   const latitude = Number(searchParams.get('lat') ?? '37.721200')
   const longitude = Number(searchParams.get('lng') ?? '127.653400')

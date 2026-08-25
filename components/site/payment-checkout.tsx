@@ -154,43 +154,43 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
 
         <div className="mt-6 space-y-5 md:mt-8 md:space-y-6">
           <div>
-            <h2 className="text-[13px] font-medium text-gray-400">예약 정보</h2>
+            <h2 className="text-[13px] font-medium text-gray-500">예약 정보</h2>
             <div className="mt-3 grid gap-2 sm:grid-cols-2 md:mt-4 md:gap-3">
               <div className="rounded-none bg-gray-50 p-4 md:p-5">
-                <span className="text-[12px] font-medium text-gray-400 block md:text-[13px]">예약 번호</span>
+                <span className="text-[12px] font-medium text-gray-500 block md:text-[13px]">예약 번호</span>
                 <span className="mt-1.5 text-[13px] font-medium text-[#1a1a1a] block break-all md:mt-2 md:text-sm">{reservation.id}</span>
               </div>
               <div className="rounded-none bg-gray-50 p-4 md:p-5">
-                <span className="text-[12px] font-medium text-gray-400 block md:text-[13px]">예약 상태</span>
+                <span className="text-[12px] font-medium text-gray-500 block md:text-[13px]">예약 상태</span>
                 <span className="mt-1.5 text-[13px] font-semibold text-[#1a1a1a] block md:mt-2 md:text-sm">
                   {reservation.status === 'PENDING' ? '결제 대기' : reservationStatusLabel[reservation.status]}
                 </span>
               </div>
               <div className="rounded-none bg-gray-50 p-4 md:p-5">
-                <span className="text-[13px] font-medium text-gray-400 block">예약자명</span>
+                <span className="text-[13px] font-medium text-gray-500 block">예약자명</span>
                 <span className="mt-2 text-sm font-medium text-[#1a1a1a] block">{reservation.guestName}</span>
               </div>
               <div className="rounded-none bg-gray-50 p-4 md:p-5">
-                <span className="text-[13px] font-medium text-gray-400 block">연락처 및 이메일</span>
+                <span className="text-[13px] font-medium text-gray-500 block">연락처 및 이메일</span>
                 <span className="mt-2 text-sm font-medium text-[#1a1a1a] block">
                   {maskPhone(reservation.phone)} · {maskEmail(reservation.email)}
                 </span>
               </div>
               <div className="rounded-none bg-gray-50 p-4 md:p-5">
-                <span className="text-[13px] font-medium text-gray-400 block">이용 일정</span>
+                <span className="text-[13px] font-medium text-gray-500 block">이용 일정</span>
                 <span className="mt-2 text-sm font-medium text-[#1a1a1a] block">
                   {formatDate(reservation.checkIn)} ~ {formatDate(reservation.checkOut)}
                 </span>
               </div>
               <div className="rounded-none bg-gray-50 p-4 md:p-5">
-                <span className="text-[13px] font-medium text-gray-400 block">인원 수</span>
+                <span className="text-[13px] font-medium text-gray-500 block">인원 수</span>
                 <span className="mt-2 text-sm font-medium text-[#1a1a1a] block">{reservation.guests}명</span>
               </div>
             </div>
           </div>
 
           <div className="border-t border-gray-100 pt-8">
-            <h2 className="text-[13px] font-medium text-gray-400">결제 금액 및 수단</h2>
+            <h2 className="text-[13px] font-medium text-gray-500">결제 금액 및 수단</h2>
 
             {reservation.paymentMethod === 'CORPORATE_BILLING' ? (
               <div className="mt-5 rounded-none border border-gray-200 bg-gray-50 px-5 py-5 text-sm leading-8 text-gray-500">
@@ -199,7 +199,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                   선택하신 결제 수단은 <strong className="text-[#1a1a1a]">{paymentMethodLabel[reservation.paymentMethod]}</strong>이에요.
                   법인 정산은 온라인 결제 대신, 세금계산서 발행 또는 협의된 정산 프로세스를 통해 처리해 드려요.
                 </p>
-                <p className="mt-3 text-[13px] text-gray-400">
+                <p className="mt-3 text-[13px] text-gray-500">
                   문의: {contactInfo.email}
                 </p>
               </div>
@@ -211,7 +211,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                 <p className="mt-2">
                   해당 예약은 결제를 진행할 수 없어요. 새 일정으로 다시 신청해 주세요.
                 </p>
-                <p className="mt-3 text-[13px] text-gray-400">
+                <p className="mt-3 text-[13px] text-gray-500">
                   문의: {contactInfo.email}
                 </p>
                 <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -265,7 +265,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                     <span className="mt-3 text-2xl font-bold text-[#1a1a1a]">
                       {reservation.depositAmount.toLocaleString('ko-KR')}원
                     </span>
-                    <span className="mt-2 text-[13px] leading-5 text-gray-400">
+                    <span className="mt-2 text-[13px] leading-5 text-gray-500">
                       총 결제액의 50%를 먼저 결제해요. 체크인 당일 잔금을 정산해요.
                     </span>
                   </label>
@@ -296,7 +296,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                     <span className="mt-3 text-2xl font-bold text-[#1a1a1a]">
                       {reservation.finalAmount.toLocaleString('ko-KR')}원
                     </span>
-                    <span className="mt-2 text-[13px] leading-5 text-gray-400">
+                    <span className="mt-2 text-[13px] leading-5 text-gray-500">
                       전체 금액을 일괄 결제해요. 현장 추가 결제 없이 바로 입실할 수 있어요.
                     </span>
                   </label>
@@ -335,7 +335,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                     <span>최종 결제 금액</span>
                     <span className="text-xl font-bold">{amount.toLocaleString('ko-KR')}원</span>
                   </div>
-                  <div className="flex justify-between text-[13px] text-gray-400 py-1">
+                  <div className="flex justify-between text-[13px] text-gray-500 py-1">
                     <span>결제 방법</span>
                     <span>{paymentMethodLabel[reservation.paymentMethod]}</span>
                   </div>
@@ -352,13 +352,13 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                   {isProcessing ? '결제 창을 불러오는 중...' : `${amount.toLocaleString('ko-KR')}원 결제하기`}
                 </Button>
 
-                <p className="hidden text-center text-[13px] text-gray-400 mt-4 md:block">
+                <p className="hidden text-center text-[13px] text-gray-500 mt-4 md:block">
                   토스페이먼츠 보안 모듈을 통해 안전하게 처리돼요. 환불 규정은 이용 안내를 따라요.
                 </p>
               </div>
 
               {/* 모바일 sticky 결제 바 */}
-              <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white/95 px-4 py-3 backdrop-blur-md md:hidden">
+              <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white/95 px-4 py-3 pb-[calc(12px+env(safe-area-inset-bottom))] backdrop-blur-md md:hidden">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-[13px] text-gray-500">{paymentType === 'DEPOSIT' ? '예약금' : '전액'}</p>

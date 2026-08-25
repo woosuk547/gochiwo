@@ -94,7 +94,7 @@ export function MyReservationContent() {
 
         <div className="mt-6 space-y-4">
           <label className="flex flex-col space-y-1.5">
-            <span className="text-[11px] tracking-[0.1em] text-gray-400">예약 번호</span>
+            <span className="text-[11px] tracking-[0.1em] text-gray-500">예약 번호</span>
             <Input
               value={reservationId}
               onChange={(e) => setReservationId(e.target.value)}
@@ -104,7 +104,7 @@ export function MyReservationContent() {
             />
           </label>
           <label className="flex flex-col space-y-1.5">
-            <span className="text-[11px] tracking-[0.1em] text-gray-400">이메일</span>
+            <span className="text-[11px] tracking-[0.1em] text-gray-500">이메일</span>
             <Input
               type="email"
               value={email}
@@ -130,34 +130,34 @@ export function MyReservationContent() {
 
       {result && (
         <div className="mt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 rounded-none border border-gray-200 bg-white p-5 md:mt-8 md:p-7 lg:p-10">
-          <p className="text-[13px] font-medium text-gray-400">예약 상세</p>
+          <p className="text-[13px] font-medium text-gray-500">예약 상세</p>
           <h3 className="mt-2 text-xl font-bold text-[#1a1a1a] md:mt-3 md:text-2xl">{result.guestName}님의 예약</h3>
 
           <div className="mt-4 grid gap-2 sm:grid-cols-2 md:mt-6 md:gap-3">
             <div className="rounded-none bg-gray-50 p-5">
-              <span className="block text-[13px] font-medium text-gray-400">예약 상태</span>
+              <span className="block text-[13px] font-medium text-gray-500">예약 상태</span>
               <span className="mt-2 block text-sm font-semibold text-[#1a1a1a]">{statusLabel[result.status] || result.status}</span>
             </div>
             <div className="rounded-none bg-gray-50 p-5">
-              <span className="block text-[13px] font-medium text-gray-400">결제 상태</span>
+              <span className="block text-[13px] font-medium text-gray-500">결제 상태</span>
               <span className="mt-2 block text-sm font-semibold text-[#1a1a1a]">{paymentStatusLabel[result.paymentStatus] || result.paymentStatus}</span>
             </div>
             <div className="rounded-none bg-gray-50 p-5">
-              <span className="block text-[13px] font-medium text-gray-400">이용 일정</span>
+              <span className="block text-[13px] font-medium text-gray-500">이용 일정</span>
               <span className="mt-2 block text-sm font-medium text-[#1a1a1a]">
                 {formatDate(result.checkIn)} ~ {formatDate(result.checkOut)}
               </span>
             </div>
             <div className="rounded-none bg-gray-50 p-5">
-              <span className="block text-[13px] font-medium text-gray-400">인원</span>
+              <span className="block text-[13px] font-medium text-gray-500">인원</span>
               <span className="mt-2 block text-sm font-medium text-[#1a1a1a]">{result.guests}명</span>
             </div>
             <div className="rounded-none bg-gray-50 p-5">
-              <span className="block text-[13px] font-medium text-gray-400">최종 금액</span>
+              <span className="block text-[13px] font-medium text-gray-500">최종 금액</span>
               <span className="mt-2 block text-sm font-medium text-[#1a1a1a]">{result.finalAmount.toLocaleString('ko-KR')}원</span>
             </div>
             <div className="rounded-none bg-gray-50 p-5">
-              <span className="block text-[13px] font-medium text-gray-400">예약금</span>
+              <span className="block text-[13px] font-medium text-gray-500">예약금</span>
               <span className="mt-2 block text-sm font-medium text-[#1a1a1a]">{result.depositAmount.toLocaleString('ko-KR')}원</span>
             </div>
           </div>
@@ -172,7 +172,7 @@ export function MyReservationContent() {
             </Button>
           )}
 
-          <p className="mt-4 text-[13px] text-gray-400">
+          <p className="mt-4 text-[13px] text-gray-500">
             예약 취소 및 변경은 {contactInfo.email}으로 문의해 주세요.
           </p>
         </div>

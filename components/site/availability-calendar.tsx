@@ -41,7 +41,7 @@ export function AvailabilityCalendar({ blockedDates, reservedRanges }: Availabil
                 <h3 className="text-[16px] font-semibold text-[#1a1a1a]">{getMonthLabel(monthDate)}</h3>
               </div>
 
-              <div className="grid grid-cols-7 border-b border-gray-50 py-2 text-center text-[12px] font-medium text-gray-400">
+              <div className="grid grid-cols-7 border-b border-gray-50 py-2 text-center text-[12px] font-medium text-gray-500">
                 {weekLabels.map((label) => (
                   <div key={label}>{label}</div>
                 ))}

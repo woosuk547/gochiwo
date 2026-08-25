@@ -21,7 +21,7 @@ export default function PaymentFailPage() {
       <section className="mx-auto max-w-2xl px-4 py-10 md:px-6 md:py-16 lg:px-10 lg:py-20">
         <Suspense fallback={
           <div className="rounded-none border border-gray-200 bg-white p-5 text-center md:p-8">
-            <p className="text-gray-400 text-sm">불러오는 중...</p>
+            <p className="text-gray-500 text-sm">불러오는 중...</p>
           </div>
         }>
           <PaymentFailContent contactEmail={contactInfo.email} />

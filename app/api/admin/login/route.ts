@@ -4,6 +4,7 @@ import {
   setAdminSession,
   validateAdminCredentials,
 } from '@/lib/admin-auth'
+import { clientIp, rateLimitExceeded, tooManyRequestsResponse } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   if (!isAdminConfigured()) {
@@ -23,6 +24,11 @@ export async function POST(request: NextRequest) {
         { error: '관리자 ID와 비밀번호를 입력해주세요.' },
         { status: 400 }
       )
+    }
+
+    const ip = clientIp(request)
+    if (rateLimitExceeded(`admin-login:${ip}`, 5, 15 * 60 * 1000)) {
+      return tooManyRequestsResponse()
     }
 
     const matchedAdminId = validateAdminCredentials(adminId, password)

@@ -1,9 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
-import { useReducedMotion } from 'framer-motion'
 import { PageShell } from '@/components/site/page-shell'
+import { HeroVideo } from '@/components/site/hero-video'
 import {
   FadeIn,
   TextReveal,
@@ -25,8 +24,6 @@ import {
 } from '@/lib/repause-content'
 
 export function HomeContent() {
-  const prefersReducedMotion = useReducedMotion()
-
   function formatNoticeDate(dateStr: string) {
     const d = new Date(dateStr)
     const m = String(d.getUTCMonth() + 1).padStart(2, '0')
@@ -41,33 +38,12 @@ export function HomeContent() {
 
       {/* ── 1. Immersive Hero ─────────────────────────────────────────── */}
       <section className="relative -mt-16 flex min-h-[100svh] items-center justify-center overflow-hidden">
-        {prefersReducedMotion ? (
-          <Image
-            src="/repause/hero-exterior.jpg"
-            alt="리포즈 프라이빗 독채"
-            fill
-            className="pointer-events-none object-cover"
-            priority
-            sizes="100vw"
-          />
-        ) : (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-label="리포즈 프라이빗 독채 소개 영상"
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-            poster="/repause/hero-exterior.jpg"
-          >
-            <source src="/repause/hero.mp4" type="video/mp4" />
-          </video>
-        )}
+        <HeroVideo />
 
-        <div className="pointer-events-none absolute inset-0 bg-black/35" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.45)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 z-[1] bg-black/35" />
+        <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.45)_100%)]" />
 
-        <div className="relative flex flex-col items-center px-5 text-center pointer-events-auto">
+        <div className="relative z-[2] flex flex-col items-center px-5 text-center pointer-events-auto">
           <FadeIn delay={0.2} duration={0.7} distance={0}>
             <p className="mb-5 font-serif text-[clamp(1.35rem,3.5vw,1.85rem)] font-light tracking-[-0.02em] text-white">
               리포즈
@@ -146,7 +122,7 @@ export function HomeContent() {
                   >
                     <p className="text-[14px] font-medium tracking-[-0.015em] text-[#1a1a1a]">{item.title}</p>
                     <p className="mt-1 text-[13px] text-gray-500">{item.desc}</p>
-                    <p className="mt-0.5 text-[13px] font-light text-gray-400">{item.detail}</p>
+                    <p className="mt-0.5 text-[13px] font-light text-gray-500">{item.detail}</p>
                   </div>
                 ))}
               </div>
@@ -166,7 +142,7 @@ export function HomeContent() {
       <section className="border-t border-gray-100 px-5 py-20 md:py-28">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
-            <p className="text-label text-gray-400">하루의 여정</p>
+            <p className="text-label text-gray-500">하루의 여정</p>
             <h2 className="mt-3 font-serif text-section font-extralight tracking-[-0.025em] text-[#1a1a1a]">
               Repause에서의 하루
             </h2>
@@ -180,7 +156,7 @@ export function HomeContent() {
                     i === 0 ? 'md:pt-0' : ''
                   }`}
                 >
-                  <p className="text-label text-gray-400">{step.time}</p>
+                  <p className="text-label text-gray-500">{step.time}</p>
                   <p className="mt-1 text-[12px] tracking-[0.12em] text-gray-300">{step.label}</p>
                   <h3 className="mt-3 font-serif text-[1.25rem] font-light tracking-[-0.02em] text-[#1a1a1a]">
                     {step.title}
@@ -241,7 +217,7 @@ export function HomeContent() {
               <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
             </Link>
             <span className="hidden h-3 w-px bg-gray-200 md:block" />
-            <p className="text-[13px] text-gray-400">
+            <p className="text-[13px] text-gray-500">
               {primaryStay.fromPrice} / 4인 기준
             </p>
           </div>
@@ -334,8 +310,8 @@ export function HomeContent() {
         <div className="mx-auto max-w-6xl">
           <FadeIn>
             <div className="mb-6 flex items-center justify-between">
-              <p className="text-label text-gray-400">소식</p>
-              <Link href="/notices" className="text-[12px] text-gray-400 transition-colors hover:text-[#1a1a1a]">
+              <p className="text-label text-gray-500">소식</p>
+              <Link href="/notices" className="text-[12px] text-gray-500 transition-colors hover:text-[#1a1a1a]">
                 전체 →
               </Link>
             </div>

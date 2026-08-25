@@ -19,7 +19,7 @@ export function ReservationPriceSummary(props: ReservationPriceSummaryProps) {
   return (
     <div className="mt-6 rounded-none border border-gray-200 bg-gray-50 p-5">
       <div className="border-b border-gray-200 pb-4">
-        <p className="text-[12px] font-medium text-gray-400">예상 금액</p>
+        <p className="text-[12px] font-medium text-gray-500">예상 금액</p>
         <p className="mt-1 text-2xl font-bold text-[#1a1a1a]">
           {props.quote ? formatCurrency(props.quote.finalAmount) : '일정을 선택하면 계산돼요'}
         </p>

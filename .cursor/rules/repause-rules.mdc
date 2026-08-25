@@ -9,7 +9,7 @@ alwaysApply: true
 - **필수**: 리포즈 UI 작업(신규 페이지/컴포넌트/카피/애니메이션) 전 `docs/design-guide.md`(코드 실측 상세 가이드) 반드시 확인. 아래는 요약이며, 상세 규칙·근거 코드는 그 문서가 원본.
 - **컨셉**: 에디토리얼 프리미엄 독채 스테이 (스테이폴리오 정보구조 + 럭셔리 부티크 호텔 직선 화면 문법)
 - **시각**: 화이트 배경 + 잉크 블랙(#1a1a1a) 강조 섹션, Pretendard 기본 + Noto Serif KR(`font-serif`, 헤드라인/인용구 한정) 포인트, **rounded-none 기본**(원형 포인트만 rounded-full 예외), 그림자 대신 1px 보더+여백+오버레이로 위계 구성
-- **컬러**: 블랙 `#1a1a1a`(`text-brand`/`bg-brand`), 서브 `gray-400/500`, 보더 `gray-100/200`, 배경 `white`(+ 섹션 구분용 `#f8f8f8`)
+- **컬러**: 블랙 `#1a1a1a`(`text-brand`/`bg-brand`), 서브 `gray-500`(캡션·라벨, WCAG AA), 보더 `gray-100/200`, 배경 `white`(+ 섹션 구분용 `#f8f8f8`)
 - **금지**: 웜 뉴트럴/베이지, 보라 계열, `rounded-xl`+ 둥근 카드, `shadow-lg` 위계 의존, 영어 uppercase eyebrow(헤더 nav 제외), text-[10px] tracking-[0.3em+], 세리프 남용(헤드라인 외 사용 금지), AI 템플릿 느낌
 - **UX 라이팅**: 해요체 기본, 한 문장 한 메시지, 과장형("최고"/"완벽한") 금지, 행정 어휘("운영팀/접수/정산") 금지, 쉬운 말
 - **CTA**: 동사 1개("예약하기"/"공간 둘러보기"), `lib/editorial.ts`의 `editorialBtnPrimary/Outline/Dark/DarkOutline` 상수 사용(rounded-none, min-h-44px, border, hover 시 배경↔텍스트 반전)

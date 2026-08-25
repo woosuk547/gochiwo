@@ -4,13 +4,12 @@
 
 ## 배포 & 인프라
 - **프로덕션**: https://repause.co.kr (NCP)
-- **도메인**: 반값도메인 (ID: `sm5126`, PW: `!zmfldhtm5151`) | Cloudflare NS → A `101.79.25.108`
-- **NCP (네이버클라우드)**: ID `creaos@naver.com` / PW `!zmfldhtm160!` / 연락처 `010-2648-6729`
-- **서버**: `repause` (Instance `142994067`) | Public IP `101.79.25.108` | SSH `root` + `deploy/ncp/repause-key.pem`
+- **도메인**: Cloudflare NS → A `101.79.25.108`. 등록기관·NCP 로그인은 시크릿 매니저/콘솔만. 이 파일에 비밀번호를 적지 말 것.
+- **서버**: Public IP `101.79.25.108` | SSH `root` + `deploy/ncp/repause-key.pem` (pem은 gitignore)
 - **앱 경로**: `/opt/repause` (docker compose + `.env.production`) | Volume `/data` → `DATABASE_URL=file:/data/dev.db`
 - **배포**: `NCP_HOST=101.79.25.108 SSH_OPTS="-i deploy/ncp/repause-key.pem" npm run deploy:ncp`
 - **Github**: https://github.com/woosuk547/gochiwo
-- **레거시 Railway** (비활성·트라이얼 만료 임박): `repause-production.up.railway.app` | Proj `c3ce71f7-fe3d-4c63-b714-4e56a2892dc7`
+- **레거시 Railway** (비활성): 대시보드·토큰은 콘솔만. 이 파일에 적지 말 것.
 
 ## AI 작업 수칙
 - 한국어 사용

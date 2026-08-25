@@ -20,7 +20,7 @@ export default function PaymentSuccessPage() {
           fallback={
             <div className="rounded-none border border-gray-200 bg-white p-8 text-center">
               <div className="mx-auto h-12 w-12 animate-spin rounded-full border-2 border-gray-200 border-t-[#1a1a1a]" />
-              <p className="mt-4 text-[14px] text-gray-400">결제 정보 확인 중...</p>
+              <p className="mt-4 text-[14px] text-gray-500">결제 정보 확인 중...</p>
             </div>
           }
         >

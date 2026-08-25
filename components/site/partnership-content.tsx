@@ -49,7 +49,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
           aria-selected={activeTab === 'partnership'}
           onClick={() => setActiveTab('partnership')}
           className={`min-h-[44px] pb-3 pt-1 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
-            activeTab === 'partnership' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
+            activeTab === 'partnership' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-500 hover:text-gray-600'
           }`}
         >
           임직원 제휴 예약
@@ -67,7 +67,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
           aria-selected={activeTab === 'rental'}
           onClick={() => setActiveTab('rental')}
           className={`min-h-[44px] pb-3 pt-1 text-[15px] font-medium tracking-tight relative cursor-pointer pr-8 ${
-            activeTab === 'rental' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-400 hover:text-gray-600'
+            activeTab === 'rental' ? 'text-[#1a1a1a] font-semibold' : 'text-gray-500 hover:text-gray-600'
           }`}
         >
           미디어 대관 · 워케이션 문의
@@ -114,7 +114,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
 
               {/* 파트너사 */}
               <div className="rounded-none border border-gray-100 p-5 bg-white">
-                <p className="text-[11px] tracking-[0.12em] text-gray-400">제휴 협력사</p>
+                <p className="text-[11px] tracking-[0.12em] text-gray-500">제휴 협력사</p>
                 <p className="mt-2 text-[14px] text-gray-500 leading-relaxed">
                   협력사 소속 임직원 고객님에게는 평일 30%, 주말/공휴일 20% (성수기 20% 고정)의 전용 우대 요금이 자동 적용됩니다.
                   리포즈는 일상에서 잠시 벗어나 고요한 회복을 열어갈 협력사 임직원 분들을 따뜻하게 맞이합니다.
@@ -183,7 +183,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
               {rentalMode === 'media' ? (
                 <>
                   <div className="space-y-4">
-                    <p className="text-[11px] tracking-[0.12em] text-gray-400">미디어 대관 안내</p>
+                    <p className="text-[11px] tracking-[0.12em] text-gray-500">미디어 대관 안내</p>
                     <h3 className="text-xl font-light tracking-tight text-[#1a1a1a] font-serif">상업적 미디어 대관 규정</h3>
                     <div className="w-12 h-px bg-gray-300 my-4" />
                   </div>
@@ -208,7 +208,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                       <p className="text-gray-500 italic text-[12px] leading-relaxed">
                         촬영을 위한 가구 및 소품의 이동은 사전 협의된 범위 내에서만 가능하며, 촬영 종료 직후 입실 전 상태로 원상복구해야 합니다. 촬영 중 발생한 시설물, 가구, 식생(잔디 및 조경)의 파손, 오염, 스크래치에 대해서는 촬영 주체(브랜드 및 대행사)가 전액 실비로 손해배상할 책임이 있습니다.
                       </p>
-                      <p className="text-[11px] text-gray-400 mt-2">
+                      <p className="text-[11px] text-gray-500 mt-2">
                         * 원상복구 보증금은 고객센터 상담 시 안내해 드립니다.
                       </p>
                     </div>
@@ -231,7 +231,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
               ) : (
                 <>
                   <div className="space-y-4">
-                    <p className="text-[11px] tracking-[0.12em] text-gray-400">워케이션 안내</p>
+                    <p className="text-[11px] tracking-[0.12em] text-gray-500">워케이션 안내</p>
                     <h3 className="text-xl font-light tracking-tight text-[#1a1a1a] font-serif">워케이션 이용 안내</h3>
                     <div className="w-12 h-px bg-gray-300 my-4" />
                   </div>

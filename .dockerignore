@@ -24,7 +24,6 @@ _legacy-gochiwo
 _외주_크리오스
 docs
 *.md
-!CLAUDE.md
 quote_*.html
 Sinabro
 
@@ -34,5 +33,6 @@ Sinabro
 **/.turbo
 colima
 *.pem
+prisma/*.db
 prisma/*.db-journal
 prisma/*.db-wal

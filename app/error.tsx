@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-white px-5 text-center text-[#1a1a1a]">
-      <p className="text-[13px] font-medium tracking-[0.12em] text-gray-400">오류</p>
+      <p className="text-[13px] font-medium tracking-[0.12em] text-gray-500">오류</p>
       <h1 className="mt-4 text-[clamp(2rem,5vw,3.5rem)] font-extralight leading-tight tracking-[-0.03em]">
         잠시 문제가 생겼어요
       </h1>

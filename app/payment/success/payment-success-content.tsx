@@ -58,7 +58,7 @@ export function PaymentSuccessContent() {
       {status === 'LOADING' && (
         <div className="space-y-6 py-10">
           <div className="mx-auto h-12 w-12 animate-spin rounded-full border-2 border-gray-200 border-t-[#1a1a1a]" />
-          <p className="text-[13px] font-medium text-gray-400">결제 승인 처리 중</p>
+          <p className="text-[13px] font-medium text-gray-500">결제 승인 처리 중</p>
           <h2 className="text-2xl font-bold text-[#1a1a1a]">결제를 안전하게 처리하고 있어요</h2>
           <p className="mx-auto max-w-md text-sm leading-relaxed text-gray-500">
             토스페이먼츠 보안 망을 통해 승인을 진행하고 있어요. 잠시만 기다려 주세요. 페이지를 새로고침하거나 닫지 마세요.
@@ -76,7 +76,7 @@ export function PaymentSuccessContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p className="text-[13px] font-medium text-gray-400">결제 완료</p>
+          <p className="text-[13px] font-medium text-gray-500">결제 완료</p>
           <h2 className="text-2xl font-bold text-[#1a1a1a] md:text-3xl">결제가 완료되었어요</h2>
           <p className="mx-auto max-w-md text-sm leading-relaxed text-gray-500">
             리포즈 프라이빗 독채 예약이 확정되었어요. 상세 내역은 이메일로 보내드렸어요.
@@ -119,7 +119,7 @@ export function PaymentSuccessContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
-          <p className="text-[13px] font-medium text-gray-400">결제 승인 실패</p>
+          <p className="text-[13px] font-medium text-gray-500">결제 승인 실패</p>
           <h2 className="text-2xl font-bold text-[#1a1a1a] md:text-3xl">결제 승인에 실패했어요</h2>
           <p className="mx-auto max-w-md rounded-none border border-red-100 bg-red-50/50 p-4 text-sm font-medium leading-relaxed text-red-600">
             {errorMessage}

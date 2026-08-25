@@ -132,7 +132,7 @@ export function LargeCalendarPicker({
       </div>
 
       {/* 요일 헤더 */}
-      <div className="grid grid-cols-7 border-b border-gray-50 py-2.5 px-4 text-center text-[13px] font-medium text-gray-400">
+      <div className="grid grid-cols-7 border-b border-gray-50 py-2.5 px-4 text-center text-[13px] font-medium text-gray-500">
         {weekLabels.map((label) => (
           <div key={label}>{label}</div>
         ))}

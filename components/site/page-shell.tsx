@@ -14,9 +14,12 @@ interface PageShellProps {
 export function PageShell({ children, overlayHeader = false, className }: PageShellProps) {
   return (
     <div className={`min-h-screen bg-white text-brand ${className ?? ''}`}>
+      <a href="#main" className="skip-link">
+        본문으로 건너뛰기
+      </a>
       <SiteHeader overlay={overlayHeader} />
       <PageTransition>
-        {children}
+        <main id="main">{children}</main>
       </PageTransition>
       <SiteFooter />
     </div>
