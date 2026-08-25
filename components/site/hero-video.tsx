@@ -35,7 +35,7 @@ export function HeroVideo() {
   }
 
   return (
-    <div className="absolute inset-0 z-20">
+    <>
       <video
         autoPlay
         muted
@@ -52,10 +52,10 @@ export function HeroVideo() {
         onClick={togglePlayback}
         aria-pressed={paused}
         aria-label={paused ? '영상 재생' : '영상 일시정지'}
-        className={`${editorialBtnOutline} pointer-events-auto absolute bottom-[calc(96px+env(safe-area-inset-bottom))] left-5 px-4 text-[13px] lg:bottom-6`}
+        className={`${editorialBtnOutline} pointer-events-auto absolute bottom-[calc(96px+env(safe-area-inset-bottom))] left-5 z-20 px-4 text-[13px] lg:bottom-6`}
       >
         {paused ? '재생' : '일시정지'}
       </button>
-    </div>
+    </>
   )
 }

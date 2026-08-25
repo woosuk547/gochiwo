@@ -9,6 +9,7 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-08-25] 히어로 영상 래퍼 `absolute inset-0 z-20`이면 카피(z-2)가 영상 뒤에 가려짐 -> 영상은 z 없이, 일시정지 버튼만 z-20.
 - [2026-08-25] 히어로 `<video useRef>`가 클릭 시 null -> 일시정지 버튼의 parent querySelector('video')로 토글.
 - [2026-08-25] 토스 PAYMENT_STATUS_CHANGED 웹훅은 서명 헤더 없음 -> Secret으로 GET 재조회 후 updateMany. transmission-id로 중복 무시. URL은 개발자센터 등록해야 이벤트가 옴.
 - [2026-08-25] Lighthouse 접근성 95도 color-contrast·landmark 실패면 전역 이슈 -> 점수만 보지 말고 failed audits 항목을 연다. gray-400 on white는 2.6:1.
