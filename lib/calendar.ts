@@ -1,4 +1,5 @@
 import { expandDateKeys, formatDateKey, parseDateInput } from '@/lib/booking'
+import { getHoliday } from '@/lib/holidays'
 
 export const weekLabels = ['일', '월', '화', '수', '목', '금', '토']
 
@@ -58,4 +59,13 @@ export function selectDateRange(
   }
 
   return { checkIn, checkOut: clickedKey }
+}
+
+/** 달력 날짜 숫자 색. 일요일·공휴일(대체공휴일 포함)은 빨강, 토요일은 파랑. */
+export function getDayNameColor(dateKey: string): string {
+  const date = parseDateInput(dateKey)
+  if (!date) return ''
+  if (date.getUTCDay() === 0 || getHoliday(dateKey)) return 'text-red-600'
+  if (date.getUTCDay() === 6) return 'text-blue-600'
+  return ''
 }

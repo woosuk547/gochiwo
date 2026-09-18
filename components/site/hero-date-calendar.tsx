@@ -8,8 +8,9 @@ import {
   expandDateKeys,
   buildReservedDateKeys,
 } from '@/lib/booking'
-import { getMonthMatrix, selectDateRange, weekLabels } from '@/lib/calendar'
+import { getDayNameColor, getMonthMatrix, selectDateRange, weekLabels } from '@/lib/calendar'
 import { getNightlyRateInfo } from '@/lib/repause-pricing'
+import { getHoliday } from '@/lib/holidays'
 
 interface HeroDateCalendarProps {
   checkIn: string
@@ -101,8 +102,8 @@ export function HeroDateCalendar({
       </div>
 
       <div className="grid grid-cols-7 px-3 py-2 text-center text-[12px] font-medium text-gray-500">
-        {weekLabels.map((label) => (
-          <div key={label}>{label}</div>
+        {weekLabels.map((label, index) => (
+          <div key={label} className={index === 0 ? 'text-red-600' : index === 6 ? 'text-blue-600' : undefined}>{label}</div>
         ))}
       </div>
 
@@ -120,6 +121,8 @@ export function HeroDateCalendar({
           const rateInfo = getNightlyRateInfo(dateKey)
           const dayNum = cell.getUTCDate()
           const monthName = new Intl.DateTimeFormat('ko-KR', { month: 'long', timeZone: 'UTC' }).format(cell)
+          const nameColor = !isUnavailable && !isSelected ? getDayNameColor(dateKey) : ''
+          const holidayName = getHoliday(dateKey)?.name ?? ''
           const reason = isPast
             ? ' (선택 불가)'
             : isBlocked || (isReserved && !selectingCheckout)
@@ -135,7 +138,7 @@ export function HeroDateCalendar({
               type="button"
               onClick={() => !isUnavailable && handleDateClick(dateKey)}
               disabled={isUnavailable}
-              aria-label={`${monthName} ${dayNum}일${isSelected ? ' (선택됨)' : ''}${reason}${price}`}
+              aria-label={`${monthName} ${dayNum}일${holidayName ? ` (${holidayName})` : ''}${isSelected ? ' (선택됨)' : ''}${reason}${price}`}
               aria-pressed={isSelected}
               className={`flex aspect-square flex-col items-center justify-center gap-0.5 text-[13px] transition-colors select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a1a1a] focus-visible:ring-offset-1 ${
                 isUnavailable
@@ -153,7 +156,7 @@ export function HeroDateCalendar({
                           : 'cursor-pointer rounded-none text-gray-700 hover:bg-gray-50'
               }`}
             >
-              <span className="leading-none">{dayNum}</span>
+              <span className={`leading-none ${nameColor}`}>{dayNum}</span>
               {!isUnavailable && !isSelected && rateInfo && (
                 <span className={`text-[10px] font-normal leading-none ${rateInfo.isPeak ? 'font-semibold text-gray-600' : 'text-gray-400'}`}>
                   {rateInfo.shortLabel}
@@ -174,6 +177,10 @@ export function HeroDateCalendar({
           마감
         </span>
         <span>숫자는 1박 요금(만원)</span>
+        <span className="flex items-center gap-1">
+          <span aria-hidden="true" className="text-red-600">●</span> 일·공휴일
+          <span aria-hidden="true" className="ml-1.5 text-blue-600">●</span> 토
+        </span>
       </div>
 
       {rangeNotice && (

@@ -10,8 +10,9 @@ import {
   expandDateKeys,
   buildReservedDateKeys,
 } from '@/lib/booking'
-import { addDays, getMonthMatrix, selectDateRange, weekLabels } from '@/lib/calendar'
+import { addDays, getDayNameColor, getMonthMatrix, selectDateRange, weekLabels } from '@/lib/calendar'
 import { getNightlyRateInfo } from '@/lib/repause-pricing'
+import { getHoliday } from '@/lib/holidays'
 
 interface LargeCalendarPickerProps {
   checkIn: string
@@ -151,8 +152,8 @@ export function LargeCalendarPicker({
 
       {/* 요일 헤더 */}
       <div className="grid grid-cols-7 border-b border-gray-50 py-2.5 px-4 text-center text-[13px] font-medium text-gray-500">
-        {weekLabels.map((label) => (
-          <div key={label}>{label}</div>
+        {weekLabels.map((label, index) => (
+          <div key={label} className={index === 0 ? 'text-red-600' : index === 6 ? 'text-blue-600' : undefined}>{label}</div>
         ))}
       </div>
 
@@ -200,10 +201,12 @@ export function LargeCalendarPicker({
 
               const dayNum = cell.getUTCDate()
               const monthName = new Intl.DateTimeFormat('ko-KR', { month: 'long', timeZone: 'UTC' }).format(cell)
+              const nameColor = !isUnavailable && !isSelected ? getDayNameColor(dateKey) : ''
+              const holidayName = getHoliday(dateKey)?.name ?? ''
               const unavailableReason = isPast ? ' (선택 불가)' : isBlocked || (isReserved && !selectingCheckout) ? ' (예약 마감)' : ''
               const checkoutReason = isCheckoutOnly ? ' (퇴실일로 선택 가능)' : ''
               const priceReason = !isUnavailable && rateInfo ? `, 1박 ${rateInfo.shortLabel}만원` : ''
-              const ariaLabel = `${monthName} ${dayNum}일${isSelected ? ' (선택됨)' : ''}${unavailableReason}${checkoutReason}${priceReason}`
+              const ariaLabel = `${monthName} ${dayNum}일${holidayName ? ` (${holidayName})` : ''}${isSelected ? ' (선택됨)' : ''}${unavailableReason}${checkoutReason}${priceReason}`
 
               return (
                 <motion.button
@@ -234,7 +237,7 @@ export function LargeCalendarPicker({
                             : 'text-gray-700 rounded-none cursor-pointer hover:bg-gray-50'
                   }`}
                 >
-                  <span className="leading-none">{dayNum}</span>
+                  <span className={`leading-none ${nameColor}`}>{dayNum}</span>
                   {!isUnavailable && !isSelected && rateInfo && (
                     <span className={`text-[10px] font-normal leading-none ${rateInfo.isPeak ? 'font-semibold text-gray-600' : 'text-gray-400'}`}>
                       {rateInfo.shortLabel}
@@ -262,6 +265,10 @@ export function LargeCalendarPicker({
           지난 날짜
         </span>
         <span>날짜 아래 숫자는 1박 요금(만원)</span>
+        <span className="flex items-center gap-1">
+          <span aria-hidden="true" className="text-red-600">●</span> 일·공휴일
+          <span aria-hidden="true" className="ml-1.5 text-blue-600">●</span> 토
+        </span>
       </div>
 
       {/* 충돌 안내 */}

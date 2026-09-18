@@ -127,14 +127,14 @@ export function HeroDateWidget() {
               role="dialog"
               aria-modal="false"
               aria-label="날짜 선택 달력"
-              className="fixed inset-x-4 bottom-[calc(16px+env(safe-area-inset-bottom))] z-50 sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-full sm:mt-2 sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:-translate-x-1/2"
+              className="fixed inset-x-4 bottom-[calc(16px+env(safe-area-inset-bottom))] z-50 sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-[88px] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:-translate-x-1/2"
             >
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
                 transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
-                className="max-h-[75svh] overflow-y-auto sm:max-h-none sm:overflow-visible"
+                className="max-h-[calc(100svh-120px)] overflow-y-auto"
               >
               {loading || !availability ? (
                 <div className="border border-gray-200 bg-white px-4 py-10 text-center">
