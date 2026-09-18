@@ -9,6 +9,8 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-09-18] 채널 데스크 답장 자동화 -> 답장창은 contenteditable이라 `type`이 안 먹고 `fill`로 입력 후 `Meta+Enter` 전송. 전송 전 AI 추천 팝업이 가리면 Escape으로 닫기. 게스트 첫 채팅은 이름·이메일 프로필 저장 후 발송 가능.
+
 - [2026-09-18] 채널톡 boot 401 디버깅 -> HeadlessChrome UA면 채널 자사 사이트도 동일하게 boot 401. `AGENT_BROWSER_USER_AGENT`를 실제 Chrome UA로 바꿔 재확인 필수. 정상 부트는 launcher iframe+말풍선으로 확인.
 - [2026-09-18] 채널톡 화이트리스트 실험 -> 빈 값이면 전체 도메인 노출이라 진단용으로 비웠다가 반드시 복원. 형식은 `repause.co.kr`(프로토콜 제외). 삭제는 텍스트 전체삭제+저장.
 
