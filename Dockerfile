@@ -32,6 +32,13 @@ RUN printf '%s\n' \
 RUN npx prisma generate
 RUN npx prisma db push --accept-data-loss
 RUN npm run build
+# 런타임 entrypoint의 `prisma db push`용 CLI closure 스테이징.
+# prisma/@prisma만 복사하면 @prisma/config의 transitive deps(effect 등)가 빠져
+# MODULE_NOT_FOUND로 db push가 조용히 실패하므로 closure 전체를 묶는다.
+RUN mkdir -p /tmp/prisma-cli && cd /app/node_modules && cp -r \
+  prisma @prisma @standard-schema \
+  c12 chokidar citty confbox consola deepmerge-ts defu destr dotenv effect empathic exsolve fast-check giget jiti node-fetch-native nypm ohash pathe perfect-debounce pkg-types pure-rand rc9 readdirp tinyexec \
+  /tmp/prisma-cli/
 
 FROM base AS runner
 WORKDIR /app
@@ -50,9 +57,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/prisma/dev.db ./prisma/seed.db
 COPY --from=builder --chown=nextjs:nodejs /app/prisma/schema.prisma ./prisma/schema.prisma
 COPY --from=builder /app/lib/generated ./lib/generated
-# prisma CLI (런타임 스키마 동기화용)
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+# prisma CLI closure (런타임 스키마 동기화용)
+COPY --from=builder /tmp/prisma-cli ./node_modules/
 COPY --from=builder /app/package.json ./package.json
 COPY --chown=nextjs:nodejs scripts/docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
