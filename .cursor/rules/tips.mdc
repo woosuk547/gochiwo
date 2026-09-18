@@ -9,6 +9,9 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-09-18] 채널 채팅 전 프로필 요구 해제 -> 설정 > 상담 > 팔로업 알림의 이름·이메일 스위치. 끄는 순서가 중요(이름 먼저, 이메일 나중. 반대면 이름이 disabled로 잠김). 저장 후 재접속해 유지 확인.
+- [2026-09-18] 채널 인사말 에디터 -> contenteditable에 `fill`하면 기존 뒤에 덧붙음. 클릭 후 Meta+a·Backspace로 비우고 `fill`해야 교체됨.
+
 - [2026-09-18] 채널 데스크 답장 자동화 -> 답장창은 contenteditable이라 `type`이 안 먹고 `fill`로 입력 후 `Meta+Enter` 전송. 전송 전 AI 추천 팝업이 가리면 Escape으로 닫기. 게스트 첫 채팅은 이름·이메일 프로필 저장 후 발송 가능.
 
 - [2026-09-18] 채널톡 boot 401 디버깅 -> HeadlessChrome UA면 채널 자사 사이트도 동일하게 boot 401. `AGENT_BROWSER_USER_AGENT`를 실제 Chrome UA로 바꿔 재확인 필수. 정상 부트는 launcher iframe+말풍선으로 확인.
