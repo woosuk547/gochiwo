@@ -16,6 +16,11 @@ import {
 import { sendReservationConfirmation } from '@/lib/mailer'
 import { prisma } from '@/lib/prisma'
 import {
+  discountCodeError,
+  normalizeDiscountCode,
+  toQuoteDiscountCode,
+} from '@/lib/discount-codes'
+import {
   calculateReservationQuote,
   isPartnerBenefitLabel,
   partnerBenefitOptions,
@@ -34,6 +39,13 @@ class ReservationConflictError extends Error {
   constructor() {
     super('RESERVATION_CONFLICT')
     this.name = 'ReservationConflictError'
+  }
+}
+
+class DiscountCodeError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'DiscountCodeError'
   }
 }
 
@@ -72,6 +84,7 @@ export async function POST(request: NextRequest) {
     const paymentMethod = typeof body.paymentMethod === 'string' ? body.paymentMethod : ''
     const note = typeof body.note === 'string' ? body.note.trim() : ''
     const agreementsAccepted = body.agreementsAccepted === true
+    const discountCodeInput = typeof body.discountCode === 'string' ? normalizeDiscountCode(body.discountCode) : ''
 
     if (!guestName || !email || !phone || !checkIn || !checkOut) {
       return NextResponse.json({ error: '필수 정보를 모두 입력해주세요.' }, { status: 400 })
@@ -142,6 +155,33 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: `한 번에 ${MAX_NIGHTS}박까지만 예약할 수 있어요.` }, { status: 400 })
     }
 
+    // 할인코드: 일반예약 전용. 검증된 행만 요금 계산에 전달한다.
+    let discountCodeRow: {
+      id: string
+      code: string
+      label: string
+      type: string
+      value: number
+      maxUses: number | null
+      usedCount: number
+      expiresAt: Date | null
+      active: boolean
+    } | null = null
+    if (discountCodeInput) {
+      if (source !== 'DIRECT') {
+        return NextResponse.json({ error: '제휴 예약에는 할인코드를 쓸 수 없어요.' }, { status: 400 })
+      }
+      const found = await prisma.discountCode.findUnique({ where: { code: discountCodeInput } })
+      if (!found) {
+        return NextResponse.json({ error: '등록되지 않은 할인코드예요.' }, { status: 400 })
+      }
+      const foundError = discountCodeError(found)
+      if (foundError) {
+        return NextResponse.json({ error: foundError }, { status: 400 })
+      }
+      discountCodeRow = found
+    }
+
     const quote = calculateReservationQuote({
       checkIn: body.checkIn,
       checkOut: body.checkOut,
@@ -149,11 +189,16 @@ export async function POST(request: NextRequest) {
       source,
       paymentMethod: paymentMethod as PaymentMethod,
       benefitLabel: benefitLabel || undefined,
+      discountCode: discountCodeRow ? toQuoteDiscountCode(discountCodeRow) : undefined,
     })
 
     if (!quote) {
       return NextResponse.json({ error: '예상 결제 금액을 계산할 수 없습니다.' }, { status: 400 })
     }
+
+    const codeSnapshot = discountCodeRow
+      ? { discountCode: discountCodeRow.code, codeDiscountAmount: quote.codeDiscount }
+      : { discountCode: null, codeDiscountAmount: 0 }
 
     const reservation = await prisma.$transaction(async (tx) => {
       await expireStalePendingReservations(new Date(), tx)
@@ -167,6 +212,29 @@ export async function POST(request: NextRequest) {
 
       if (blockedDates.length > 0 || overlappingReservation) {
         throw new ReservationConflictError()
+      }
+
+      // 할인코드 재검증 + 사용 횟수 차감. 횟수 상한은 조건부 증가로 동시성을 막는다.
+      if (discountCodeRow) {
+        const fresh = await tx.discountCode.findUnique({ where: { code: discountCodeRow.code } })
+        const freshError = fresh ? discountCodeError(fresh) : '등록되지 않은 할인코드예요.'
+        if (!fresh || freshError) {
+          throw new DiscountCodeError(freshError ?? '등록되지 않은 할인코드예요.')
+        }
+        if (fresh.maxUses !== null) {
+          const claimed = await tx.discountCode.updateMany({
+            where: { code: fresh.code, usedCount: { lt: fresh.maxUses } },
+            data: { usedCount: { increment: 1 } },
+          })
+          if (claimed.count === 0) {
+            throw new DiscountCodeError('사용 횟수를 모두 소진한 할인코드예요.')
+          }
+        } else {
+          await tx.discountCode.update({
+            where: { code: fresh.code },
+            data: { usedCount: { increment: 1 } },
+          })
+        }
       }
 
       return tx.reservation.create({
@@ -185,6 +253,8 @@ export async function POST(request: NextRequest) {
           baseAmount: quote.roomAmount,
           extraGuestAmount: quote.extraGuestAmount,
           discountAmount: quote.discountAmount,
+          discountCode: codeSnapshot.discountCode,
+          codeDiscountAmount: codeSnapshot.codeDiscountAmount,
           finalAmount: quote.finalAmount,
           depositAmount: quote.depositAmount,
           note: note || null,
@@ -201,6 +271,8 @@ export async function POST(request: NextRequest) {
       source,
       paymentMethod: paymentMethod as PaymentMethod,
       benefitLabel: benefitLabel || null,
+      discountCode: codeSnapshot.discountCode,
+      codeDiscountAmount: codeSnapshot.codeDiscountAmount,
       finalAmount: quote.finalAmount,
       depositAmount: quote.depositAmount,
     }).catch((emailError) => {
@@ -209,6 +281,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(serializeReservation(reservation), { status: 201 })
   } catch (error) {
+    if (error instanceof DiscountCodeError) {
+      return NextResponse.json({ error: error.message }, { status: 400 })
+    }
     if (error instanceof ReservationConflictError) {
       return NextResponse.json({ error: '선택한 일정에는 이미 예약 또는 차단일이 있습니다.' }, { status: 409 })
     }

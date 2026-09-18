@@ -21,6 +21,8 @@ export interface ReservationSummary {
   baseAmount: number
   extraGuestAmount: number
   discountAmount: number
+  codeDiscountAmount: number
+  discountCode: string | null
   finalAmount: number
   depositAmount: number
   note: string | null
@@ -35,6 +37,21 @@ export interface BlockedDateSummary {
   date: string
   label: string | null
   createdAt: string
+}
+
+export interface DiscountCodeSummary {
+  id: string
+  code: string
+  label: string
+  type: 'PERCENT' | 'FIXED'
+  value: number
+  maxUses: number | null
+  usedCount: number
+  expiresAt: string | null
+  active: boolean
+  note: string | null
+  createdAt: string
+  updatedAt: string
 }
 
 export const reservationStatusLabel: Record<ReservationStatus, string> = {

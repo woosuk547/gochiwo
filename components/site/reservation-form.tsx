@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, useEffect } from 'react'
+import { useState, useTransition, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -243,6 +243,15 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
     note: '',
   })
 
+  // 할인코드 (일반예약 전용). 서버 검증이 최종 권위이며, 여기는 미리보기용이다.
+  const [codeOpen, setCodeOpen] = useState(false)
+  const [codeInput, setCodeInput] = useState('')
+  const [appliedCode, setAppliedCode] = useState<{ code: string; label: string; type: 'PERCENT' | 'FIXED'; value: number } | null>(null)
+  const [codeError, setCodeError] = useState('')
+  const [codeChecking, setCodeChecking] = useState(false)
+  const appliedCodeRef = useRef(appliedCode)
+  appliedCodeRef.current = appliedCode
+
   const minBookableDateKey =
     source === 'PARTNERSHIP' ? getMinBookableDateKey(PARTNERSHIP_MIN_ADVANCE_DAYS) : undefined
 
@@ -263,7 +272,84 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
     source,
     paymentMethod: form.paymentMethod,
     benefitLabel: form.benefitLabel,
+    discountCode: source === 'DIRECT' && appliedCode ? { type: appliedCode.type, value: appliedCode.value } : undefined,
   })
+
+  // 일정·인원 변경 시 적용된 코드를 조용히 재검증한다 (만료·소진 반영)
+  useEffect(() => {
+    const applied = appliedCodeRef.current
+    if (!applied || source !== 'DIRECT') return
+    if (!form.checkIn || !form.checkOut) return
+    let cancelled = false
+    void (async () => {
+      try {
+        const response = await fetch('/api/discount-codes/validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            code: applied.code,
+            checkIn: form.checkIn,
+            checkOut: form.checkOut,
+            guests: form.guests,
+            source,
+            paymentMethod: form.paymentMethod,
+          }),
+        })
+        const result = await response.json()
+        if (cancelled) return
+        if (!response.ok) {
+          setAppliedCode(null)
+          setCodeError(result.error || '할인코드를 다시 확인해 주세요.')
+        }
+      } catch {
+        // 네트워크 실패는 무시하고 제출 시 서버가 최종 판단한다
+      }
+    })()
+    return () => { cancelled = true }
+  }, [form.checkIn, form.checkOut, form.guests, form.paymentMethod, source])
+
+  async function handleApplyCode() {
+    const raw = codeInput.trim()
+    if (!raw) {
+      setCodeError('할인코드를 입력해 주세요.')
+      return
+    }
+    if (!form.checkIn || !form.checkOut) {
+      setCodeError('날짜를 먼저 선택해 주세요.')
+      return
+    }
+    setCodeChecking(true)
+    setCodeError('')
+    try {
+      const response = await fetch('/api/discount-codes/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: raw,
+          checkIn: form.checkIn,
+          checkOut: form.checkOut,
+          guests: form.guests,
+          source,
+          paymentMethod: form.paymentMethod,
+        }),
+      })
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(result.error || '할인코드를 확인할 수 없어요.')
+      }
+      setAppliedCode({ code: result.code, label: result.label, type: result.type, value: result.value })
+      setCodeInput('')
+    } catch (applyError) {
+      setCodeError(applyError instanceof Error ? applyError.message : '할인코드를 확인할 수 없어요.')
+    } finally {
+      setCodeChecking(false)
+    }
+  }
+
+  function handleRemoveCode() {
+    setAppliedCode(null)
+    setCodeError('')
+  }
 
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -339,11 +425,21 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         const response = await fetch('/api/reservations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...form, source, agreementsAccepted: allAgreed }),
+          body: JSON.stringify({
+            ...form,
+            source,
+            agreementsAccepted: allAgreed,
+            discountCode: source === 'DIRECT' && appliedCode ? appliedCode.code : undefined,
+          }),
         })
         const result = await response.json()
 
         if (!response.ok) {
+          if (typeof result.error === 'string' && result.error.includes('할인코드')) {
+            setAppliedCode(null)
+            setCodeError(result.error)
+            setCodeOpen(true)
+          }
           throw new Error(result.error || '일정 확인 및 접수 처리 과정에 예기치 못한 오류가 발생했습니다.')
         }
 
@@ -356,6 +452,9 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           quote ? { paymentMethod: form.paymentMethod, benefitLabel: form.benefitLabel, finalAmount: quote.finalAmount, depositAmount: quote.depositAmount } : null,
         )
         setForm({ guestName: '', companyName: '', email: '', phone: '', checkIn: '', checkOut: '', guests: '4', arrivalTime: '18:00 이전', benefitLabel: source === 'PARTNERSHIP' ? partnerBenefitOptions[0] : '', paymentMethod: 'CARD', note: '' })
+        setAppliedCode(null)
+        setCodeInput('')
+        setCodeError('')
         setSuccess(true)
       } catch (submitError) {
         setError(submitError instanceof Error ? submitError.message : '예약 접수 과정에 일시적인 정체가 발생했습니다.')
@@ -509,9 +608,80 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
             {paymentMethods.map((m) => <option key={m} value={m}>{paymentMethodLabel[m]}</option>)}
           </FormSelect>
         </label>
+
+        {source === 'DIRECT' && (
+          <div className="rounded-none border border-gray-200">
+            <button
+              type="button"
+              onClick={() => setCodeOpen((prev) => !prev)}
+              aria-expanded={codeOpen}
+              className="flex min-h-[44px] w-full cursor-pointer items-center justify-between px-4 text-[13px] font-medium text-gray-600 hover:text-[#1a1a1a]"
+            >
+              {appliedCode ? `할인코드 적용됨 · ${appliedCode.code}` : '할인코드가 있어요'}
+              <span className={`text-gray-300 transition-transform ${codeOpen ? 'rotate-180' : ''}`}>▾</span>
+            </button>
+            <AnimatePresence initial={false}>
+              {codeOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="border-t border-gray-100 px-4 py-4">
+                    {appliedCode ? (
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-[13px] text-gray-600">
+                          <span className="font-semibold text-[#1a1a1a]">{appliedCode.code}</span>
+                          <span className="text-gray-400"> · {appliedCode.label}</span>
+                        </p>
+                        <button
+                          type="button"
+                          onClick={handleRemoveCode}
+                          className="min-h-[44px] shrink-0 px-3 text-[12px] font-medium text-gray-500 underline underline-offset-2 hover:text-[#1a1a1a]"
+                        >
+                          제거
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex gap-2">
+                          <input
+                            value={codeInput}
+                            onChange={(e) => setCodeInput(e.target.value.toUpperCase())}
+                            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void handleApplyCode() } }}
+                            placeholder="코드 입력 (선택)"
+                            autoCapitalize="characters"
+                            autoComplete="off"
+                            spellCheck={false}
+                            aria-label="할인코드"
+                            className="h-11 min-w-0 flex-1 rounded-none border border-gray-200 bg-white px-4 text-[14px] tracking-wide text-[#1a1a1a] uppercase placeholder:normal-case placeholder:text-gray-300 focus:border-[#1a1a1a] focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => void handleApplyCode()}
+                            disabled={codeChecking}
+                            className="h-11 shrink-0 rounded-none border border-[#1a1a1a] bg-[#1a1a1a] px-5 text-[14px] font-medium text-white transition-colors hover:bg-transparent hover:text-[#1a1a1a] disabled:opacity-50"
+                          >
+                            {codeChecking ? '확인 중' : '적용'}
+                          </button>
+                        </div>
+                        <p className="mt-2 text-[12px] leading-relaxed text-gray-400">
+                          지인에게 전달받은 코드가 있으면 입력해 주세요. 없으면 비워 두셔도 돼요.
+                        </p>
+                      </>
+                    )}
+                    {codeError && <p role="alert" className="mt-2 text-[12px] text-red-500">{codeError}</p>}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
       </div>
 
-      <ReservationPriceSummary source={source} paymentMethod={form.paymentMethod} benefitLabel={form.benefitLabel} quote={quote} />
+      <ReservationPriceSummary source={source} paymentMethod={form.paymentMethod} benefitLabel={form.benefitLabel} quote={quote} discountCodeLabel={appliedCode?.code ?? null} />
 
       {/* 제출 전 금액 요약 strip */}
       {quote && form.paymentMethod !== 'CORPORATE_BILLING' && (

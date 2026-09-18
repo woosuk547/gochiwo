@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Noto_Serif_KR } from 'next/font/google'
-import { KakaoChannelButton } from '@/components/site/kakao-channel-button'
+import { ChannelTalkBoot } from '@/components/site/channel-talk-boot'
 import { MobileCTABar } from '@/components/site/mobile-cta-bar'
 import './globals.css'
 
@@ -49,7 +49,7 @@ export default function RootLayout({
       <body className="antialiased" suppressHydrationWarning>
         {children}
         <MobileCTABar />
-        <KakaoChannelButton />
+        <ChannelTalkBoot />
       </body>
     </html>
   )

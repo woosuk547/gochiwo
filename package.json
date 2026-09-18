@@ -12,6 +12,7 @@
     "deploy:ncp": "bash scripts/deploy-ncp.sh"
   },
   "dependencies": {
+    "@channel.io/channel-web-sdk-loader": "^2.0.2",
     "@google/genai": "^1.44.0",
     "@prisma/client": "^6.19.2",
     "class-variance-authority": "^0.7.1",

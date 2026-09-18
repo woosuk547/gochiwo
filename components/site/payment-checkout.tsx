@@ -38,6 +38,7 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
 
   // 할인 내역은 요금 정책 단일 진실 공급원(repause-pricing)으로 재계산하되,
   // DB 저장 총 할인액과 일치할 때만 항목을 분리 표시한다.
+  // 할인코드는 저장된 스냅샷으로 직접 표시한다 (코드 삭제·만료 뒤에도 유지).
   const quote = calculateReservationQuote({
     checkIn: reservation.checkIn,
     checkOut: reservation.checkOut,
@@ -46,7 +47,9 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
     paymentMethod: reservation.paymentMethod,
     benefitLabel: reservation.benefitLabel ?? undefined,
   })
-  const breakdownMatches = quote !== null && quote.discountAmount === reservation.discountAmount
+  const storedCodeDiscount = reservation.codeDiscountAmount ?? 0
+  const breakdownMatches =
+    quote !== null && quote.discountAmount + storedCodeDiscount === reservation.discountAmount
   const consecutiveDiscount = breakdownMatches ? quote.consecutiveDiscount : 0
   const partnerDiscount = breakdownMatches ? quote.partnerDiscount : 0
 
@@ -325,7 +328,13 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                       <span>-{partnerDiscount.toLocaleString('ko-KR')}원</span>
                     </div>
                   )}
-                  {reservation.discountAmount > 0 && consecutiveDiscount === 0 && partnerDiscount === 0 && (
+                  {storedCodeDiscount > 0 && (
+                    <div className="flex justify-between text-sm py-1.5 text-emerald-700">
+                      <span>할인코드{reservation.discountCode ? ` (${reservation.discountCode})` : ''}</span>
+                      <span>-{storedCodeDiscount.toLocaleString('ko-KR')}원</span>
+                    </div>
+                  )}
+                  {reservation.discountAmount > 0 && consecutiveDiscount === 0 && partnerDiscount === 0 && storedCodeDiscount === 0 && (
                     <div className="flex justify-between text-sm py-1.5 text-emerald-700">
                       <span>할인 적용</span>
                       <span>-{reservation.discountAmount.toLocaleString('ko-KR')}원</span>

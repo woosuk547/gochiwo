@@ -58,6 +58,8 @@ model Reservation {
   discountAmount   Int               @default(0)
   finalAmount      Int               @default(0)
   depositAmount    Int               @default(0)
+  discountCode     String?
+  codeDiscountAmount Int               @default(0)
   note             String?
   paymentKey       String?
   orderId          String?
@@ -75,6 +77,21 @@ model BlockedDate {
   date      DateTime @unique
   label     String?
   createdAt DateTime @default(now())
+}
+
+model DiscountCode {
+  id        String    @id @default(cuid())
+  code      String    @unique
+  label     String
+  type      String    @default("PERCENT")
+  value     Int
+  maxUses   Int?
+  usedCount Int       @default(0)
+  expiresAt DateTime?
+  active    Boolean   @default(true)
+  note      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model RentalInquiry {

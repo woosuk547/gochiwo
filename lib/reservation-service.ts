@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import {
   formatDateKey,
   type BlockedDateSummary,
+  type DiscountCodeSummary,
   type PaymentMethod,
   type PaymentStatus,
   type ReservationStatus,
@@ -87,6 +88,8 @@ export function serializeReservation(reservation: {
   baseAmount: number
   extraGuestAmount: number
   discountAmount: number
+  codeDiscountAmount: number
+  discountCode: string | null
   finalAmount: number
   depositAmount: number
   note: string | null
@@ -115,6 +118,8 @@ export function serializeReservation(reservation: {
     baseAmount: reservation.baseAmount,
     extraGuestAmount: reservation.extraGuestAmount,
     discountAmount: reservation.discountAmount,
+    codeDiscountAmount: reservation.codeDiscountAmount,
+    discountCode: reservation.discountCode,
     finalAmount: reservation.finalAmount,
     depositAmount: reservation.depositAmount,
     note: reservation.note,
@@ -136,6 +141,36 @@ export function serializeBlockedDate(blockedDate: {
     date: formatDateKey(blockedDate.date),
     label: blockedDate.label,
     createdAt: blockedDate.createdAt.toISOString(),
+  }
+}
+
+export function serializeDiscountCode(row: {
+  id: string
+  code: string
+  label: string
+  type: string
+  value: number
+  maxUses: number | null
+  usedCount: number
+  expiresAt: Date | null
+  active: boolean
+  note: string | null
+  createdAt: Date
+  updatedAt: Date
+}): DiscountCodeSummary {
+  return {
+    id: row.id,
+    code: row.code,
+    label: row.label,
+    type: row.type === 'FIXED' ? 'FIXED' : 'PERCENT',
+    value: row.value,
+    maxUses: row.maxUses,
+    usedCount: row.usedCount,
+    expiresAt: row.expiresAt ? formatDateKey(row.expiresAt) : null,
+    active: row.active,
+    note: row.note,
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
   }
 }
 

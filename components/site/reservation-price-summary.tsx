@@ -11,6 +11,7 @@ interface ReservationPriceSummaryProps {
   paymentMethod: PaymentMethod
   benefitLabel: string
   quote: ReservationQuote | null
+  discountCodeLabel?: string | null
 }
 
 export function ReservationPriceSummary(props: ReservationPriceSummaryProps) {
@@ -53,7 +54,15 @@ export function ReservationPriceSummary(props: ReservationPriceSummaryProps) {
                 <span className="text-emerald-700">- {formatCurrency(props.quote.partnerDiscount)}</span>
               </div>
             )}
-            {props.quote.discountAmount > 0 && props.quote.consecutiveDiscount === 0 && props.quote.partnerDiscount === 0 && (
+            {props.quote.codeDiscount > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-emerald-700 font-normal">
+                  할인코드{props.discountCodeLabel ? ` (${props.discountCodeLabel})` : ''}
+                </span>
+                <span className="text-emerald-700">- {formatCurrency(props.quote.codeDiscount)}</span>
+              </div>
+            )}
+            {props.quote.discountAmount > 0 && props.quote.consecutiveDiscount === 0 && props.quote.partnerDiscount === 0 && props.quote.codeDiscount === 0 && (
               <div className="flex items-center justify-between">
                 <span className="text-emerald-700 font-normal">할인 적용</span>
                 <span className="text-emerald-700">- {formatCurrency(props.quote.discountAmount)}</span>

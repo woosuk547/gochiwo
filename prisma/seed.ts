@@ -67,6 +67,19 @@ async function main() {
   })
 
   console.log('✅ Repause 시드 데이터 삽입 완료')
+
+  await prisma.discountCode.upsert({
+    where: { code: 'FRIEND10' },
+    update: {},
+    create: {
+      code: 'FRIEND10',
+      label: '지인 할인 10%',
+      type: 'PERCENT',
+      value: 10,
+    },
+  })
+
+  console.log('✅ 할인코드 시드 완료 (FRIEND10)')
 }
 
 main()

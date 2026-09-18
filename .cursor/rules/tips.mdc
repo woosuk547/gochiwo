@@ -9,6 +9,11 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-09-18] 할인코드 결제 표시 깨짐 방지 -> 예약에 `discountCode`+`codeDiscountAmount` 스냅샷 저장. 코드 삭제·만료·비활성 뒤에도 결제 페이지·메일이 저장값으로 표시. breakdownMatches는 코드 제외 재계산+저장 코드액 합산 비교.
+- [2026-09-18] 할인코드 사용횟수 동시성 -> 예약 트랜잭션 안에서 재검증 + `updateMany({ usedCount: { lt: maxUses } }, increment)` 조건부 증가, count 0이면 400. 검증 API는 조회만(차감 금지).
+- [2026-09-18] 채널톡 연동 -> `@channel.io/channel-web-sdk-loader` boot 1회 + 경로별 show/hide. 플러그인 키는 채널 데스크(General > Manage Plug-in) 복사, `.env.production`+Dockerfile ARG/ENV+deploy-ncp.sh build-arg 3곳 동기화. 화이트리스트에 https://repause.co.kr 등록 필수(미등록 시 버튼 미노출).
+- [2026-09-18] NEXT_PUBLIC_* 추가 -> 빌드 시 인라인이므로 Dockerfile ARG/ENV + `.env.production` printf + `deploy-ncp.sh` build-arg를 같이 추가. deploy 스크립트는 `grep NEXT_PUBLIC_`로 자동 로드라 env 파일에만 키를 두면 됨. 빈 값 허용 시 빌드 가드 제외(채널톡처럼 미노출 설계).
+
 - [2026-08-25] 히어로 영상 래퍼 `absolute inset-0 z-20`이면 카피(z-2)가 영상 뒤에 가려짐 -> 영상은 z 없이, 일시정지 버튼만 z-20.
 - [2026-08-25] 히어로 `<video useRef>`가 클릭 시 null -> 일시정지 버튼의 parent querySelector('video')로 토글.
 - [2026-08-25] 토스 PAYMENT_STATUS_CHANGED 웹훅은 서명 헤더 없음 -> Secret으로 GET 재조회 후 updateMany. transmission-id로 중복 무시. URL은 개발자센터 등록해야 이벤트가 옴.

@@ -179,6 +179,8 @@ interface ReservationConfirmationOptions {
   source: ReservationSource
   paymentMethod: PaymentMethod
   benefitLabel: string | null
+  discountCode?: string | null
+  codeDiscountAmount?: number
   finalAmount: number
   depositAmount: number
 }
@@ -246,6 +248,11 @@ export async function sendReservationConfirmation(options: ReservationConfirmati
           <tr style="border-bottom: 1px solid #e5e5e5;">
             <td style="padding: 12px 0; color: #666666;">제휴 구분</td>
             <td style="padding: 12px 0; text-align: right;"><strong>${safeBenefit}</strong></td>
+          </tr>` : ''}
+          ${options.discountCode ? `
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 12px 0; color: #666666;">할인코드</td>
+            <td style="padding: 12px 0; text-align: right;"><strong>${escapeHtml(options.discountCode)}</strong>${options.codeDiscountAmount ? ` (-${formatCurrency(options.codeDiscountAmount)})` : ''}</td>
           </tr>` : ''}
           <tr>
             <td style="padding: 12px 0; color: #666666;">결제 수단</td>

@@ -5,17 +5,19 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { AdminLoginCard } from '@/components/admin/login-card'
 import { BlockedDateManager } from '@/components/admin/blocked-date-manager'
 import { CalendarView } from '@/components/admin/calendar-view'
+import { DiscountCodeManager } from '@/components/admin/discount-code-manager'
 import { ReservationManager } from '@/components/admin/reservation-manager'
 import { RevenueSummary } from '@/components/admin/revenue-summary'
 import { TestMailSender } from '@/components/admin/test-mail-sender'
 import type {
   BlockedDateSummary,
+  DiscountCodeSummary,
   PaymentStatus,
   ReservationStatus,
   ReservationSummary,
 } from '@/lib/booking'
 
-type AdminTab = 'reservations' | 'blocked' | 'revenue' | 'mail'
+type AdminTab = 'reservations' | 'blocked' | 'discounts' | 'revenue' | 'mail'
 type StatFilter = 'ALL' | 'PENDING' | 'GUIDE_SENT' | 'PAID' | 'PARTNERSHIP'
 
 interface Toast {
@@ -32,6 +34,7 @@ export function AdminShell() {
   const [loginForm, setLoginForm] = useState({ adminId: '', password: '' })
   const [reservations, setReservations] = useState<ReservationSummary[]>([])
   const [blockedDates, setBlockedDates] = useState<BlockedDateSummary[]>([])
+  const [discountCodes, setDiscountCodes] = useState<DiscountCodeSummary[]>([])
   const [toasts, setToasts] = useState<Toast[]>([])
   const [calendarOpen, setCalendarOpen] = useState(true)
 
@@ -62,16 +65,18 @@ export function AdminShell() {
   }
 
   async function loadDashboard() {
-    const [rRes, bRes] = await Promise.all([
+    const [rRes, bRes, dRes] = await Promise.all([
       fetch('/api/reservations', { cache: 'no-store' }),
       fetch('/api/block-dates', { cache: 'no-store' }),
+      fetch('/api/discount-codes', { cache: 'no-store' }),
     ])
-    if (rRes.status === 401 || bRes.status === 401) {
+    if (rRes.status === 401 || bRes.status === 401 || dRes.status === 401) {
       setAuthenticated(false); setAuthChecked(true); setAuthError('세션이 만료됐어요.'); return
     }
-    const [rData, bData] = await Promise.all([rRes.json(), bRes.json()])
+    const [rData, bData, dData] = await Promise.all([rRes.json(), bRes.json(), dRes.json()])
     setReservations(rData)
     setBlockedDates(bData)
+    setDiscountCodes(dData)
   }
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
@@ -114,6 +119,64 @@ export function AdminShell() {
     }
   }
 
+  async function createDiscountCode(input: {
+    code: string
+    label: string
+    type: 'PERCENT' | 'FIXED'
+    value: string
+    maxUses: string
+    expiresAt: string
+    note: string
+  }): Promise<string | null> {
+    const response = await fetch('/api/discount-codes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        code: input.code,
+        label: input.label,
+        type: input.type,
+        value: Number(input.value),
+        maxUses: input.maxUses === '' ? null : Number(input.maxUses),
+        expiresAt: input.expiresAt === '' ? null : input.expiresAt,
+        note: input.note,
+      }),
+    })
+    const result = await response.json()
+    if (!response.ok) {
+      return result.error || '할인코드를 저장하지 못했어요.'
+    }
+    await loadDashboard()
+    showToast('할인코드가 등록됐어요.')
+    return null
+  }
+
+  async function updateDiscountCode(id: string, updates: Record<string, unknown>): Promise<string | null> {
+    const response = await fetch(`/api/discount-codes/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    })
+    const result = await response.json()
+    if (!response.ok) {
+      const message = result.error || '할인코드를 수정하지 못했어요.'
+      showToast(message, 'error')
+      return message
+    }
+    await loadDashboard()
+    showToast('할인코드가 수정됐어요.')
+    return null
+  }
+
+  async function deleteDiscountCode(id: string) {
+    const response = await fetch(`/api/discount-codes/${id}`, { method: 'DELETE' })
+    if (response.ok) {
+      await loadDashboard()
+      showToast('할인코드가 삭제됐어요.')
+    } else {
+      showToast('할인코드를 삭제하지 못했어요.', 'error')
+    }
+  }
+
   function handleBlockFromCalendar(date: string) {
     createBlockedDate(date, '')
   }
@@ -124,7 +187,7 @@ export function AdminShell() {
 
   async function logout() {
     await fetch('/api/admin/logout', { method: 'POST' })
-    setAuthenticated(false); setReservations([]); setBlockedDates([])
+    setAuthenticated(false); setReservations([]); setBlockedDates([]); setDiscountCodes([])
   }
 
   function prevMonth() {
@@ -158,6 +221,7 @@ export function AdminShell() {
   const tabs: { key: AdminTab; label: string }[] = [
     { key: 'reservations', label: '예약 관리' },
     { key: 'blocked', label: '차단일' },
+    { key: 'discounts', label: '할인코드' },
     { key: 'revenue', label: '매출' },
     { key: 'mail', label: '메일' },
   ]
@@ -314,6 +378,14 @@ export function AdminShell() {
                   )}
                   {activeTab === 'blocked' && (
                     <BlockedDateManager blockedDates={blockedDates} onCreate={createBlockedDate} onDelete={deleteBlockedDate} />
+                  )}
+                  {activeTab === 'discounts' && (
+                    <DiscountCodeManager
+                      codes={discountCodes}
+                      onCreate={createDiscountCode}
+                      onUpdate={updateDiscountCode}
+                      onDelete={deleteDiscountCode}
+                    />
                   )}
                   {activeTab === 'revenue' && (
                     <RevenueSummary reservations={reservations} />

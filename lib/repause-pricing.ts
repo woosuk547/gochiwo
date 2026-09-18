@@ -15,6 +15,8 @@ export interface ReservationQuoteInput {
   source: ReservationSource
   paymentMethod: PaymentMethod
   benefitLabel?: string
+  /** 서버에서 검증된 할인코드만 전달 (미검증 값 금지) */
+  discountCode?: { type: 'PERCENT' | 'FIXED'; value: number }
 }
 
 export interface ReservationQuote {
@@ -24,6 +26,7 @@ export interface ReservationQuote {
   discountAmount: number
   partnerDiscount: number
   consecutiveDiscount: number
+  codeDiscount: number
   finalAmount: number
   depositAmount: number
   nightsLabel: string
@@ -117,7 +120,17 @@ export function calculateReservationQuote(input: ReservationQuoteInput): Reserva
   
   // 연박 할인: 2박 이상일 때 박당 20,000원 특별 할인 ("연박 할인 특별가")
   const consecutiveDiscount = nights >= 2 ? nights * 20000 : 0
-  const discountAmount = partnerDiscount + consecutiveDiscount
+
+  // 할인코드: 다른 할인 적용 후 남은 금액 기준. 정률은 반올림, 정액은 상한 클램프.
+  let codeDiscount = 0
+  if (input.source === 'DIRECT' && input.discountCode && input.discountCode.value > 0) {
+    const codeBase = Math.max(0, subtotal - partnerDiscount - consecutiveDiscount)
+    codeDiscount =
+      input.discountCode.type === 'FIXED'
+        ? Math.min(input.discountCode.value, codeBase)
+        : Math.round((codeBase * Math.min(input.discountCode.value, 90)) / 100)
+  }
+  const discountAmount = partnerDiscount + consecutiveDiscount + codeDiscount
   
   const finalAmount = Math.max(0, subtotal - discountAmount)
   const depositAmount =
@@ -130,6 +143,7 @@ export function calculateReservationQuote(input: ReservationQuoteInput): Reserva
     discountAmount,
     partnerDiscount,
     consecutiveDiscount,
+    codeDiscount,
     finalAmount,
     depositAmount,
     nightsLabel: `${nights}박 ${nights + 1}일`,

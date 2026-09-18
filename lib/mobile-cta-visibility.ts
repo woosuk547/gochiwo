@@ -1,4 +1,4 @@
-/** Mobile sticky CTA visibility — shared between MobileCTABar and KakaoChannelButton */
+/** Mobile sticky CTA visibility — dispatched by MobileCTABar */
 export const MOBILE_CTA_EVENT = 'repause:mobile-cta-visible'
 
 export function dispatchMobileCtaVisible(visible: boolean) {
