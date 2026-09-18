@@ -9,6 +9,7 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-09-18] fetch useEffect 로딩 데드락 -> `loading`을 deps에 넣고 안에서 setLoading하면 리렌더 cleanup이 진행 중 fetch를 취소해 영원히 로딩. deps는 `[open, availability]`만.
 - [2026-09-18] dev.db 수동 INSERT -> `datetime('now')`('YYYY-MM-DD HH:MM:SS')는 Prisma P2023(Conversion failed). checkIn/createdAt 등은 ISO(`YYYY-MM-DDTHH:MM:SS.000Z`)로 넣어야 함.
 - [2026-09-18] 백그라운드 Shell 파이프 금지 -> `npm run dev 2>&1 | tail`은 tail이 EOF까지 버퍼링해서 Ready를 못 봄. 파이프 없이 block 0 + AwaitShell 패턴 매칭.
 - [2026-09-18] 채널 채팅 전 프로필 요구 해제 -> 설정 > 상담 > 팔로업 알림의 이름·이메일 스위치. 끄는 순서가 중요(이름 먼저, 이메일 나중. 반대면 이름이 disabled로 잠김). 저장 후 재접속해 유지 확인.
