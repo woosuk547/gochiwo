@@ -9,6 +9,9 @@ alwaysApply: true
 신규 팁은 이 파일 상단에 추가.
 훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
 
+- [2026-09-18] 채널톡 boot 401 디버깅 -> HeadlessChrome UA면 채널 자사 사이트도 동일하게 boot 401. `AGENT_BROWSER_USER_AGENT`를 실제 Chrome UA로 바꿔 재확인 필수. 정상 부트는 launcher iframe+말풍선으로 확인.
+- [2026-09-18] 채널톡 화이트리스트 실험 -> 빈 값이면 전체 도메인 노출이라 진단용으로 비웠다가 반드시 복원. 형식은 `repause.co.kr`(프로토콜 제외). 삭제는 텍스트 전체삭제+저장.
+
 - [2026-09-18] entrypoint `prisma db push` 조용히 실패 -> Runner에 `prisma`+`@prisma`만 복사하면 `@prisma/config`의 transitive deps(`effect` 등) 누락으로 MODULE_NOT_FOUND. 빌더에서 CLI closure 34개 패키지를 `/tmp/prisma-cli`에 스테이징 후 통째로 복사. closure 검증은 임시 디렉토리에 복사 후 `db push` 단독 실행으로 확인.
 
 - [2026-09-18] 할인코드 결제 표시 깨짐 방지 -> 예약에 `discountCode`+`codeDiscountAmount` 스냅샷 저장. 코드 삭제·만료·비활성 뒤에도 결제 페이지·메일이 저장값으로 표시. breakdownMatches는 코드 제외 재계산+저장 코드액 합산 비교.
