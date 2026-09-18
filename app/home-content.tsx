@@ -39,11 +39,13 @@ export function HomeContent() {
     <PageShell overlayHeader>
 
       {/* ── 1. Immersive Hero ─────────────────────────────────────────── */}
-      <section className="relative -mt-16 flex min-h-[100svh] items-center justify-center overflow-hidden">
-        <HeroVideo />
+      <section className="relative -mt-16 flex min-h-[100svh] items-center justify-center">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <HeroVideo />
 
-        <div className="pointer-events-none absolute inset-0 z-[1] bg-black/35" />
-        <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.45)_100%)]" />
+          <div className="absolute inset-0 z-[1] bg-black/35" />
+          <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.45)_100%)]" />
+        </div>
 
         <div className="relative z-[2] flex flex-col items-center px-5 text-center pointer-events-auto">
           <FadeIn delay={0.2} duration={0.7} distance={0}>
