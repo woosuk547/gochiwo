@@ -6,13 +6,26 @@ import { LargeCalendarPicker } from '@/components/site/large-calendar-picker'
 import { ReservationForm } from '@/components/site/reservation-form'
 import { partnershipBenefits, contactInfo } from '@/lib/repause-content'
 import { getMinBookableDateKey, PARTNERSHIP_MIN_ADVANCE_DAYS } from '@/lib/booking'
+import * as ChannelService from '@channel.io/channel-web-sdk-loader'
 
 interface PartnershipContentProps {
   blockedDates: string[]
   reservedRanges: Array<{ checkIn: string; checkOut: string }>
 }
 
-const kakaoChannelUrl = 'https://pf.kakao.com/_repause'
+/** 채널톡 상담창. 미기동(키 미설정 등) 시 전화로 대체한다. */
+function openConsultChat(fallbackTel: string) {
+  try {
+    const opener = (ChannelService as unknown as { openChat?: () => void }).openChat
+    if (typeof opener === 'function') {
+      opener()
+      return
+    }
+  } catch {
+    // 아래 전화 대체로 진행
+  }
+  window.location.href = fallbackTel
+}
 
 export function PartnershipContent({ blockedDates, reservedRanges }: PartnershipContentProps) {
   const [activeTab, setActiveTab] = useState<'partnership' | 'rental'>('partnership')
@@ -101,6 +114,10 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                   </div>
                 ))}
               </div>
+
+              <p className="rounded-none border border-gray-200 bg-gray-50 px-4 py-3 text-[13px] leading-relaxed text-gray-600">
+                이용일 기준 21일 전부터 예약할 수 있어요. 그보다 이른 날짜는 선택이 안 돼요.
+              </p>
 
               {/* 캘린더 */}
               <LargeCalendarPicker
@@ -216,7 +233,7 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                     <div className="space-y-2 border-t border-gray-100 pt-4">
                       <h4 className="font-bold text-[#1a1a1a] text-[14px]">4. 브랜드 이미지 및 콘텐츠 사전 심의</h4>
                       <p className="text-gray-500 pl-1">
-                        리포즈의 정갈한 명예를 수호하고 선정적이거나 유흥 목적의 콘텐츠에 노출되는 것을 사전에 방지하고자, 대관 확정 전 촬영 콘셉트 및 스토리보드를 정중히 심의·요청드리고 있습니다.
+                        브랜드 이미지를 지키기 위해 대관 확정 전에 촬영 콘셉트와 스토리보드를 미리 확인해요. 선정적이거나 유흥 목적의 콘텐츠는 대관이 어려워요.
                       </p>
                     </div>
 
@@ -274,14 +291,13 @@ export function PartnershipContent({ blockedDates, reservedRanges }: Partnership
                   >
                     전화 문의 · {contactInfo.phone}
                   </a>
-                  <a
-                    href={kakaoChannelUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-[44px] items-center justify-center rounded-none border border-gray-200 px-6 text-[14px] font-semibold text-[#1a1a1a] transition-colors hover:border-gray-300"
+                  <button
+                    type="button"
+                    onClick={() => openConsultChat(`tel:${contactInfo.phone.replace(/-/g, '')}`)}
+                    className="inline-flex min-h-[44px] cursor-pointer items-center justify-center rounded-none border border-gray-200 px-6 text-[14px] font-semibold text-[#1a1a1a] transition-colors hover:border-gray-300"
                   >
-                    카카오톡 문의하기
-                  </a>
+                    채팅으로 문의하기
+                  </button>
                 </div>
               </div>
             </div>

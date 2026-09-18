@@ -10,7 +10,18 @@ export function PaymentSuccessContent() {
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'LOADING' | 'SUCCESS' | 'ERROR'>('LOADING')
   const [errorMessage, setErrorMessage] = useState('')
+  const [copied, setCopied] = useState(false)
   const [, startTransition] = useTransition()
+
+  async function handleCopyReservationId() {
+    if (!reservationId) return
+    try {
+      await navigator.clipboard.writeText(reservationId)
+      setCopied(true)
+    } catch {
+      setCopied(false)
+    }
+  }
 
   const paymentKey = searchParams.get('paymentKey')
   const orderId = searchParams.get('orderId')
@@ -95,10 +106,29 @@ export function PaymentSuccessContent() {
                 {amount ? Number(amount).toLocaleString('ko-KR') : '0'}원
               </span>
             </div>
-            <div className="flex justify-between pb-3 text-gray-500">
+            <div className="flex items-center justify-between gap-3 pb-3 text-gray-500">
               <span>예약 ID</span>
-              <span className="font-mono text-xs text-[#1a1a1a]">{reservationId}</span>
+              <span className="flex items-center gap-2">
+                <span className="font-mono text-xs text-[#1a1a1a]">{reservationId}</span>
+                <button
+                  type="button"
+                  onClick={() => void handleCopyReservationId()}
+                  className="min-h-[32px] px-2 text-[12px] font-medium text-gray-500 underline underline-offset-2 hover:text-[#1a1a1a]"
+                >
+                  {copied ? '복사됨' : '복사'}
+                </button>
+              </span>
             </div>
+          </div>
+
+          <div className="mx-auto max-w-sm rounded-none border border-gray-200 bg-gray-50 p-4 text-left text-[13px] leading-relaxed text-gray-600">
+            <p className="font-semibold text-[#1a1a1a]">체크인 안내</p>
+            <p className="mt-1">입실 16:00 · 퇴실 11:00. 당일 오전에 오시는 길과 출입 안내를 보내드려요.</p>
+            <p className="mt-2">
+              <Link href="/guide" className="font-medium underline underline-offset-2 hover:text-[#1a1a1a]">
+                이용 안내·오시는 길 보기
+              </Link>
+            </p>
           </div>
 
           <div className="mx-auto max-w-sm space-y-3 pt-8">

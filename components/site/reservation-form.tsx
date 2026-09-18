@@ -134,7 +134,7 @@ function FormInput({ value, onChange, type = "text", placeholder, required = fal
           onBlur={() => setFocused(false)}
           aria-invalid={error ? true : undefined}
           aria-describedby={error && id ? `${id}-error` : undefined}
-          className={`h-11 w-full rounded-none border-t-0 border-x-0 border-b bg-transparent px-0 pb-1.5 text-[14px] text-[#1a1a1a] placeholder:text-gray-300 focus:border-[#1a1a1a] focus:outline-none transition-all duration-300 ${error ? 'border-red-400' : 'border-gray-200'}`}
+          className={`h-11 w-full rounded-none border-t-0 border-x-0 border-b bg-transparent px-0 pb-1.5 text-[14px] text-[#1a1a1a] placeholder:text-gray-400 focus:border-[#1a1a1a] focus:outline-none transition-all duration-300 ${error ? 'border-red-400' : 'border-gray-200'}`}
         />
         <motion.div
           className="absolute bottom-0 left-0 h-[1.5px] bg-[#1a1a1a]"
@@ -187,7 +187,7 @@ function FormTextarea({ value, onChange, placeholder }: { value: string; onChang
         placeholder={placeholder}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className="min-h-24 w-full rounded-none border-t-0 border-x-0 border-b border-gray-200 bg-transparent px-0 py-2.5 text-[14px] text-[#1a1a1a] placeholder:text-gray-300 focus:border-[#1a1a1a] focus:outline-none transition-all duration-300 resize-none"
+        className="min-h-24 w-full rounded-none border-t-0 border-x-0 border-b border-gray-200 bg-transparent px-0 py-2.5 text-[14px] text-[#1a1a1a] placeholder:text-gray-400 focus:border-[#1a1a1a] focus:outline-none transition-all duration-300 resize-none"
       />
       <motion.div
         className="absolute bottom-0 left-0 h-[1.5px] bg-[#1a1a1a]"
@@ -469,7 +469,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#1a1a1a]">
             <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
           </div>
-          <h2 className="mt-4 text-xl font-bold text-[#1a1a1a]">여정 신청 완료</h2>
+          <h2 className="mt-4 text-xl font-bold text-[#1a1a1a]">신청 완료</h2>
           <p className="mt-2 text-[14px] text-gray-500">
             신청을 확인한 뒤 메일로 안내드릴게요. 예약 번호는 메일에서 확인할 수 있어요.
           </p>
@@ -479,11 +479,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
             <p>결제 방식: {paymentMethodLabel[submittedSummary.paymentMethod]}</p>
             {source === 'PARTNERSHIP' && <p>제휴 구분: {submittedSummary.benefitLabel}</p>}
             <p>예상 금액: {submittedSummary.finalAmount.toLocaleString('ko-KR')}원</p>
-            <p>{submittedSummary.paymentMethod === 'CORPORATE_BILLING' ? '법인 정산 계약건은 전담 크루가 개별적으로 정교하게 소통해 드립니다.' : `예약금: ${submittedSummary.depositAmount.toLocaleString('ko-KR')}원`}</p>
+            <p>{submittedSummary.paymentMethod === 'CORPORATE_BILLING' ? '법인 정산은 확인 후 메일로 안내드려요.' : `예약금: ${submittedSummary.depositAmount.toLocaleString('ko-KR')}원`}</p>
           </div>
         )}
         <div className="mt-6 rounded-none bg-gray-50 p-4 text-[13px] text-gray-500 space-y-1">
-          <p>만약 승인 가이드 메일이 확인되지 않을 경우, 개인 우편함의 유입 정화 필터를 조심히 살펴보시기 바랍니다.</p>
+          <p>메일이 안 보이면 스팸함을 확인해 주세요.</p>
           <p>문의: {contactInfo.email}</p>
         </div>
       </div>
@@ -495,11 +495,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       {/* 헤더 */}
       <div className="border-b border-gray-100 pb-5">
         <h2 className="text-[17px] font-semibold tracking-[-0.03em] text-[#1a1a1a]">
-          {source === 'PARTNERSHIP' ? '제휴 파트너십 여정 신청' : '온전한 안식을 위한 여정 신청'}
+          {source === 'PARTNERSHIP' ? '제휴 예약 신청' : '예약 신청'}
         </h2>
         <p className="mt-1.5 text-[13px] leading-relaxed tracking-tight text-gray-500">
           {source === 'PARTNERSHIP'
-            ? '제휴사 임직원 우대 혜택, 촬영 대관, 기업 일정을 정교하게 맞춰 드립니다.'
+            ? '임직원 우대, 촬영 대관, 기업 일정 상담을 진행해요.'
             : '날짜와 인원을 고르면 예상 요금을 바로 보여 드려요. 결제가 끝나면 예약이 확정돼요.'}
         </p>
         <div className="mt-4 grid grid-cols-3 gap-2">
@@ -521,11 +521,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       {/* 폼 필드 */}
       <div className="mt-8 flex flex-col gap-6">
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-500">예약자 성함 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">예약자 성함 <span className="text-gray-400 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-guest-name" value={form.guestName} onChange={(e) => updateField('guestName', e.target.value)} required error={fieldErrors.guestName} />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-500">이메일 주소 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">이메일 주소 <span className="text-gray-400 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-email" type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required error={fieldErrors.email} />
           {source === 'PARTNERSHIP' && form.benefitLabel === partnerBenefitOptions[0] && (
             <p className="text-[11px] text-gray-500 leading-relaxed">
@@ -534,14 +534,17 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           )}
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-500">연락처 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">연락처 <span className="text-gray-400 font-light text-[12px] ml-0.5">*</span></span>
           <FormInput id="rsv-phone" value={form.phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="010-0000-0000" required error={fieldErrors.phone} />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-500">머무실 인원 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">머무실 인원 <span className="text-gray-400 font-light text-[12px] ml-0.5">*</span></span>
           <FormSelect value={form.guests} onChange={(e) => updateField('guests', e.target.value)} required>
             {guestOptions.map((opt) => <option key={opt} value={opt}>{opt}명</option>)}
           </FormSelect>
+          <p className="text-[12px] leading-relaxed text-gray-500">
+            3인은 4인으로, 5인은 6인으로 선택해 주세요.
+          </p>
           {form.guests === '6' && (
             <p className="text-[12px] text-gray-500 leading-relaxed font-medium">
               * 6인 예약 시 2명 분의 토퍼와 프리미엄 침구가 추가로 준비돼요. 기준 4인 초과분에는 1인당 40,000원/박이 적용돼요.
@@ -552,11 +555,11 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         {source === 'PARTNERSHIP' && (
           <>
             <label className="flex flex-col gap-2">
-              <span className="text-[11px] font-semibold tracking-wider text-gray-500">회사명 · 제휴사명 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+              <span className="text-[11px] font-semibold tracking-wider text-gray-500">회사명 · 제휴사명 <span className="text-gray-400 font-light text-[12px] ml-0.5">*</span></span>
               <FormInput id="rsv-company" value={form.companyName} onChange={(e) => updateField('companyName', e.target.value)} placeholder="예: 소속 회사명 · 부서명" required error={fieldErrors.companyName} />
             </label>
             <label className="flex flex-col gap-2">
-              <span className="text-[11px] font-semibold tracking-wider text-gray-500">제휴 우대 구분 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+              <span className="text-[11px] font-semibold tracking-wider text-gray-500">제휴 우대 구분 <span className="text-gray-400 font-light text-[12px] ml-0.5">*</span></span>
               <FormSelect value={form.benefitLabel} onChange={(e) => updateField('benefitLabel', e.target.value)} required>
                 {partnerBenefitOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
               </FormSelect>
@@ -565,7 +568,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
         )}
 
         <div>
-          <span className="text-[11px] font-semibold tracking-wider text-gray-500">체크인 · 체크아웃 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">체크인 · 체크아웃 <span className="text-gray-400 font-light text-[12px] ml-0.5">*</span></span>
           <div className="mt-2">
             {showDatePicker ? (
               <DateRangePicker
@@ -603,7 +606,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
           </FormSelect>
         </label>
         <label className="flex flex-col gap-2">
-          <span className="text-[11px] font-semibold tracking-wider text-gray-500">결제 수단 <span className="text-gray-300 font-light text-[12px] ml-0.5">*</span></span>
+          <span className="text-[11px] font-semibold tracking-wider text-gray-500">결제 수단 <span className="text-gray-400 font-light text-[12px] ml-0.5">*</span></span>
           <FormSelect value={form.paymentMethod} onChange={(e) => updateField('paymentMethod', e.target.value as PaymentMethod)} required>
             {paymentMethods.map((m) => <option key={m} value={m}>{paymentMethodLabel[m]}</option>)}
           </FormSelect>
@@ -656,7 +659,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
                             autoComplete="off"
                             spellCheck={false}
                             aria-label="할인코드"
-                            className="h-11 min-w-0 flex-1 rounded-none border border-gray-200 bg-white px-4 text-[14px] tracking-wide text-[#1a1a1a] uppercase placeholder:normal-case placeholder:text-gray-300 focus:border-[#1a1a1a] focus:outline-none"
+                            className="h-11 min-w-0 flex-1 rounded-none border border-gray-200 bg-white px-4 text-[14px] tracking-wide text-[#1a1a1a] uppercase placeholder:normal-case placeholder:text-gray-400 focus:border-[#1a1a1a] focus:outline-none"
                           />
                           <button
                             type="button"
@@ -699,7 +702,7 @@ export function ReservationForm({ source, blockedDates = [], reservedRanges = []
       )}
 
       <label className="mt-5 flex flex-col gap-2">
-        <span className="text-[11px] font-semibold tracking-wider text-gray-500">요청 사항 <span className="text-gray-300 font-light text-[12px] ml-0.5">(선택)</span></span>
+        <span className="text-[11px] font-semibold tracking-wider text-gray-500">요청 사항 <span className="text-gray-400 font-light text-[12px] ml-0.5">(선택)</span></span>
         <FormTextarea value={form.note} onChange={(e) => updateField('note', e.target.value)} placeholder="기념일, 인원 구성, 촬영 목적 등" />
       </label>
 

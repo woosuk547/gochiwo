@@ -11,6 +11,7 @@ import {
   buildReservedDateKeys,
 } from '@/lib/booking'
 import { addDays, getMonthMatrix, selectDateRange, weekLabels } from '@/lib/calendar'
+import { getNightlyRateInfo } from '@/lib/repause-pricing'
 
 interface LargeCalendarPickerProps {
   checkIn: string
@@ -43,6 +44,12 @@ export function LargeCalendarPicker({
   const isPastLimit =
     currentYear < today.getFullYear() ||
     (currentYear === today.getFullYear() && currentMonth <= today.getMonth())
+
+  const isCurrentMonth = currentYear === today.getFullYear() && currentMonth === today.getMonth()
+  const resetToCurrentMonth = () => {
+    setCurrentYear(today.getFullYear())
+    setCurrentMonth(today.getMonth())
+  }
 
   const handlePrevMonth = () => {
     if (isPastLimit) return
@@ -125,7 +132,18 @@ export function LargeCalendarPicker({
         <button type="button" onClick={handlePrevMonth} aria-label="이전 달" disabled={isPastLimit} className="flex h-10 w-10 items-center justify-center rounded-none text-gray-500 hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
           <ChevronLeft className="h-5 w-5" />
         </button>
-        <h3 className="text-[16px] font-semibold text-[#1a1a1a]">{getMonthLabel()}</h3>
+        <div className="flex flex-col items-center gap-0.5">
+          <h3 className="text-[16px] font-semibold text-[#1a1a1a]">{getMonthLabel()}</h3>
+          {!isCurrentMonth && (
+            <button
+              type="button"
+              onClick={resetToCurrentMonth}
+              className="min-h-[24px] text-[12px] font-medium text-gray-500 underline underline-offset-2 hover:text-[#1a1a1a]"
+            >
+              이번 달로 돌아가기
+            </button>
+          )}
+        </div>
         <button type="button" onClick={handleNextMonth} aria-label="다음 달" className="flex h-10 w-10 items-center justify-center rounded-none text-gray-500 hover:bg-gray-100 transition-colors">
           <ChevronRight className="h-5 w-5" />
         </button>
@@ -171,17 +189,21 @@ export function LargeCalendarPicker({
               const isReserved = reservedKeys.has(dateKey)
               // 교대일: 기존 예약 체크인일은 내 체크아웃으로 선택 가능
               const isUnavailable = isPast || isBlocked || (isReserved && !selectingCheckout)
+              const isCheckoutOnly = selectingCheckout && isReserved && !isBlocked && !isPast
 
               const isSelected = isDateSelected(dateKey)
               const isStart = dateKey === checkIn
               const isEnd = dateKey === checkOut
               const isInRange = isDateInRange(dateKey)
               const isFocused = focusedDateKey === dateKey
+              const rateInfo = getNightlyRateInfo(dateKey)
 
               const dayNum = cell.getUTCDate()
               const monthName = new Intl.DateTimeFormat('ko-KR', { month: 'long', timeZone: 'UTC' }).format(cell)
-              const unavailableReason = isPast ? ' (선택 불가)' : isBlocked || isReserved ? ' (예약 마감)' : ''
-              const ariaLabel = `${monthName} ${dayNum}일${isSelected ? ' (선택됨)' : ''}${unavailableReason}`
+              const unavailableReason = isPast ? ' (선택 불가)' : isBlocked || (isReserved && !selectingCheckout) ? ' (예약 마감)' : ''
+              const checkoutReason = isCheckoutOnly ? ' (퇴실일로 선택 가능)' : ''
+              const priceReason = !isUnavailable && rateInfo ? `, 1박 ${rateInfo.shortLabel}만원` : ''
+              const ariaLabel = `${monthName} ${dayNum}일${isSelected ? ' (선택됨)' : ''}${unavailableReason}${checkoutReason}${priceReason}`
 
               return (
                 <motion.button
@@ -196,21 +218,28 @@ export function LargeCalendarPicker({
                   tabIndex={isFocused || (!focusedDateKey && dateKey === todayKey) ? 0 : -1}
                   whileTap={{ scale: isUnavailable ? 1 : 0.95 }}
                   whileHover={{ scale: isUnavailable ? 1 : 1.05 }}
-                  className={`flex aspect-square items-center justify-center text-[13px] relative transition-all select-none md:text-[14px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a1a1a] focus-visible:ring-offset-1 ${
+                  className={`flex aspect-square flex-col items-center justify-center gap-0.5 text-[13px] relative transition-all select-none md:text-[14px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a1a1a] focus-visible:ring-offset-1 ${
                     isUnavailable
                       ? isPast
                         ? 'text-gray-200 cursor-not-allowed rounded-none'
                         : 'text-gray-300 cursor-not-allowed line-through bg-gray-50/80 rounded-none'
                       : isSelected
                         ? 'bg-[#1a1a1a] text-white font-bold rounded-full cursor-pointer'
-                        : isInRange
+                        : isCheckoutOnly
+                          ? 'text-[#1a1a1a] font-medium ring-1 ring-inset ring-gray-400 rounded-none cursor-pointer hover:bg-gray-50'
+                          : isInRange
                           ? 'bg-gray-100 text-[#1a1a1a] font-medium rounded-none cursor-pointer'
                           : dateKey === todayKey
                             ? 'text-[#1a1a1a] font-bold ring-1 ring-inset ring-gray-300 rounded-none cursor-pointer hover:bg-gray-50'
                             : 'text-gray-700 rounded-none cursor-pointer hover:bg-gray-50'
                   }`}
                 >
-                  <span>{dayNum}</span>
+                  <span className="leading-none">{dayNum}</span>
+                  {!isUnavailable && !isSelected && rateInfo && (
+                    <span className={`text-[10px] font-normal leading-none ${rateInfo.isPeak ? 'font-semibold text-gray-600' : 'text-gray-400'}`}>
+                      {rateInfo.shortLabel}
+                    </span>
+                  )}
                 </motion.button>
               )
             })}
@@ -232,6 +261,7 @@ export function LargeCalendarPicker({
           <span aria-hidden="true" className="flex h-4 w-4 items-center justify-center text-[11px] text-gray-200">1</span>
           지난 날짜
         </span>
+        <span>날짜 아래 숫자는 1박 요금(만원)</span>
       </div>
 
       {/* 충돌 안내 */}

@@ -18,7 +18,7 @@ export function ReservationPriceSummary(props: ReservationPriceSummaryProps) {
   const corporateBilling = props.paymentMethod === 'CORPORATE_BILLING'
 
   return (
-    <div className="mt-6 rounded-none border border-gray-200 bg-gray-50 p-5">
+    <div className="sticky top-[72px] z-10 mt-6 rounded-none border border-gray-200 bg-gray-50 p-5 xl:static">
       <div className="border-b border-gray-200 pb-4">
         <p className="text-[12px] font-medium text-gray-500">예상 금액</p>
         <p className="mt-1 text-2xl font-bold text-[#1a1a1a]">

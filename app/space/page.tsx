@@ -81,7 +81,7 @@ export default function SpacePage() {
           </div>
           <FadeIn delay={0.45}>
             <p className="mt-4 text-[14px] leading-relaxed text-white/75 md:text-[15px]">
-              바쁜 일상의 걸음을 잠시 멈추고, 공간 속에 내포된 고유한 감각을 천천히 묵상해 보세요.
+              바쁜 걸음을 멈추고, 공간이 주는 고요를 천천히 느껴보세요.
             </p>
           </FadeIn>
         </div>
@@ -144,6 +144,30 @@ export default function SpacePage() {
           </div>
         </section>
       ))}
+
+      {/* ── 침실 구성 ──────────────────────────────────────────────────── */}
+      <section className="border-t border-gray-100 px-5 py-14 md:py-16">
+        <div className="mx-auto max-w-6xl">
+          <FadeIn>
+            <p className="text-eyebrow text-gray-500">숙면 안내</p>
+            <h2 className="mt-3 font-serif text-section font-extralight leading-tight tracking-[-0.025em] text-[#1a1a1a]">
+              침실 구성
+            </h2>
+            <div className="mt-6 grid gap-px border border-gray-200 bg-gray-200 md:grid-cols-3">
+              {[
+                { label: '침대', value: '라지킹사이즈 침대 2개' },
+                { label: '4인까지', value: '침대 그대로 여유롭게' },
+                { label: '6인 예약 시', value: '토퍼·프리미엄 침구 추가 준비' },
+              ].map((item) => (
+                <div key={item.label} className="bg-white p-6">
+                  <p className="text-[12px] font-medium tracking-[0.05em] text-gray-500">{item.label}</p>
+                  <p className="mt-2 text-[15px] font-medium text-[#1a1a1a]">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
       {/* ── 시설 · 어메니티 ────────────────────────────────────────────── */}
       <section className="bg-[#f8f8f8] px-5 py-20 md:py-28">

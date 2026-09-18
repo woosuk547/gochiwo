@@ -96,6 +96,12 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
             className="space-y-6"
           >
             <FunnelSteps current={1} />
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 rounded-none border border-gray-200 bg-gray-50 px-4 py-3 text-[13px] text-gray-600">
+              <span className="font-semibold text-[#1a1a1a]">공식 홈페이지 직접예약</span>
+              <span>연박 할인 자동 적용</span>
+              <span>일정 12시간 확보</span>
+              <span>중개 수수료 없음</span>
+            </div>
             <div className="grid gap-6 xl:gap-8 xl:grid-cols-[1.05fr_0.95fr]">
             <div className="space-y-5 md:space-y-6">
               {/* 숙소 요약 */}

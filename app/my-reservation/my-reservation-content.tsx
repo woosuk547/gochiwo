@@ -37,7 +37,7 @@ const paymentStatusLabel: Record<string, string> = {
 }
 
 const fieldClassName =
-  'h-12 rounded-none border-gray-200 bg-white px-4 text-sm text-[#1a1a1a] placeholder:text-gray-300 focus-visible:border-[#1a1a1a] focus-visible:ring-[#1a1a1a]/10'
+  'h-12 rounded-none border-gray-200 bg-white px-4 text-sm text-[#1a1a1a] placeholder:text-gray-400 focus-visible:border-[#1a1a1a] focus-visible:ring-[#1a1a1a]/10'
 
 function formatDate(dateStr: string) {
   try {
@@ -98,7 +98,7 @@ export function MyReservationContent() {
             <Input
               value={reservationId}
               onChange={(e) => setReservationId(e.target.value)}
-              placeholder="cm..."
+              placeholder="완료 메일의 예약 번호 (복사해서 붙여넣기)"
               className={fieldClassName}
               required
             />

@@ -73,28 +73,24 @@ export const homeDayJourney = [
     label: '데크 · 거실',
     title: '포치 아래, 전면창의 빛',
     copy: '포치 아래 첫 숨과 전면창으로 스며드는 아침 빛. 하루의 속도가 천천히 풀려요.',
-    image: '/repause/editorial-deck.jpg',
   },
   {
     time: '낮',
     label: '수영장',
     title: '지하수 풀에서의 낮',
     copy: '지하수로 채운 사계절 전용 풀에서 맘껏 놀아요. 우리만의 물놀이 시간이에요.',
-    image: '/repause/editorial-exterior.jpg',
   },
   {
     time: '저녁',
     label: '실내',
     title: '우리끼리의 저녁',
     copy: '식탁과 소파에 둘러앉아 이야기 나누는 저녁. 방해 없는 우리만의 시간이 이어져요.',
-    image: '/repause/editorial-living.jpg',
   },
   {
     time: '밤',
     label: '침실',
     title: '깊은 고요',
     copy: '온전한 정적이 깃드는 밤. 잠드는 것조차 아깝다는 말을 자주 듣는 방이에요.',
-    image: '/repause/editorial-bedroom.jpg',
   },
 ]
 
@@ -218,16 +214,16 @@ export const guideGroups = [
 
 export const reservationNotes = [
   {
-    title: '우아한 여정 설계',
-    description: '원하시는 날짜와 인원을 선택하시면 정교하게 조율된 예상 요금을 즉시 보여드립니다.',
+    title: '예상 요금 바로 확인',
+    description: '날짜와 인원을 고르면 예상 요금을 바로 보여드려요.',
   },
   {
-    title: '확인 후 안내',
-    description: '날짜가 겹치지 않는지 확인한 뒤, 카드·계좌는 결제가 끝나면 바로 확정돼요.',
+    title: '결제하면 바로 확정',
+    description: '날짜가 겹치지 않는지 확인한 뒤, 카드·계좌이체는 결제가 끝나면 바로 확정돼요.',
   },
   {
-    title: '파트너 전용 배려',
-    description: '제휴 협력사 임직원 혜택 및 VIP 투숙 일정은 제휴 예약 채널을 통해 조율해 드립니다. 상업 촬영·워케이션은 제휴 페이지의 [미디어 대관 · 워케이션 문의] 탭을 이용해 주세요.',
+    title: '제휴·대관은 따로',
+    description: '임직원 혜택과 VIP 일정은 제휴 예약에서, 상업 촬영·워케이션은 [미디어 대관 · 워케이션 문의] 탭에서 상담해 드려요.',
   },
 ]
 
@@ -245,11 +241,11 @@ export const partnershipBenefits = [
   },
   {
     title: '미디어 대관 · 워케이션 문의',
-    copy: '쇼핑몰 룩북, 광고·미디어 촬영, 워케이션 등은 제휴 페이지의 [미디어 대관 · 워케이션 문의] 탭에서 안내받아 주세요.',
+    copy: '쇼핑몰 룩북, 광고·미디어 촬영, 워케이션은 [미디어 대관 · 워케이션 문의] 탭에서 상담해 드려요.',
   },
   {
-    title: '정교한 기업 정산',
-    copy: '법인 일괄 정산 및 개별 임직원 정산 등 기업 환경에 알맞는 매끄럽고 체계적인 맞춤 정산 프로토콜을 지원합니다.',
+    title: '기업 맞춤 정산',
+    copy: '법인 일괄 정산과 임직원 개별 정산을 지원해요. 세금계산서 발행도 가능해요.',
   },
 ]
 
@@ -375,8 +371,8 @@ export const guideFaqSections: GuideFaqSection[] = [
           {
             question: '머무르는 동안 불편 사항이 생기면 어떻게 연락하나요?',
             answer:
-              '고객님의 온전한 휴식을 방해하지 않도록 비대면 서비스를 지향하고 있습니다. 다만, 머무시는 동안 도움이 필요하시거나 문의 사항이 있으실 경우 아래 채널 중 하나로 연락해 주시면 신속하고 정중하게 안내해 드리겠습니다.\n\n· 고객센터(오전 10시~18시 운영): 02-514-5536\n· 카카오톡: @REPAUSE 채널\n· 인스타그램: @repause_poolvilla',
-            cta: { href: 'https://pf.kakao.com/_repause', label: '카카오톡 문의하기' },
+              '머무시는 동안 도움이 필요하면 아래 채널로 연락해 주세요. 채팅이 가장 빨라요.\n\n· 홈페이지 우측 하단 채팅 문의\n· 고객센터(오전 10시~18시 운영): 02-514-5536\n· 인스타그램: @repause_poolvilla',
+            cta: { href: 'tel:025145536', label: '전화로 문의하기' },
           },
         ],
       },
@@ -412,8 +408,8 @@ export const guideFaqSections: GuideFaqSection[] = [
 
 export const cancellationPolicy = {
   intro: [
-    '환불 대금은 최종 납부 금액을 기준으로 정교하게 산정되어 정돈됩니다.',
-    '예약 신청 및 접수 당일 취소의 경우에도 이용 예정일을 기준으로 반환 기준이 동일하게 적용됩니다.',
+    '환불금은 최종 납부 금액을 기준으로 계산해요.',
+    '당일 신청·당일 취소도 이용 예정일 기준으로 같은 규정을 적용해요.',
   ],
   tableRows: [
     { daysLabel: '15일 전', offpeak: '100% 환불', peak: '100% 환불' },

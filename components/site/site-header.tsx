@@ -95,6 +95,19 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
             )
           })}
           <Link
+            href="/my-reservation"
+            className={`relative px-4 py-2 text-[14px] font-medium tracking-tight transition-colors rounded-none ${
+              pathname === '/my-reservation'
+                ? solidHeader ? 'font-semibold text-brand' : 'font-semibold text-white'
+                : solidHeader ? 'text-gray-600 hover:text-brand' : 'text-white/80 hover:text-white'
+            }`}
+          >
+            예약 조회
+            {pathname === '/my-reservation' && (
+              <span className={`absolute bottom-0.5 left-4 right-4 h-px ${solidHeader ? 'bg-brand' : 'bg-white'}`} />
+            )}
+          </Link>
+          <Link
             href="/reservation"
             className={`ml-3 px-5 py-2 text-[13px] font-semibold tracking-wide transition-all duration-300 rounded-none border ${
               solidHeader
@@ -164,6 +177,15 @@ export function SiteHeader({ overlay = false }: SiteHeaderProps) {
                     {item.label}
                   </Link>
                 ))}
+                <Link
+                  href="/my-reservation"
+                  className={`px-4 py-3.5 text-[15px] font-medium transition-colors rounded-none ${
+                    pathname === '/my-reservation' ? 'bg-gray-50 font-semibold text-brand' : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  예약 조회
+                </Link>
                 <Link
                   href="/reservation"
                   className="mt-4 flex items-center justify-center border border-brand bg-brand px-4 py-4 text-[14px] font-semibold tracking-wide text-white rounded-none transition-all duration-300 hover:bg-transparent hover:text-brand"

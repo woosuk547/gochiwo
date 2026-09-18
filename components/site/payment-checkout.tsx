@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
@@ -9,7 +9,7 @@ import { contactInfo } from '@/lib/repause-content'
 import { calculateReservationQuote, BASE_GUESTS } from '@/lib/repause-pricing'
 import { getAppUrl } from '@/lib/app-url'
 import { FunnelSteps } from '@/components/site/funnel-steps'
-import { isUnpaidHoldExpired } from '@/lib/reservation-hold'
+import { isUnpaidHoldExpired, PENDING_HOLD_MS } from '@/lib/reservation-hold'
 
 interface PaymentCheckoutProps {
   reservation: ReservationSummary
@@ -54,6 +54,22 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
   const partnerDiscount = breakdownMatches ? quote.partnerDiscount : 0
 
   const holdExpired = isUnpaidHoldExpired(reservation)
+
+  const holdDeadline = useMemo(
+    () => new Date(new Date(reservation.createdAt).getTime() + PENDING_HOLD_MS),
+    [reservation.createdAt],
+  )
+  const holdDeadlineLabel = new Intl.DateTimeFormat('ko-KR', {
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(holdDeadline)
+  const showHoldDeadline =
+    reservation.status === 'PENDING' &&
+    !holdExpired &&
+    reservation.paymentStatus !== 'PAID' &&
+    reservation.paymentStatus !== 'DEPOSIT_PAID'
 
   const handlePayment = async () => {
     if (holdExpired) {
@@ -137,7 +153,10 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
       <Script
         src="https://js.tosspayments.com/v2/standard"
         onLoad={() => setTossLoaded(true)}
-        onError={() => setError('결제 스크립트 로드에 실패했어요. 인터넷 연결을 확인해 주세요.')}
+        onError={() => {
+          setTossLoaded(false)
+          setError('결제 모듈을 불러오지 못했어요. 아래 다시 시도 버튼을 눌러주세요.')
+        }}
       />
 
       <div className="mx-auto max-w-3xl rounded-none border border-gray-200 bg-white p-4 md:p-6 lg:p-10">
@@ -153,6 +172,11 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                 ? '예약 신청이 접수되었어요. 결제가 완료되면 예약이 확정돼요.'
                 : '예약 내용을 확인해 주세요.'}
           </p>
+          {showHoldDeadline && (
+            <p className="mt-2 text-[13px] font-medium text-amber-700">
+              {holdDeadlineLabel}까지 결제해 주세요. 기한이 지나면 일정이 자동으로 풀려요.
+            </p>
+          )}
         </div>
 
         <div className="mt-6 space-y-5 md:mt-8 md:space-y-6">
@@ -340,8 +364,18 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                       <span>-{reservation.discountAmount.toLocaleString('ko-KR')}원</span>
                     </div>
                   )}
+                  <div className="flex justify-between text-sm py-1.5 text-gray-500">
+                    <span>총 예약 금액</span>
+                    <span>{reservation.finalAmount.toLocaleString('ko-KR')}원</span>
+                  </div>
+                  {paymentType === 'DEPOSIT' && (
+                    <div className="flex justify-between text-sm py-1.5 text-gray-500">
+                      <span>체크인 당일 잔금 (현장 정산)</span>
+                      <span>{(reservation.finalAmount - reservation.depositAmount).toLocaleString('ko-KR')}원</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-base font-semibold py-4 border-t border-dashed border-gray-200 mt-2 text-[#1a1a1a]">
-                    <span>최종 결제 금액</span>
+                    <span>이번 결제 금액{paymentType === 'DEPOSIT' ? ' (예약금)' : ' (전액)'}</span>
                     <span className="text-xl font-bold">{amount.toLocaleString('ko-KR')}원</span>
                   </div>
                   <div className="flex justify-between text-[13px] text-gray-500 py-1">
@@ -350,7 +384,18 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                   </div>
                 </div>
 
-                {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
+                {error && (
+                  <p className="mt-2 flex flex-wrap items-center gap-2 text-sm text-red-600">
+                    <span>{error}</span>
+                    <button
+                      type="button"
+                      onClick={() => window.location.reload()}
+                      className="min-h-[32px] font-medium underline underline-offset-2"
+                    >
+                      다시 시도
+                    </button>
+                  </p>
+                )}
 
                 <Button
                   onClick={handlePayment}
@@ -382,7 +427,18 @@ export function PaymentCheckout({ reservation }: PaymentCheckoutProps) {
                     {isProcessing ? '처리 중...' : '결제하기'}
                   </Button>
                 </div>
-                {error && <p className="mt-2 text-[13px] text-red-600">{error}</p>}
+                {error && (
+                  <p className="mt-2 flex flex-wrap items-center gap-2 text-[13px] text-red-600">
+                    <span>{error}</span>
+                    <button
+                      type="button"
+                      onClick={() => window.location.reload()}
+                      className="min-h-[32px] font-medium underline underline-offset-2"
+                    >
+                      다시 시도
+                    </button>
+                  </p>
+                )}
               </div>
               </>
             )}

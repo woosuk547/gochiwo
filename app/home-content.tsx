@@ -54,12 +54,8 @@ export function HomeContent() {
             <FadeIn delay={0.35} duration={1.1} distance={50}>
               <h1 className="font-serif text-display font-extralight leading-[1.05] tracking-[-0.025em] text-white">
                 고요가 흐르는 시간
+                <span className="block text-white/80">우리만의 휴식</span>
               </h1>
-            </FadeIn>
-            <FadeIn delay={0.5} duration={1.1} distance={50}>
-              <p className="font-serif text-display font-extralight leading-[1.05] tracking-[-0.025em] text-white/60">
-                우리만의 휴식
-              </p>
             </FadeIn>
           </div>
 
@@ -157,7 +153,7 @@ export function HomeContent() {
                   }`}
                 >
                   <p className="text-label text-gray-500">{step.time}</p>
-                  <p className="mt-1 text-[12px] tracking-[0.12em] text-gray-300">{step.label}</p>
+                  <p className="mt-1 text-[12px] tracking-[0.12em] text-gray-400">{step.label}</p>
                   <h3 className="mt-3 font-serif text-[1.25rem] font-light tracking-[-0.02em] text-[#1a1a1a]">
                     {step.title}
                   </h3>

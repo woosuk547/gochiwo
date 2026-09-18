@@ -78,6 +78,19 @@ function getNightlyRate(date: Date) {
   return isWeekendOrHoliday(date) ? WEEKEND_RATE : WEEKDAY_RATE
 }
 
+/** 캘린더 표시용 1박 요금. shortLabel은 만원 단위 숫자 문자열(예: '68'). */
+export function getNightlyRateInfo(dateKey: string) {
+  const date = parseDateInput(dateKey)
+  if (!date) return null
+  const rate = getNightlyRate(date)
+  return {
+    rate,
+    shortLabel: `${Math.round(rate / 10000)}`,
+    isPeak: isPeakSeason(date),
+    isWeekend: !isPeakSeason(date) && isWeekendOrHoliday(date),
+  }
+}
+
 function getNights(checkIn: Date, checkOut: Date) {
   return Math.round((checkOut.getTime() - checkIn.getTime()) / 86400000)
 }
