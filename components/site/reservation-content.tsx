@@ -1,6 +1,7 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -25,6 +26,18 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
   const formRef = useRef<HTMLDivElement>(null)
+  const searchParams = useSearchParams()
+
+  // 홈 날짜 위젯 딥링크 (?checkIn=&checkOut=) 초기값 반영
+  useEffect(() => {
+    const ci = searchParams.get('checkIn') ?? ''
+    const co = searchParams.get('checkOut') ?? ''
+    if (/^\d{4}-\d{2}-\d{2}$/.test(ci) && /^\d{4}-\d{2}-\d{2}$/.test(co) && co > ci) {
+      setCheckIn(ci)
+      setCheckOut(co)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function handleCalendarChange(newCheckIn: string, newCheckOut: string) {
     setCheckIn(newCheckIn)

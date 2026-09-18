@@ -12,6 +12,7 @@ import {
   ParallaxLayers,
 } from '@/components/motion'
 import { GuestReviews } from '@/components/site/guest-reviews'
+import { HeroDateWidget } from '@/components/site/hero-date-widget'
 import { noticeEntries } from '@/lib/repause-brand-content'
 import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
 import {
@@ -78,6 +79,10 @@ export function HomeContent() {
                 공간 둘러보기
               </Link>
             </div>
+          </FadeIn>
+
+          <FadeIn delay={0.9} duration={0.7} distance={16} className="w-full max-w-xl">
+            <HeroDateWidget />
           </FadeIn>
         </div>
 
