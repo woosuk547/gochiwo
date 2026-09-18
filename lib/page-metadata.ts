@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 const SITE = 'https://repause.co.kr'
-const OG_IMAGE = '/repause/editorial-exterior.jpg'
+const OG_IMAGE = '/repause/og-cover.jpg'
 
 export function publicPageMeta(title: string, description: string, path: string): Metadata {
   const url = path === '/' ? SITE : `${SITE}${path}`

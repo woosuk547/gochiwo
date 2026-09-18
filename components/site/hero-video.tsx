@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type MouseEvent } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import Image from 'next/image'
 import { useReducedMotion } from 'framer-motion'
 import { editorialBtnOutline } from '@/lib/editorial'
@@ -8,8 +8,18 @@ import { editorialBtnOutline } from '@/lib/editorial'
 export function HeroVideo() {
   const prefersReducedMotion = useReducedMotion()
   const [paused, setPaused] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
-  if (prefersReducedMotion) {
+  // 모바일은 포스터 이미지만 (히어로 영상 3.6MB 절약)
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 767px)')
+    const update = () => setIsMobile(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  if (prefersReducedMotion || isMobile) {
     return (
       <Image
         src="/repause/hero-exterior.jpg"

@@ -11,6 +11,7 @@ import {
   ParallaxImage,
   ParallaxLayers,
 } from '@/components/motion'
+import { GuestReviews } from '@/components/site/guest-reviews'
 import { noticeEntries } from '@/lib/repause-brand-content'
 import { editorialBtnPrimary, editorialBtnOutline } from '@/lib/editorial'
 import {
@@ -241,6 +242,9 @@ export function HomeContent() {
           </FadeIn>
         </div>
       </section>
+
+      {/* ── Guest Reviews (후기 있을 때만 노출) ─────────────────────────── */}
+      <GuestReviews />
 
       {/* ── 7. Reservation Timeline ───────────────────────────────────── */}
       <section className="border-t border-gray-100 bg-[#1a1a1a] px-5 py-20 md:py-28">

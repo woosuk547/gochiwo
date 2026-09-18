@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: '리포즈 | 하이엔드 프라이빗 독채 스테이',
     description: '고요한 휴식과 우리만의 시간을 위한 프라이빗 독채 스테이.',
     url: 'https://repause.co.kr',
-    images: [{ url: '/repause/editorial-exterior.jpg', width: 1200, height: 630, alt: '리포즈 프라이빗 독채' }],
+    images: [{ url: '/repause/og-cover.jpg', width: 1200, height: 630, alt: '리포즈 프라이빗 독채' }],
   },
 }
 
@@ -22,7 +22,7 @@ const lodgingJsonLd = {
   '@type': 'LodgingBusiness',
   name: '리포즈 프라이빗 독채',
   url: 'https://repause.co.kr',
-  image: 'https://repause.co.kr/repause/editorial-exterior.jpg',
+  image: 'https://repause.co.kr/repause/og-cover.jpg',
   telephone: '02-514-5536',
   priceRange: '₩680,000 - ₩950,000',
   address: {

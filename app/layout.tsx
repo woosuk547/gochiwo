@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '리포즈 | 하이엔드 프라이빗 독채 스테이',
     description: '고요한 휴식과 우리만의 시간을 위한 프라이빗 독채 스테이.',
-    images: ['/repause/editorial-exterior.jpg'],
+    images: ['/repause/og-cover.jpg'],
   },
 }
 
