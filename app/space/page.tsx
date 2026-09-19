@@ -46,7 +46,7 @@ const spaceDetails = [
   {
     label: '데크',
     title: '프라이빗 데크',
-    copy: '포치 아래 의자에 앉아 잠시 눈을 감아보세요. 마음이 차분해지며 고요한 명상에 잠기게 됩니다.',
+    copy: '포치 아래 의자에 앉아 잠시 눈을 감아보세요. 우리만의 시간이 천천히 열립니다.',
     image: '/repause/editorial-deck.jpg',
     reverse: false,
   },
@@ -92,8 +92,8 @@ export default function SpacePage() {
         <div className="mx-auto max-w-4xl">
           <TextReveal>
             <p className="text-[clamp(1.3rem,2.5vw,2rem)] font-light leading-[1.8] tracking-[-0.025em] text-[#1a1a1a]">
-              공간 안에서 마주하는 사색의 깊이가 길어질수록, 회복의 부피 또한 깊어집니다.<br />
-              자연을 응시하는 거실에서 조용히 시작되어 깊은 수면, 자쿠지, 그리고 테라스 데크로 이어지는 유려한 여정을 경험해 보세요.
+              전면창 거실에서 시작해 자쿠지와 데크로 이어져요.<br />
+              같은 시간에 우리만 쓰는 독채입니다.
             </p>
           </TextReveal>
 
@@ -103,7 +103,7 @@ export default function SpacePage() {
                 { label: '사계절 전용 풀', value: '지하수 · 가을·겨울 미온수' },
                 { label: '전면창 거실', value: '자연을 응시하는 소파 라운지' },
                 { label: '자쿠지', value: '따뜻한 반신욕' },
-                { label: '프라이빗 데크', value: '포치 아래 고요한 명상' },
+                { label: '프라이빗 데크', value: '포치 아래 의자' },
                 { label: '다이닝 & 키친', value: '6인용 식탁과 완비된 주방' },
               ].map((item) => (
                 <div key={item.label} className="border-b border-gray-50 pb-4 md:border-b-0 md:pb-0">

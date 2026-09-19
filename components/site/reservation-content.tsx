@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LargeCalendarPicker } from '@/components/site/large-calendar-picker'
@@ -117,31 +116,6 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
             </div>
             <div className="grid gap-6 xl:gap-8 xl:grid-cols-[1.05fr_0.95fr]">
             <div className="space-y-5 md:space-y-6">
-              {/* 숙소 요약 */}
-              <div className="rounded-none border border-gray-200 bg-white p-4 md:p-5">
-                <div className="relative aspect-[16/9] overflow-hidden rounded-none">
-                  <Image src="/repause/room-outdoor.jpg" alt="리포즈 데크" fill className="object-cover" sizes="(min-width: 1280px) 50vw, 100vw" />
-                </div>
-                <div className="mt-3 md:mt-4">
-                  <h2 className="text-lg font-bold text-[#1a1a1a] md:text-xl">{primaryStay.name}</h2>
-                  <p className="mt-2 text-[13px] leading-relaxed text-gray-500 md:text-[14px]">{primaryStay.description}</p>
-                  <p className="mt-2 text-[12px] text-gray-500 md:text-[13px]">
-                    제휴사 임직원 예약 및 대관 문의는{' '}
-                    <Link href="/partnership" className="font-medium text-gray-600 underline">제휴 / 대관 안내</Link>
-                    에서 확인해 주시기 바랍니다.
-                  </p>
-                  <div className="mt-3 grid grid-cols-2 gap-2 md:mt-4">
-                    {staySnapshot.map((item) => (
-                      <div key={item.label} className="rounded-none bg-gray-50 px-3 py-2">
-                        <p className="text-[11px] font-medium text-gray-500">{item.label}</p>
-                        <p className="mt-0.5 text-[12px] font-semibold text-[#1a1a1a] md:text-[13px]">{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* 캘린더 */}
               <LargeCalendarPicker
                 checkIn={checkIn}
                 checkOut={checkOut}
@@ -149,6 +123,24 @@ export function ReservationContent({ blockedDates, reservedRanges }: Reservation
                 blockedDates={blockedDates}
                 reservedRanges={reservedRanges}
               />
+
+              <div className="rounded-none border border-gray-200 bg-white p-4 md:p-5">
+                <h2 className="text-lg font-bold text-[#1a1a1a] md:text-xl">{primaryStay.name}</h2>
+                <p className="mt-2 text-[13px] leading-relaxed text-gray-500 md:text-[14px]">{primaryStay.description}</p>
+                <p className="mt-2 text-[12px] text-gray-500 md:text-[13px]">
+                  제휴사 임직원 예약과 대관은{' '}
+                  <Link href="/partnership" className="font-medium text-gray-600 underline">제휴 / 대관 안내</Link>
+                  에서 확인해 주세요.
+                </p>
+                <div className="mt-3 grid grid-cols-2 gap-2 md:mt-4">
+                  {staySnapshot.map((item) => (
+                    <div key={item.label} className="rounded-none bg-gray-50 px-3 py-2">
+                      <p className="text-[11px] font-medium text-gray-500">{item.label}</p>
+                      <p className="mt-0.5 text-[12px] font-semibold text-[#1a1a1a] md:text-[13px]">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               {/* 예약 안내 + 포함사항 — 심플 리스트 */}
               <details className="group rounded-none border border-gray-100">

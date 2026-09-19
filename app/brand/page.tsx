@@ -44,7 +44,7 @@ export default function BrandPage() {
           </div>
           <FadeIn delay={0.4}>
             <p className="mt-4 text-[14px] leading-relaxed text-white/75 md:text-[15px]">
-              세상의 알람을 끄고 자연의 숨소리에 주파수를 맞추는 순간, 비로소 쉼의 본질에 가까워집니다.
+              세상의 알람을 끄고, 숲의 소리에 맞춰 쉬는 순간이 시작됩니다.
             </p>
           </FadeIn>
         </div>
@@ -87,7 +87,7 @@ export default function BrandPage() {
       <section className="border-t border-gray-100 px-5 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
-            <p className="text-eyebrow text-gray-500">운영 원칙</p>
+            <p className="text-eyebrow text-gray-500">우리가 지키는 것</p>
           </FadeIn>
           <AnimatedGrid staggerDelay={0.1} className="mt-10 grid gap-px border border-gray-100 md:grid-cols-3">
             {brandPrinciples.map((p, i) => (
@@ -151,7 +151,7 @@ export default function BrandPage() {
               <p className="text-eyebrow text-white/60">운영사</p>
               <h2 className="mt-3 text-[1.8rem] font-light text-white">크리오스</h2>
               <p className="mt-3 text-[14px] leading-relaxed text-white/50">
-                리포즈의 모든 공간 기획과 전담 운영을 깊이 있게 총괄하는 전문 법인입니다.
+                리포즈의 공간 기획과 예약을 맡는 법인이에요.
               </p>
             </AnimatedSection>
 

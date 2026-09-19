@@ -110,3 +110,14 @@ model RentalInquiry {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+/** 홈 후기. 본인 동의를 받은 원문만 등록한다. */
+model GuestReview {
+  id         String   @id @default(cuid())
+  quote      String
+  guestLabel String
+  stayedAt   String
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

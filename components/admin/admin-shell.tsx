@@ -9,6 +9,7 @@ import { DiscountCodeManager } from '@/components/admin/discount-code-manager'
 import { ReservationManager } from '@/components/admin/reservation-manager'
 import { RevenueSummary } from '@/components/admin/revenue-summary'
 import { TestMailSender } from '@/components/admin/test-mail-sender'
+import { GuestReviewManager } from '@/components/admin/guest-review-manager'
 import type {
   BlockedDateSummary,
   DiscountCodeSummary,
@@ -17,7 +18,7 @@ import type {
   ReservationSummary,
 } from '@/lib/booking'
 
-type AdminTab = 'reservations' | 'blocked' | 'discounts' | 'revenue' | 'mail'
+type AdminTab = 'reservations' | 'blocked' | 'discounts' | 'reviews' | 'revenue' | 'mail'
 type StatFilter = 'ALL' | 'PENDING' | 'GUIDE_SENT' | 'PAID' | 'PARTNERSHIP'
 
 interface Toast {
@@ -222,6 +223,7 @@ export function AdminShell() {
     { key: 'reservations', label: '예약 관리' },
     { key: 'blocked', label: '차단일' },
     { key: 'discounts', label: '할인코드' },
+    { key: 'reviews', label: '후기' },
     { key: 'revenue', label: '매출' },
     { key: 'mail', label: '메일' },
   ]
@@ -387,6 +389,7 @@ export function AdminShell() {
                       onDelete={deleteDiscountCode}
                     />
                   )}
+                  {activeTab === 'reviews' && <GuestReviewManager />}
                   {activeTab === 'revenue' && (
                     <RevenueSummary reservations={reservations} />
                   )}

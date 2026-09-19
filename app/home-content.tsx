@@ -69,41 +69,16 @@ export function HomeContent() {
             </p>
           </FadeIn>
 
-          <FadeIn delay={0.75} duration={0.7} distance={16}>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
-              <Link href="/reservation" className={editorialBtnPrimary}>
-                예약하기
-              </Link>
-              <Link
-                href="/space"
-                className="text-[13px] font-medium tracking-[0.1em] text-white/70 border-b border-transparent pb-0.5 transition-all duration-300 hover:border-white/60 hover:text-white"
-              >
-                공간 둘러보기
-              </Link>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={0.9} duration={0.7} distance={16} className="w-full max-w-xl">
+          <FadeIn delay={0.75} duration={0.7} distance={16} className="w-full max-w-xl">
             <HeroDateWidget />
+            <Link
+              href="/space"
+              className="mt-4 inline-flex min-h-[44px] items-center text-[13px] font-medium tracking-[0.1em] text-white/70 border-b border-transparent pb-0.5 transition-all duration-300 hover:border-white/60 hover:text-white"
+            >
+              공간 둘러보기
+            </Link>
           </FadeIn>
         </div>
-
-        <FadeIn
-          delay={1.2}
-          className="absolute bottom-[calc(24px+env(safe-area-inset-bottom))] left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"
-        >
-          <p className="text-[11px] tracking-[0.12em] text-white/50">아래로 스크롤</p>
-          <div className="relative h-12 w-px bg-white/15">
-            <div className="absolute top-0 h-4 w-px animate-[scrollDown_2s_ease-in-out_infinite] bg-white/60" />
-          </div>
-        </FadeIn>
-
-        <FadeIn delay={0.9} className="absolute bottom-10 left-5 hidden md:block md:left-10">
-          <p className="text-[11px] tracking-[0.12em] text-white/50">Repause © 2026</p>
-        </FadeIn>
-        <FadeIn delay={0.9} className="absolute bottom-10 right-5 hidden md:block md:right-10">
-          <p className="text-[11px] tracking-[0.1em] text-white/50">{primaryStay.guests} · 사계절 전용 풀</p>
-        </FadeIn>
       </section>
 
       {/* ── 2. Pull Quote ─────────────────────────────────────────────── */}
@@ -138,7 +113,7 @@ export function HomeContent() {
       {/* ── 3. Parallax Forest Journey ────────────────────────────────── */}
       <ParallaxLayers
         layers={homeParallaxLayers}
-        subtitle="고요한 여정으로"
+        subtitle="오시는 길"
         title="프라이빗 독채에 닿기까지"
       />
 
@@ -146,9 +121,9 @@ export function HomeContent() {
       <section className="border-t border-gray-100 px-5 py-20 md:py-28">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
-            <p className="text-label text-gray-500">하루의 여정</p>
+            <p className="text-label text-gray-500">하루</p>
             <h2 className="mt-3 font-serif text-section font-extralight tracking-[-0.025em] text-[#1a1a1a]">
-              Repause에서의 하루
+              리포즈에서의 하루
             </h2>
           </FadeIn>
 

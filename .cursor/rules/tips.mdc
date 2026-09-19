@@ -3,11 +3,8 @@ description: 작업 중 발견한 버그·해결책·팁 자동 기록 (CLAUDE.m
 alwaysApply: true
 ---
 
-# 배운 점 & 팁
-
-형식: `- [YYYY-MM-DD] 이슈 -> 팁` (미사어구 금지)
-신규 팁은 이 파일 상단에 추가.
-훅: `.cursor/hooks.json` — sessionStart 컨텍스트 주입 + stop 시 미기록 팁 follow-up (`loop_limit: 1`).
+- [2026-09-19] 히어로 하단 달력 팝오버 -> 아래 공간 <440px이면 `bottom-full`로 위에 연다. `top-full`은 100svh 히어로에서 화면 밖으로 나감.
+- [2026-09-19] 예약 페이지 큰 이미지 히어로 -> 달력이 접힘 아래. 텍스트 PageHero + 캘린더를 숙소 카드보다 위에.
 
 - [2026-09-18] fetch useEffect 로딩 데드락 -> `loading`을 deps에 넣고 안에서 setLoading하면 리렌더 cleanup이 진행 중 fetch를 취소해 영원히 로딩. deps는 `[open, availability]`만.
 - [2026-09-18] dev.db 수동 INSERT -> `datetime('now')`('YYYY-MM-DD HH:MM:SS')는 Prisma P2023(Conversion failed). checkIn/createdAt 등은 ISO(`YYYY-MM-DDTHH:MM:SS.000Z`)로 넣어야 함.
